@@ -66,10 +66,13 @@
 <!-- الشعار -->
 <div class="logo">
   🌟 مملكة الأصليات – 📞 01022495795 / 01096005334 🌟
+  <br>
+  المستخدم: <span id="username-display"></span>
 </div>
 
 <div id="password-prompt">
   <h2>أدخل كلمة المرور للولوج للموقع</h2>
+  <input type="text" id="username" placeholder="اسم المستخدم" />
   <input type="password" id="pass" placeholder="كلمة المرور" />
   <button onclick="checkPassword()">دخول</button>
 </div>
@@ -83,10 +86,12 @@
   const correctPassword = "888";
 
   function checkPassword() {
-    const input = document.getElementById('pass').value;
-    if(input === correctPassword) {
+    const inputPass = document.getElementById('pass').value;
+    const inputUser = document.getElementById('username').value || "مستخدم مجهول";
+    if(inputPass === correctPassword) {
       document.getElementById('password-prompt').style.display = 'none';
       document.getElementById('content').style.display = 'block';
+      document.getElementById('username-display').textContent = inputUser;
     } else {
       alert("كلمة المرور خاطئة!");
     }
