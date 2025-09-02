@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <title>منتجات جنه مع جدول الأسعار</title>
+  <title>مملكة الأصليات مع جدول الأسعار</title>
   <style>
     body {
       font-family: Tahoma, sans-serif;
@@ -56,32 +56,46 @@
       display: inline-block;
       margin: 5px;
     }
+    #content {
+      display: none; /* يخفي المحتوى لحد ما يدخل الباسورد */
+    }
   </style>
 </head>
 <body>
 
 <!-- الشعار -->
 <div class="logo">
-  🌟 البرنامج برعاية شركة جنة – 📞 01022495795 / 01096005334 🌟
+  🌟 مملكة الأصليات – 📞 01022495795 / 01096005334 🌟
 </div>
 
-<h1>منتجات جنه لاكسسوار المحمول بنبروه</h1>
+<div id="password-prompt">
+  <h2>أدخل كلمة المرور للولوج للموقع</h2>
+  <input type="password" id="pass" placeholder="كلمة المرور" />
+  <button onclick="checkPassword()">دخول</button>
+</div>
 
-<div id="products-container"></div>
+<div id="content">
+  <h1>منتجات مملكة الأصليات لاكسسوار المحمول بنبروه</h1>
+  <div id="products-container"></div>
+</div>
 
 <script>
+  const correctPassword = "888";
+
+  function checkPassword() {
+    const input = document.getElementById('pass').value;
+    if(input === correctPassword) {
+      document.getElementById('password-prompt').style.display = 'none';
+      document.getElementById('content').style.display = 'block';
+    } else {
+      alert("كلمة المرور خاطئة!");
+    }
+  }
+
   // بيانات المنتجات
   const products = [
-    {
-      image: 'شاحن 123.jpg',
-      name: 'شاحن 123',
-      price: '100 جنيه'
-    },
-    {
-      image: 'سماعه سامسونج.jpg',
-      name: 'سماعه سامسونج',
-      price: '200 جنيه'
-    }
+    { image: 'شاحن 123.jpg', name: 'شاحن 123', price: '100 جنيه' },
+    { image: 'سماعه سامسونج.jpg', name: 'سماعه سامسونج', price: '200 جنيه' }
   ];
 
   const container = document.getElementById('products-container');
@@ -92,8 +106,8 @@
         <img src="${product.image}" alt="${product.name}" />
         <div class="name">${product.name}</div>
         <div class="price">السعر: ${product.price}</div>
-        <a class="contact-btn" href="https://wa.me/201022495795?text=مرحبًا، أود طلب ${product.name} بسعر ${product.price} من موقع جنه">تواصل على 01022495795</a>
-        <a class="contact-btn" href="https://wa.me/201096005334?text=مرحبًا، أود طلب ${product.name} بسعر ${product.price} من موقع جنه">تواصل على 01096005334</a>
+        <a class="contact-btn" href="https://wa.me/201022495795?text=مرحبًا، أود طلب ${product.name} بسعر ${product.price} من موقع مملكة الأصليات">تواصل على 01022495795</a>
+        <a class="contact-btn" href="https://wa.me/201096005334?text=مرحبًا، أود طلب ${product.name} بسعر ${product.price} من موقع مملكة الأصليات">تواصل على 01096005334</a>
       </div>
     `;
   });
