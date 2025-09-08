@@ -1,182 +1,13 @@
-/* أزرار أعلى الصفحة */
-.top-buttons { 
-  display:flex; 
-  flex-wrap:wrap; 
-  justify-content:center; 
-  margin:15px 0; 
-  gap:10px; 
-}
-
-.top-buttons button { 
-  padding:14px 20px;       /* زيادة مساحة الزر */
-  font-size:1.25em;        /* تكبير الخط */
-  font-weight:bold;         /* تثقيل الخط */
-  border:none; 
-  border-radius:8px; 
-  background:#8a2be2; 
-  color:#fff; 
-  cursor:pointer; 
-  transition:0.3s; 
-}
-
-.top-buttons button:hover { 
-  background:#6a1fbf; 
-  transform:scale(1.05); 
-}
-
-/* مربع كلمة السر يظهر على الصفحة */
-.password-box { display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#fff; padding:25px; border-radius:12px; max-width:400px; width:90%; box-shadow:0 2px 15px rgba(0,0,0,0.3); text-align:center; z-index:1001; font-weight:bold; }
-.password-box input { width:70%; padding:10px; margin:10px 0; border-radius:8px; border:1px solid #ccc; }
-.password-box button { padding:10px 15px; margin:5px; border:none; border-radius:8px; background:#8a2be2; color:#fff; cursor:pointer; font-weight:bold; }
-
-/* زر الدعم الفني */
-.support-btn { position:fixed; top:10px; left:10px; padding:10px 15px; border-radius:50%; background:#ff5722; color:#fff; font-weight:bold; cursor:pointer; box-shadow:0 2px 5px rgba(0,0,0,0.3); transition:0.3s; }
-.support-btn:hover { background:#e64a19; transform:scale(1.1); }
-
-</style>
-</head>
-<body>
 
 <div class="top-bar">🌹 اللهم صلِّ وسلم وبارك على سيدنا محمد ﷺ 🌹</div>
 <div class="blink">✨ أهلاً ومرحباً بكم في مملكة الأصليات 
+  /هنبيع ببلاش واكن الصنف مجاش✨</div>
   /
   هنبيع ببلاش واكن الصنف مجاش✨</div>
 
 <header>
 <h1>شركة جنة</h1>
-<h2>لجميع خدمات المحمول</h2>
-</header>
-
-<!-- صور أعلى -->
-<div class="top-images">
-<img src="123.jpg" alt="صورة 1">
-<img src="456.jpg" alt="صورة 2">
-<img src="789.jpg" alt="صورة 3">
-</div>
-
-<!-- أزرار أعلى الصفحة -->
-<div class="top-buttons">
-<button onclick="showInfo('العنوان:<br>المنصورة - نبروه سوق المحمول')">🏠 العنوان</button>
-<button onclick="showInfo('تواصل معنا:<br>01022495795<br>01067070423<br>01012253500')">📞 تواصل معنا</button>
-<button onclick="window.open('https://www.facebook.com/share/174s1yLKfA/?mibextid=wwXIfr','_blank')">📘 فيسبوك</button>
-<button onclick="showPasswordBox()">🔥 المنتجات والعروض</button>
-</div>
-
-<!-- مربع المعلومات -->
-<div id="infoBox" class="info-box">
-<h2>تفاصيل</h2>
-<p id="infoText" style="line-height:1.6;"></p>
-<button onclick="closeInfo()">رجوع</button>
-</div>
-
-<!-- نموذج التسجيل -->
-<div class="form-container">
-<h3>📑 لتلقي العروض قم بتسجيل بياناتك</h3>
-<input type="text" id="name" placeholder="الاسم أو اسم المحل" required>
-<input type="tel" id="phone" placeholder="رقم الموبايل" required>
-<input type="text" id="address" placeholder="العنوان" required>
-<select id="field" required>
-  <option value="">اختر المجال</option>
-  <option value="داخلي">داخلي</option>
-  <option value="خارجي">خارجي</option>
-</select>
-<button id="submitBtn">🚀 سجل الان</button>
-</div>
-
-<!-- نجاح التسجيل -->
-<div id="successModal" class="modal">
-<div class="modal-content">
-<h2>🎉 تم التسجيل بنجاح نورت المملكة😍 🎉</h2>
-<button onclick="closeModal()">إغلاق</button>
-</div>
-</div>
-
-<!-- مربع كلمة السر -->
-<div id="passwordBox" class="password-box">
-<h2>ادخل كلمه السر لمشاهده الاسعار والمنتجات 🔑</h2>
-<input type="password" id="offerPass" placeholder="كلمة السر">
-<div style="margin:10px 0;">إذا أردت كلمة السر الخاصه بك، تواصل مع المندوب الخاص بك</div>
-<button onclick="checkPassword()">دخول</button>
-<button onclick="closePasswordBox()">رجوع</button>
-</div>
-
-<!-- زر الدعم الفني -->
-<button class="support-btn" onclick="window.open('https://wa.me/201022495795','_blank')">الدعم الفني</button>
-
-<script>
-const infoBox = document.getElementById('infoBox');
-const infoText = document.getElementById('infoText');
-const passwordBox = document.getElementById('passwordBox');
-const submitBtn = document.getElementById("submitBtn");
-const successModal = document.getElementById("successModal");
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw_Yc2ii6bu0iLOJEt0iXwnNjzZFLo0djFODlZIDORzWrVopf653DuJmvywGIbZa3PYJA/exec";
-
-// عرض التفاصيل داخل الصفحة
-function showInfo(text){
-  infoText.innerHTML = text;
-  infoBox.style.display = 'block';
-}
-function closeInfo(){ infoBox.style.display = 'none'; }
-
-// عرض مربع كلمة السر أمام العميل
-function showPasswordBox(){ passwordBox.style.display='block'; }
-function closePasswordBox(){ passwordBox.style.display='none'; }
-
-function checkPassword(){
-  const pass = document.getElementById("offerPass").value;
-  if(pass === "010024"){
-    alert("✅ كلمة السر صحيحة - سيتم عرض المنتجات قريباً");
-    closePasswordBox();
-  } else alert("❌ كلمة السر غير صحيحة");
-}
-
-// تسجيل البيانات للشيت مع التحقق من الحقول
-submitBtn.addEventListener("click", async (e)=>{
-  e.preventDefault();
-  const nameVal = document.getElementById("name").value.trim();
-  const phoneVal = document.getElementById("phone").value.trim();
-  const addressVal = document.getElementById("address").value.trim();
-  const fieldVal = document.getElementById("field").value;
-
-  if(!nameVal){ alert("الرجاء إدخال الاسم أو اسم المحل"); return; }
-  if(!phoneVal){ alert("الرجاء إدخال رقم الموبايل بالانجليزي"); return; }
-  if(!addressVal){ alert("الرجاء إدخال العنوان"); return; }
-  if(!fieldVal){ alert("الرجاء اختيار المجال"); return; }
-
-  submitBtn.disabled=true;
-  submitBtn.textContent='جارٍ الإرسال...';
-
-  const data = { name:nameVal, phone:phoneVal, address:addressVal, field:fieldVal };
-  const phonePattern = /^01[0-2,5][0-9]{8}$/;
-  if (!phonePattern.test(data.phone)) { alert('من فضلك أدخل رقم موبايل مصري صحيح'); submitBtn.disabled=false; submitBtn.textContent='🚀 سجل الان'; return; }
-
-  const params = new URLSearchParams();
-  for (let key in data) params.append(key,data[key]);
-
-  try{
-    fetch(SCRIPT_URL,{ method:'POST', body:params })
-    .then(res=>res.text())
-    .then(text=>{
-      let resp={};
-      try{ resp=JSON.parse(text); } catch(e){ resp={result:'error', message:text}; }
-      if(resp.result==="success"){ successModal.style.display='flex'; document.getElementById("name").value=''; document.getElementById("phone").value=''; document.getElementById("address").value=''; document.getElementById("field").value=''; }
-      else alert('❌ حدث خطأ: '+(resp.message||'خطأ غير معروف'));
-    })
-    .catch(err=>alert('❌ خطأ في الاتصال: '+err.message))
-    .finally(()=>{ submitBtn.disabled=false; submitBtn.textContent='🚀 سجل الان'; });
-  }catch(err){
-    alert('❌ خطأ غير متوقع: '+err.message);
-    submitBtn.disabled=false;
-    submitBtn.textContent='🚀 سجل الان';
-  }
-});
-
-function closeModal(){ successModal.style.display='none'; }
-</script>
-
-</body>
+@@ -189,3 +190,4 @@ <h2>ادخل كلمه السر لمشاهده الاسعار والمنتجات
 </html>
-
-
 
 
