@@ -7,6 +7,7 @@
 <style>
 body { font-family: Tahoma, sans-serif; margin:0; padding:0; background:#f9f9f9; text-align:center; }
 .top-bar { background:#ffd54f; color:#000; font-weight:bold; padding:8px; font-size:1em; }
+.blink { color:#8a2be2; font-size:1.3em; font-weight:bold; padding:10px; margin-bottom:10px; }
 header { background:#8a2be2; color:#fff; padding:25px 10px; }
 header h1 { margin:0; font-size:2.2em; font-weight:bold; }
 header h2 { margin:5px 0 0; font-size:1.2em; font-weight:normal; }
@@ -19,6 +20,9 @@ header h2 { margin:5px 0 0; font-size:1.2em; font-weight:normal; }
 .top-buttons { display:flex; flex-wrap:wrap; justify-content:center; margin:15px 0; }
 .top-buttons button { margin:5px; padding:10px 15px; font-size:1em; font-weight:bold; border:none; border-radius:8px; background:#8a2be2; color:#fff; cursor:pointer; }
 .top-buttons button:hover { opacity:0.8; }
+
+/* تفاصيل الأزرار داخل الصفحة */
+.details-box { display:none; margin:10px auto; max-width:400px; background:#fff; padding:15px; border-radius:12px; box-shadow:0 2px 10px rgba(0,0,0,0.1); text-align:right; font-weight:bold; }
 
 /* نموذج التسجيل */
 .form-container { max-width:400px; margin:20px auto; background:#fff; padding:20px; border-radius:15px; box-shadow:0 2px 10px rgba(0,0,0,0.1); text-align:right; font-weight:bold; }
@@ -48,6 +52,7 @@ header h2 { margin:5px 0 0; font-size:1.2em; font-weight:normal; }
 <body>
 
 <div class="top-bar">🌹 اللهم صلِّ وسلم وبارك على سيدنا محمد ﷺ 🌹</div>
+<div class="blink">✨ أهلاً ومرحباً بكم في مملكة الأصليات ✨</div>
 
 <header>
 <h1>شركة جنة</h1>
@@ -66,11 +71,14 @@ header h2 { margin:5px 0 0; font-size:1.2em; font-weight:normal; }
 
 <!-- أزرار أعلى الصفحة -->
 <div class="top-buttons">
-<button onclick="alert('العنوان: المنصورة - نبروه سوق المحمول')">🏠 العنوان</button>
-<button onclick="alert('تواصل معنا:\n01022495795\n01067070423\n01012253500')">📞 تواصل معنا</button>
+<button onclick="showDetails('العنوان: المنصورة - نبروه سوق المحمول')">🏠 العنوان</button>
+<button onclick="showDetails('تواصل معنا:\n01022495795\n01067070423\n01012253500')">📞 تواصل معنا</button>
 <button onclick="window.open('https://www.facebook.com/share/174s1yLKfA/?mibextid=wwXIfr','_blank')">📘 فيسبوك</button>
-<button onclick="alert('✈️ تفعيل الخدمات')">✈️ التفعيلات</button>
+<button onclick="showDetails('✈️ التفعيلات')">✈️ التفعيلات</button>
 </div>
+
+<!-- مربع تفاصيل الأزرار داخل الصفحة -->
+<div class="details-box" id="detailsBox"></div>
 
 <!-- نموذج التسجيل -->
 <div class="form-container">
@@ -111,6 +119,7 @@ header h2 { margin:5px 0 0; font-size:1.2em; font-weight:normal; }
 const submitBtn = document.getElementById("submitBtn");
 const modal = document.getElementById("successModal");
 const passwordBox = document.getElementById("passwordBox");
+const detailsBox = document.getElementById("detailsBox");
 
 // رابط Web App بعد نشره
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzdMtvyPabYsfKRsaYOCH9BrIHsxlRQZW6oEvtFvYlebC5tth6ECssXOHNXOZYCWq6MyQ/exec";
@@ -160,8 +169,14 @@ submitBtn.addEventListener("click", async (e)=>{
     }
 });
 
+// تفاصيل الأزرار داخل الصفحة
+function showDetails(text){
+    detailsBox.innerText = text;
+    detailsBox.style.display = 'block';
+}
+
 // المربع كلمة السر للمنتجات
-function showPasswordBox(){ passwordBox.style.display='block'; }
+function showPasswordBox(){ passwordBox.style.display='block'; detailsBox.style.display='none'; }
 function hidePasswordBox(){ passwordBox.style.display='none'; }
 function checkOfferPass(){
     const pass=document.getElementById("offerPass").value;
