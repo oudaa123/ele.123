@@ -12,27 +12,23 @@ body { font-family: Tahoma, sans-serif; margin:0; padding:0; background:#f9f9f9;
 header { background:#8a2be2; color:#fff; padding:25px 10px; }
 header h1 { margin:0; font-size:2.2em; font-weight:bold; }
 header h2 { margin:5px 0 0; font-size:1.2em; font-weight:normal; }
-.top-buttons { display:flex; justify-content:center; flex-wrap:wrap; gap:10px; margin:10px 0; }
-.top-buttons button { padding:10px 15px; border:none; border-radius:8px; background:#8a2be2; color:#fff; font-weight:bold; cursor:pointer; transition:0.3s; }
-.top-buttons button:hover { opacity:0.8; }
-/* صور المنتجات */
-.image-row { display:flex; justify-content:center; margin:15px 0; flex-wrap:wrap; gap:10px; }
-.image-row img { width:120px; height:120px; border-radius:10px; object-fit:cover; border:2px solid #8a2be2; }
-/* الفورم */
-form { max-width:400px; margin:20px auto; background:#fff; padding:20px; border-radius:15px; box-shadow:0 2px 10px rgba(0,0,0,0.1); text-align:right; font-weight:bold; }
-form h3 { text-align:center; color:#8a2be2; margin-bottom:15px; }
-form input, form select { width:100%; padding:12px; margin:10px 0; border-radius:8px; border:1px solid #ccc; font-size:1em; }
-form button { width:100%; padding:12px; border:none; border-radius:10px; font-size:1.1em; font-weight:bold; cursor:pointer; color:#fff; background:#8a2be2; transition:0.3s; }
-form button:hover { background:#6a1fbf; }
-/* المودال */
-.modal { display:none; position:fixed; z-index:1000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.6); }
+.form-container { max-width:400px; margin:20px auto; background:#fff; padding:20px; border-radius:15px; box-shadow:0 2px 10px rgba(0,0,0,0.1); text-align:right; font-weight:bold; }
+.form-container h3 { text-align:center; color:#8a2be2; margin-bottom:15px; }
+.form-container input, .form-container select { width:100%; padding:12px; margin:10px 0; border-radius:8px; border:1px solid #ccc; font-size:1em; }
+.form-container button { width:100%; padding:12px; border:none; border-radius:10px; font-size:1.1em; font-weight:bold; cursor:pointer; color:#fff; background:#8a2be2; transition:0.3s; }
+.form-container button:hover { background:#6a1fbf; }
+.modal { display:none; position:fixed; z-index:1000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.6); align-items:center; justify-content:center; }
 .modal-content { background:#fff; margin:20% auto; padding:20px; border-radius:12px; width:90%; max-width:400px; text-align:center; }
 .modal-content h2 { color:#8a2be2; margin-bottom:15px; }
-.modal-content button { background:#8a2be2; color:#fff; padding:10px 20px; border:none; border-radius:8px; cursor:pointer; font-weight:bold; margin:5px; }
-/* أسفل الصفحة */
-.bottom-pass { margin:20px auto; max-width:400px; text-align:center; }
-.bottom-pass input { width:70%; padding:10px; border-radius:8px; border:1px solid #ccc; margin-right:5px; }
-.bottom-pass button { padding:10px 15px; border:none; border-radius:8px; background:#8a2be2; color:#fff; cursor:pointer; font-weight:bold; }
+.offers-btn { margin:20px auto; display:block; padding:15px 25px; font-size:18px; font-weight:bold; border:none; border-radius:12px; background:linear-gradient(45deg,#ff6f00,#ff1744); color:#fff; cursor:pointer; box-shadow:0 0 15px rgba(255,87,34,0.7); transition:0.3s; }
+.offers-btn:hover { opacity:0.9; }
+/* أزرار التواصل */
+.top-buttons { display:flex; flex-wrap:wrap; justify-content:center; margin:15px 0; }
+.top-buttons button { margin:5px; padding:10px 15px; font-size:1em; font-weight:bold; border:none; border-radius:8px; background:#8a2be2; color:#fff; cursor:pointer; }
+.top-buttons button:hover { opacity:0.8; }
+.password-box { max-width:400px; margin:20px auto; text-align:center; font-weight:bold; }
+.password-box input { width:60%; padding:10px; margin:5px 5px 0 0; border-radius:8px; border:1px solid #ccc; }
+.password-box button { padding:10px 15px; border:none; border-radius:8px; background:#8a2be2; color:#fff; cursor:pointer; font-weight:bold; }
 </style>
 </head>
 <body>
@@ -45,23 +41,16 @@ form button:hover { background:#6a1fbf; }
 <h2>لجميع خدمات المحمول</h2>
 </header>
 
-<!-- الأزرار الأربعة -->
+<!-- أزرار أعلى الصفحة -->
 <div class="top-buttons">
-<button onclick="window.open('https://goo.gl/maps/YourMap','_blank')">📍 العنوان</button>
-<button onclick="alert('📞 01022495795\n📞 01112345678\n📞 01234567890')">📞 تواصل معنا</button>
+<button onclick="alert('العنوان: المنصورة - نبروه سوق المحمول')">🏠 العنوان</button>
+<button onclick="alert('تواصل معنا:\n01022495795\n01111234567\n01234567890')">📞 تواصل معنا</button>
 <button onclick="window.open('https://facebook.com/YourPage','_blank')">📘 فيسبوك</button>
-<button onclick="window.open('https://t.me/YourTelegram','_blank')">✈️ تليجرام التفعيل</button>
+<button onclick="window.open('https://t.me/YourTelegram','_blank')">✈️ تليجرام</button>
 </div>
 
-<!-- صور المنتجات -->
-<div class="image-row">
-  <img src="image1.jpg" alt="منتج 1">
-  <img src="image2.jpg" alt="منتج 2">
-  <img src="image3.jpg" alt="منتج 3">
-</div>
-
-<!-- الفورم -->
-<form id="registerForm">
+<!-- نموذج التسجيل -->
+<div class="form-container">
 <h3>📑 للحصول علي العروض قم بتسجيل بياناتك</h3>
 <input type="text" id="name" placeholder="الاسم" required>
 <input type="tel" id="phone" placeholder="رقم الموبايل" pattern="^01[0-2,5]{1}[0-9]{8}$" required>
@@ -71,10 +60,10 @@ form button:hover { background:#6a1fbf; }
   <option value="داخلي">داخلي</option>
   <option value="خارجي">خارجي</option>
 </select>
-<button type="submit">🚀 سجل الان</button>
-</form>
+<button id="submitBtn">🚀 سجل الان</button>
+</div>
 
-<!-- مودال النجاح -->
+<!-- نجاح التسجيل -->
 <div id="successModal" class="modal">
 <div class="modal-content">
 <h2>🎉 تم التسجيل بنجاح 🎉</h2>
@@ -82,47 +71,72 @@ form button:hover { background:#6a1fbf; }
 </div>
 </div>
 
+<!-- زر المنتجات -->
+<button class="offers-btn" onclick="alert('🔥 سيتم عرض المنتجات قريباً 🔥')">🔥 المنتجات والعروض 🔥</button>
+
 <!-- مربع كلمة المرور أسفل الصفحة -->
-<div class="bottom-pass">
-<input type="text" id="userPass" placeholder="للحصول على كلمة المرور تواصل مع المندوب">
-<button onclick="alert('✅ يرجى التواصل مع المندوب لمتابعة كلمة السر')">💡 إرسال</button>
+<div class="password-box">
+<label>إذا أردت كلمة السر الخاصه بك، تواصل مع المندوب المتابع معك:</label><br>
+<input type="text" id="dummyPass" placeholder="ادخل كلمة السر">
+<button onclick="alert('📌 تواصل مع المندوب لمعرفة كلمة السر')">🔑 تحقق</button>
 </div>
 
 <script>
-const form = document.getElementById("registerForm");
+const form = document.getElementById("submitBtn");
 const modal = document.getElementById("successModal");
 
-// رابط Web App بعد نشره (تأكد من نشره كـ Anyone)
+// رابط Web App بعد نشره (تأكد من أنه Anyone, even anonymous)
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwDjPFkAXtekIlp_Guivr53HzbIzwO2_LHRM95KhPLJpKyLftEsJz_MhmEupsJtcjJfzg/exec";
 
-form.addEventListener("submit", e => {
+document.getElementById("submitBtn").addEventListener("click", async (e) => {
   e.preventDefault();
+  form.disabled = true;
+  form.textContent = 'جارٍ الإرسال...';
+
   const data = {
-    name: document.getElementById("name").value,
-    phone: document.getElementById("phone").value,
-    address: document.getElementById("address").value,
+    name: document.getElementById("name").value.trim(),
+    phone: document.getElementById("phone").value.trim(),
+    address: document.getElementById("address").value.trim(),
     field: document.getElementById("field").value
   };
 
-  fetch(SCRIPT_URL, {
-    method: "POST",
-    body: JSON.stringify(data),
-    headers: { "Content-Type": "application/json" },
-    mode: "cors"
-  })
-  .then(res => res.json())
-  .then(resp => {
-    if(resp.result === "success"){
-      modal.style.display = "block";
-      form.reset();
+  // تحقق سريع لرقم الموبايل
+  const phonePattern = /^01[0-2,5][0-9]{8}$/;
+  if (!phonePattern.test(data.phone)) {
+    alert('من فضلك أدخل رقم موبايل مصري صحيح (مثال: 01012345678)');
+    form.disabled = false;
+    form.textContent = '🚀 سجل الان';
+    return;
+  }
+
+  // إرسال البيانات للشيت
+  const params = new URLSearchParams();
+  for (let key in data) params.append(key, data[key]);
+
+  try {
+    const res = await fetch(SCRIPT_URL, { method: 'POST', body: params });
+    const text = await res.text();
+    let resp = {};
+    try { resp = JSON.parse(text); } catch(e) { resp = {result:'error',message:text}; }
+
+    if(resp.result === "success") {
+      modal.style.display = 'flex';
+      document.getElementById("name").value='';
+      document.getElementById("phone").value='';
+      document.getElementById("address").value='';
+      document.getElementById("field").value='';
     } else {
-      alert("❌ خطأ: " + resp.message);
+      alert('❌ حدث خطأ: ' + (resp.message||'خطأ غير معروف'));
     }
-  })
-  .catch(err => alert("❌ خطأ في الاتصال: " + err.message));
+  } catch(err) {
+    alert('❌ خطأ في الاتصال: ' + err.message + '\nراجع نشر الـ Web App والصلاحيات.');
+  } finally {
+    form.disabled = false;
+    form.textContent = '🚀 سجل الان';
+  }
 });
 
-function closeModal(){ modal.style.display = "none"; }
+function closeModal(){ modal.style.display = 'none'; }
 </script>
 
 </body>
