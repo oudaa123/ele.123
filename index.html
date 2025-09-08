@@ -1,1 +1,131 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>مملكة الأصليات - شركة جنة</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body { font-family: Tahoma, sans-serif; margin:0; padding:0; background:#f9f9f9; text-align:center; }
+.top-bar { background:#ffd54f; color:#000; font-weight:bold; padding:8px; font-size:1em; animation: blink 2s infinite; }
+@keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.5;} }
+.blink { color:#8a2be2; font-size:1.3em; font-weight:bold; padding:10px; animation: blink 2s infinite; }
+header { background:#8a2be2; color:#fff; padding:25px 10px; }
+header h1 { margin:0; font-size:2.2em; font-weight:bold; }
+header h2 { margin:5px 0 0; font-size:1.2em; font-weight:normal; }
+form { max-width:400px; margin:20px auto; background:#fff; padding:20px; border-radius:15px; box-shadow:0 2px 10px rgba(0,0,0,0.1); text-align:right; font-weight:bold; }
+form h3 { text-align:center; color:#8a2be2; margin-bottom:15px; }
+form input, form select { width:100%; padding:12px; margin:10px 0; border-radius:8px; border:1px solid #ccc; font-size:1em; }
+form button { width:100%; padding:12px; border:none; border-radius:10px; font-size:1.1em; font-weight:bold; cursor:pointer; color:#fff; background:#8a2be2; transition:0.3s; }
+form button:hover { background:#6a1fbf; }
+.modal { display:none; position:fixed; z-index:1000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.6); }
+.modal-content { background:#fff; margin:20% auto; padding:20px; border-radius:12px; width:90%; max-width:400px; text-align:center; }
+.modal-content h2 { color:#8a2be2; margin-bottom:15px; }
+.modal-content button { background:#8a2be2; color:#fff; padding:10px 20px; border:none; border-radius:8px; cursor:pointer; font-weight:bold; margin:5px; }
+.offers-btn { margin:20px auto; display:block; padding:15px 25px; font-size:18px; font-weight:bold; border:none; border-radius:12px; background:linear-gradient(45deg,#ff6f00,#ff1744); color:#fff; cursor:pointer; box-shadow:0 0 15px rgba(255,87,34,0.7); transition:0.3s; }
+.offers-btn:hover { opacity:0.9; }
+/* أزرار التواصل */
+.contact-btn { margin:5px; padding:10px 15px; font-size:1em; font-weight:bold; border:none; border-radius:8px; background:#8a2be2; color:#fff; cursor:pointer; }
+.contact-btn:hover { opacity:0.8; }
+</style>
+</head>
+<body>
 
+<div class="top-bar">🌹 اللهم صلِّ وسلم وبارك على سيدنا محمد ﷺ 🌹</div>
+<div class="blink">✨ أهلاً ومرحباً بكم في مملكة الأصليات ✨</div>
+
+<header>
+<h1>شركة جنة</h1>
+<h2>لجميع خدمات المحمول</h2>
+</header>
+
+<form id="registerForm">
+<h3>📑 للحصول علي العروض قم بتسجيل بياناتك</h3>
+<input type="text" id="name" placeholder="الاسم" required>
+<input type="tel" id="phone" placeholder="رقم الموبايل" pattern="^01[0-2,5]{1}[0-9]{8}$" required>
+<input type="text" id="address" placeholder="العنوان" required>
+<select id="field" required>
+  <option value="">اختر المجال</option>
+  <option value="داخلي">داخلي</option>
+  <option value="خارجي">خارجي</option>
+</select>
+<button type="submit">🚀 سجل الان</button>
+</form>
+
+<div id="successModal" class="modal">
+<div class="modal-content">
+<h2>🎉 تم التسجيل بنجاح 🎉</h2>
+<button onclick="closeModal()">إغلاق</button>
+</div>
+</div>
+
+<!-- زر المنتجات -->
+<button class="offers-btn" onclick="openPasswordModal()">🔥 المنتجات والعروض 🔥</button>
+<div id="passwordModal" class="modal">
+<div class="modal-content">
+<h2>🔑 أدخل كلمة السر</h2>
+<input type="password" id="offerPass" placeholder="كلمة السر">
+<br>
+<button onclick="checkPassword()">دخول</button>
+<button onclick="closePasswordModal()">خروج</button>
+</div>
+</div>
+
+<!-- أزرار التواصل كاملة -->
+<div style="margin:20px;">
+<button class="contact-btn" onclick="window.location.href='tel:01022495795'">📞 اتصل الآن</button>
+<button class="contact-btn" onclick="window.location.href='mailto:info@yourcompany.com'">📧 راسلنا</button>
+<button class="contact-btn" onclick="window.open('https://facebook.com/YourPage','_blank')">📘 فيسبوك</button>
+<button class="contact-btn" onclick="window.open('https://goo.gl/maps/YourMap','_blank')">📍 العنوان على الخريطة</button>
+</div>
+
+<script>
+const form = document.getElementById("registerForm");
+const modal = document.getElementById("successModal");
+const passModal = document.getElementById("passwordModal");
+
+// رابط Web App بعد نشره (تأكد من نشره كـ Anyone)
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwDjPFkAXtekIlp_Guivr53HzbIzwO2_LHRM95KhPLJpKyLftEsJz_MhmEupsJtcjJfzg/exec";
+
+form.addEventListener("submit", e => {
+  e.preventDefault();
+  const data = {
+    name: document.getElementById("name").value,
+    phone: document.getElementById("phone").value,
+    address: document.getElementById("address").value,
+    field: document.getElementById("field").value
+  };
+
+  fetch(SCRIPT_URL, {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: { "Content-Type": "application/json" },
+    mode: "cors"
+  })
+  .then(res => res.json())
+  .then(resp => {
+    if(resp.result === "success"){
+      modal.style.display = "block";
+      form.reset();
+    } else {
+      alert("❌ خطأ: " + resp.message);
+    }
+  })
+  .catch(err => alert("❌ خطأ في الاتصال: " + err.message));
+});
+
+function closeModal(){ modal.style.display = "none"; }
+function openPasswordModal(){ passModal.style.display = "block"; }
+function closePasswordModal(){ passModal.style.display = "none"; }
+function checkPassword(){
+  const pass = document.getElementById("offerPass").value;
+  if(pass === "010024"){ 
+    alert("✅ كلمة السر صحيحة - سيتم عرض المنتجات قريباً");
+    closePasswordModal();
+  } else {
+    alert("❌ كلمة السر غير صحيحة");
+  }
+}
+</script>
+
+</body>
+</html>
