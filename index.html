@@ -26,17 +26,27 @@ form button:hover { background:#6a1fbf; }
 /* أزرار التواصل */
 .contact-btn { margin:5px; padding:10px 15px; font-size:1em; font-weight:bold; border:none; border-radius:8px; background:#8a2be2; color:#fff; cursor:pointer; }
 .contact-btn:hover { opacity:0.8; }
+/* الصور الثلاثة */
+.image-row { display:flex; justify-content:center; margin:15px 0; flex-wrap:wrap; gap:10px; }
+.image-row img { width:120px; height:120px; border-radius:10px; object-fit:cover; border:2px solid #8a2be2; }
 </style>
 </head>
 <body>
 
-<div class="top-bar">🌹 اللهم صلِّ وسلم وبارك على سيدنا محمد ﷺ 🌹</div>
+<div class="top-bar">🌹 اللهم صلِّ وسلم وبارك على سيدنا محمد ﷺ 🌹</div>
 <div class="blink">✨ أهلاً ومرحباً بكم في مملكة الأصليات ✨</div>
 
 <header>
 <h1>شركة جنة</h1>
 <h2>لجميع خدمات المحمول</h2>
 </header>
+
+<!-- صور المنتجات -->
+<div class="image-row">
+  <img src="image1.jpg" alt="منتج 1">
+  <img src="image2.jpg" alt="منتج 2">
+  <img src="image3.jpg" alt="منتج 3">
+</div>
 
 <form id="registerForm">
 <h3>📑 للحصول علي العروض قم بتسجيل بياناتك</h3>
@@ -70,12 +80,12 @@ form button:hover { background:#6a1fbf; }
 </div>
 </div>
 
-<!-- أزرار التواصل كاملة -->
+<!-- أزرار التواصل -->
 <div style="margin:20px;">
 <button class="contact-btn" onclick="window.location.href='tel:01022495795'">📞 اتصل الآن</button>
 <button class="contact-btn" onclick="window.location.href='mailto:info@yourcompany.com'">📧 راسلنا</button>
 <button class="contact-btn" onclick="window.open('https://facebook.com/YourPage','_blank')">📘 فيسبوك</button>
-<button class="contact-btn" onclick="window.open('https://goo.gl/maps/YourMap','_blank')">📍 العنوان على الخريطة</button>
+<button class="contact-btn" onclick="window.open('https://goo.gl/maps/YourMap','_blank')">📍 العنوان</button>
 </div>
 
 <script>
