@@ -15,43 +15,48 @@ body {
 header {
   background: #131921;
   color: white;
-  padding: 15px;
+  padding: 10px 15px;
   text-align: center;
   font-size: 20px;
   font-weight: bold;
   position: sticky;
   top: 0;
   z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-.header-buttons { margin-top: 10px; }
+
+/* ترتيب أزرار الهيدر */
+.header-buttons {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 5px;
+}
 .header-buttons button {
-  position: relative;
-  background: #ffd814;
-  border: 1px solid #fcd200;
-  padding: 6px 12px;
-  margin: 0 5px;
+  flex: 1 1 120px; /* مرونة حسب الشاشة */
+  max-width: 150px;
+  padding: 6px 10px;
   border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
+  font-size: 14px;
 }
 .header-buttons button:hover { background: #f7ca00; }
 
 /* زر الجرس */
 #notifBtn {
-  position: relative;
   background: #ff4444;
   border: 1px solid #cc0000;
-  padding: 6px 12px;
-  margin: 0 5px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
   color: #fff;
+  position: relative;
 }
 #notif-count {
   position: absolute;
-  top: -8px;
-  right: -8px;
+  top: -6px;
+  right: -6px;
   background: yellow;
   color: black;
   font-size: 12px;
@@ -59,6 +64,20 @@ header {
   padding: 2px 6px;
   border-radius: 50%;
   display: none;
+}
+
+/* تثبيت مربع البحث */
+#searchBox {
+  width: 90%;
+  max-width: 400px;
+  padding: 8px 10px;
+  margin-top: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  background: #fff;
+  z-index: 1001;
 }
 
 /* بانر المنتج الجديد */
@@ -86,26 +105,15 @@ header {
   display: none;
 }
 
-/* مربع البحث */
-#searchBox {
-  display: block;
-  margin: 15px auto;
-  padding: 10px;
-  width: 90%;
-  max-width: 400px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  font-size: 16px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+/* عرض المنتجات - تجربة عمودين */
+#products-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 15px;
+  padding: 15px;
 }
 
 /* المنتجات */
-#products-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 12px;
-  padding: 15px;
-}
 .product {
   border: 1px solid #ccc;
   border-radius: 10px;
@@ -204,6 +212,7 @@ header {
   text-decoration: underline;
 }
 
+/* Toast */
 #toast {
   position: fixed;
   bottom: 20px; right: 20px;
@@ -225,16 +234,14 @@ header {
     <button onclick="showTotal()">🛒 السلة <span id="cart-count">0</span></button>
     <button onclick="showTotal()">💰 إجمالي الفاتورة</button>
     <button onclick="openSupport()">☎️ الدعم الفني</button>
-     <button onclick="window.location.href='index.html'">🔙 القائمة الرئيسية</button>
-
+    <button onclick="window.location.href='index.html'">🔙 القائمة الرئيسية</button>
     <button id="notifBtn">🔔 <span id="notif-count">0</span></button>
   </div>
+  <!-- مربع البحث ثابت داخل الهيدر -->
+  <input type="text" id="searchBox" placeholder="🔍 ابحث عن منتج...">
 </header>
 
 <div id="newBanner">🎉 منتجات جديدة اليوم!</div>
-
-<!-- مربع البحث -->
-<input type="text" id="searchBox" placeholder="🔍 ابحث عن منتج...">
 
 <div id="products-container"></div>
 
