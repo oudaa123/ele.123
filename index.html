@@ -53,13 +53,6 @@ header h2 { margin:5px 0 0; font-size:1.2em; font-weight:normal; }
 
 .support-btn { position:fixed; top:10px; left:10px; padding:10px 15px; border-radius:50%; background:#ff5722; color:#fff; font-weight:bold; cursor:pointer; box-shadow:0 2px 5px rgba(0,0,0,0.3); transition:0.3s; }
 .support-btn:hover { background:#e64a19; transform:scale(1.1); }
-
-.product-card { margin:10px; padding:10px; border:1px solid #ccc; border-radius:8px; display:inline-block; text-align:center; }
-.product-card img { width:120px; height:auto; }
-.product-card strong { display:block; margin:5px 0; }
-.product-card input[type="number"] { width:50px; margin:5px 0; }
-.product-card button { padding:5px 10px; border:none; background:#8a2be2; color:#fff; border-radius:5px; cursor:pointer; }
-.product-card button:hover { background:#6a1fbf; }
 </style>
 </head>
 <body>
@@ -85,7 +78,6 @@ header h2 { margin:5px 0 0; font-size:1.2em; font-weight:normal; }
 <button onclick="window.open('https://www.facebook.com/share/174s1yLKfA/?mibextid=wwXIfr','_blank')">📘 فيسبوك</button>
 <button class="telegram-style-btn" onclick="showPasswordBox()">🔥 المنتجات والعروض</button>
 <button class="telegram-style-btn" onclick="showTelegramBox()">📲 تليجرام التفعيلات</button>
-<!-- زر خاص لتغيير كلمة السر -->
 <button onclick="showAdminPassBox()" style="background:#ff4081;">خاص</button>
 </div>
 
@@ -131,7 +123,6 @@ header h2 { margin:5px 0 0; font-size:1.2em; font-weight:normal; }
 <button onclick="closeTelegramBox()">رجوع</button>
 </div>
 
-<!-- مربع تغيير كلمة السر الخاصة -->
 <div id="adminPassBox" class="password-box">
 <h2>ادخل كلمة السر الخاصة لتغيير كلمة سر المنتجات 🔑</h2>
 <input type="password" id="adminPass" placeholder="كلمة السر الخاصة">
@@ -143,12 +134,55 @@ header h2 { margin:5px 0 0; font-size:1.2em; font-weight:normal; }
 <button class="support-btn" onclick="window.open('https://wa.me/201022495795','_blank')">الدعم الفني</button>
 
 <script>
+// العناصر
 const infoBox = document.getElementById('infoBox');
 const infoText = document.getElementById('infoText');
 const passwordBox = document.getElementById('passwordBox');
 const submitBtn = document.getElementById("submitBtn");
 const successModal = document.getElementById("successModal");
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw_Yc2ii6bu0iLOJEt0iXwnNjzZFLo0djFODlZIDORzWrVopf653DuJmvywGIbZa3PYJA/exec";
+
+// كلمة السر الافتراضية والمدة
+let defaultPass = "010024"; 
+let currentPass = localStorage.getItem("productsPass") || defaultPass;
+let passExpiry = localStorage.getItem("productsPassExpiry") || 0;
+
+// تحقق كلمة السر
+function checkPassword() {
+    const pass = document.getElementById('offerPass').value;
+    const now = Date.now();
+    if(now > passExpiry){ 
+        currentPass = defaultPass; 
+        localStorage.setItem("productsPass", defaultPass); 
+    }
+    if(pass === currentPass){
+        window.open('products.html', '_blank');
+    } else {
+        alert("❌ كلمة السر غير صحيحة");
+    }
+}
+
+// تغيير كلمة السر للمنتجات
+function showAdminPassBox(){ document.getElementById('adminPassBox').style.display='block'; }
+function closeAdminPassBox(){ document.getElementById('adminPassBox').style.display='none'; }
+function changeProductsPass(){
+    const adminPass = document.getElementById('adminPass').value;
+    const newPass = document.getElementById('newProductsPass').value;
+    const correctAdminPass = "777"; // كلمة السر الخاصة بك
+    if(adminPass === correctAdminPass && newPass){
+        // حفظ كلمة السر الجديدة مع مدة 15 دقيقة
+        currentPass = newPass;
+        localStorage.setItem("productsPass", newPass);
+        localStorage.setItem("productsPassExpiry", Date.now() + 15*60*1000);
+        alert("✅ تم تغيير كلمة السر بنجاح! اعطِ الرقم الجديد للعميل.");
+        // إخراج العملاء الحاليين
+        window.location.reload();
+        document.getElementById('adminPass').value='';
+        document.getElementById('newProductsPass').value='';
+        closeAdminPassBox();
+    } else {
+        alert("❌ كلمة السر الخاصة خاطئة أو كلمة السر الجديدة فارغة!");
+    }
+}
 
 // دوال المعلومات
 function showInfo(text){ infoText.innerHTML = text; infoBox.style.display = 'block'; }
@@ -159,68 +193,28 @@ function showTelegramBox(){ document.getElementById('telegramBox').style.display
 function closeTelegramBox(){ document.getElementById('telegramBox').style.display='none'; }
 function checkTelegram(){ alert("سيتم وضع الرابط لاحقاً"); }
 
-// دالة تحقق كلمة السر للمنتجات
-function checkPassword() {
-  const pass = document.getElementById('offerPass').value;
-  const storedPass = localStorage.getItem("productsPass") || "010024"; 
-  if(pass === storedPass) {
-    window.open('products.html', '_blank');
-  } else {
-    alert("❌ كلمة السر غير صحيحة");
-  }
-}
-
 // تسجيل بيانات المستخدم
 submitBtn.addEventListener("click", (e)=>{
   e.preventDefault();
-  
   const nameVal = document.getElementById("name").value.trim();
   const phoneVal = document.getElementById("phone").value.trim();
   const addressVal = document.getElementById("address").value.trim();
   const fieldVal = document.getElementById("field").value;
-  
   if(!nameVal){ alert("الرجاء إدخال الاسم أو اسم المحل"); return; }
   if(!phoneVal){ alert("الرجاء إدخال رقم الموبايل بالانجليزي"); return; }
   if(!addressVal){ alert("الرجاء إدخال العنوان"); return; }
   if(!fieldVal){ alert("الرجاء اختيار المجال"); return; }
-  
   const phonePattern = /^01[0-2,5][0-9]{8}$/;
   if (!phonePattern.test(phoneVal)){ alert('من فضلك أدخل رقم موبايل مصري صحيح'); return; }
-  
   successModal.style.display='flex';
   document.getElementById("name").value='';
   document.getElementById("phone").value='';
   document.getElementById("address").value='';
   document.getElementById("field").value='';
-  
-  const data = { name:nameVal, phone:phoneVal, address:addressVal, field:fieldVal };
-  const params = new URLSearchParams();
-  for (let key in data) params.append(key,data[key]);
-  
-  fetch(SCRIPT_URL, { method:'POST', body:params })
-    .catch(err=>console.log('❌ خطأ في الاتصال: '+err.message));
+  // إرسال البيانات (اختياري)
 });
 
 function closeModal(){ successModal.style.display='none'; }
-
-// دوال تغيير كلمة السر الخاصة
-function showAdminPassBox(){ document.getElementById('adminPassBox').style.display='block'; }
-function closeAdminPassBox(){ document.getElementById('adminPassBox').style.display='none'; }
-function changeProductsPass(){
-  const adminPass = document.getElementById('adminPass').value;
-  const newPass = document.getElementById('newProductsPass').value;
-  const correctAdminPass = "777"; // كلمة السر الخاصة بك
-  if(adminPass === correctAdminPass && newPass){
-    localStorage.setItem("productsPass", newPass);
-    alert("✅ تم تغيير كلمة السر بنجاح!");
-    document.getElementById('adminPass').value='';
-    document.getElementById('newProductsPass').value='';
-    closeAdminPassBox();
-  } else {
-    alert("❌ كلمة السر الخاصة خاطئة أو كلمة السر الجديدة فارغة!");
-  }
-}
 </script>
-
 </body>
 </html>
