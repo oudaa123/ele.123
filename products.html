@@ -36,6 +36,42 @@ header {
 }
 .header-buttons button:hover { background: #f7ca00; }
 
+/* زر الجرس */
+#notifBtn {
+  position: relative;
+  background: #ff4444;
+  border: 1px solid #cc0000;
+  padding: 6px 12px;
+  margin: 0 5px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #fff;
+}
+#notif-count {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: yellow;
+  color: black;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 50%;
+  display: none;
+}
+
+/* بانر المنتج الجديد */
+#newBanner {
+  display: none;
+  background: red;
+  color: white;
+  text-align: center;
+  padding: 10px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
 /* عداد السلة */
 #cart-count {
   position: absolute;
@@ -189,8 +225,11 @@ header {
     <button onclick="showTotal()">🛒 السلة <span id="cart-count">0</span></button>
     <button onclick="showTotal()">💰 إجمالي الفاتورة</button>
     <button onclick="openSupport()">☎️ الدعم الفني</button>
+    <button id="notifBtn">🔔 <span id="notif-count">0</span></button>
   </div>
 </header>
+
+<div id="newBanner">🎉 منتجات جديدة اليوم!</div>
 
 <!-- مربع البحث -->
 <input type="text" id="searchBox" placeholder="🔍 ابحث عن منتج...">
@@ -248,6 +287,9 @@ function renderProducts(data){
      productsData = data.reverse();
      localStorage.setItem("products", JSON.stringify(productsData));
      renderProducts(productsData);
+
+     // 🔔 تحقق من المنتجات الجديدة
+     setTimeout(checkNewProducts, 1500);
    } catch(err){ console.log("❌ خطأ في جلب المنتجات:",err); }
 })();
 
@@ -335,6 +377,39 @@ function sendOrder(){
 
 function openSupport(){
   window.open("https://wa.me/201022495795", "_blank");
+}
+
+// 🔔 التحقق من المنتجات الجديدة
+function checkNewProducts(){
+  const today = new Date().toISOString().split("T")[0];
+  let newCount = 0;
+
+  productsData.forEach(p=>{
+    if(p.date && p.date.startsWith(today)){
+      newCount++;
+    }
+  });
+
+  if(newCount > 0){
+    document.getElementById("notif-count").innerText = newCount;
+    document.getElementById("notif-count").style.display = "inline-block";
+    document.getElementById("newBanner").style.display = "block";
+
+    // صوت إشعار
+    let audio = new Audio("https://www.soundjay.com/buttons/sounds/button-3.mp3");
+    audio.play();
+
+    // إشعار المتصفح
+    if(Notification.permission === "granted"){
+      new Notification(`تم إضافة ${newCount} منتجات جديدة اليوم 🎉`);
+    } else if(Notification.permission !== "denied"){
+      Notification.requestPermission().then(p=>{
+        if(p==="granted"){
+          new Notification(`تم إضافة ${newCount} منتجات جديدة اليوم 🎉`);
+        }
+      });
+    }
+  }
 }
 
 // 🔍 البحث
