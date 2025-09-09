@@ -2,184 +2,162 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<title>مملكة الأصليات - شركة جنة</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>جميع منتجات جنة</title>
 <style>
-body { font-family: Tahoma; margin:0; padding:0; background:#f9f9f9; text-align:center; }
-.top-bar { background:#ffd54f; color:#000; font-weight:bold; padding:8px; font-size:1em; }
-.blink { color:#8a2be2; font-size:1.3em; font-weight:bold; padding:10px; }
-header { background:#8a2be2; color:#fff; padding:25px 10px; }
-header h1 { margin:0; font-size:2.2em; font-weight:bold; }
-header h2 { margin:5px 0 0; font-size:1.2em; font-weight:normal; }
-.top-images { display:flex; justify-content:center; gap:10px; margin:15px 0; }
-.top-images img { width:120px; height:auto; border-radius:10px; }
-.top-buttons { display:flex; flex-wrap:wrap; justify-content:center; margin:15px 0; gap:10px; }
-.top-buttons button { padding:12px 18px; font-size:1em; font-weight:bold; border:none; border-radius:8px; background:#8a2be2; color:#fff; cursor:pointer; transition:0.3s; }
-.top-buttons button:hover { background:#6a1fbf; transform:scale(1.05); }
-.telegram-fixed-btn {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    padding: 12px 18px;
-    border-radius: 50px;
-    background: #00bfff;
-    color: #fff;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-    z-index: 1002;
-    transition: 0.3s;
+body { font-family: Tahoma, sans-serif; margin: 0; background: #f9f9f9; }
+header { background: #131921; color: white; padding: 15px; text-align: center; font-size: 20px; font-weight: bold; position: sticky; top: 0; z-index: 1000; }
+.header-buttons { margin-top: 10px; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.header-buttons button { position: relative; background: #ffd814; border: 1px solid #fcd200; padding: 8px 10px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 14px; min-width: 90px; box-sizing: border-box; }
+.header-buttons button:hover { background: #f7ca00; }
+#cart-count { position: absolute; top: -6px; right: -6px; background: red; color: #fff; font-size: 11px; font-weight: bold; padding: 2px 5px; border-radius: 50%; display: none; }
+#searchBox { display: block; margin: 15px auto; padding: 10px; width: 90%; max-width: 400px; border-radius: 8px; border: 1px solid #ccc; font-size: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
+#products-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; padding: 15px; }
+.product { border: 1px solid #ccc; border-radius: 10px; padding: 10px; text-align: center; background: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.1); transition: 0.3s; }
+.product:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+.product img { width: 100%; height: 120px; object-fit: contain; margin-bottom: 8px; }
+.name { font-size: 16px; margin: 5px 0; color: #333; }
+.price { font-weight: bold; margin-bottom: 5px; }
+.product input { width: 50px; margin: 5px 0; border-radius: 5px; border: 1px solid #ccc; text-align: center; }
+.product button { padding: 5px 10px; border: none; border-radius: 5px; background: #8a2be2; color: #fff; cursor: pointer; font-weight: bold; transition: 0.3s; }
+.product button:hover { background: #6a1fbf; transform: scale(1.05); }
+#totalModal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%); background: #fff; padding: 20px; border-radius: 15px; box-shadow: 0 3px 15px rgba(0,0,0,0.3); text-align: center; z-index: 1002; width: 90%; max-width: 400px; max-height: 80%; overflow-y: auto; }
+#totalModal h2 { font-size: 20px; margin-bottom: 15px; color: #8a2be2; }
+#totalModal button { margin: 5px; padding: 8px 15px; border: none; border-radius: 10px; background: #8a2be2; color: #fff; cursor: pointer; font-weight: bold; transition: 0.3s; }
+#totalModal button:hover { background: #6a1fbf; }
+#cartList { text-align: right; margin-bottom: 10px; }
+.cart-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ccc; padding: 5px 0; }
+.cart-item span { margin: 0 5px; }
+.cart-item button { padding: 2px 8px; font-size: 14px; }
+#orderNumbers a { display: block; margin: 5px 0; font-size: 16px; color: #8a2be2; font-weight: bold; text-decoration: none; }
+#orderNumbers a:hover { color: #6a1fbf; text-decoration: underline; }
+#toast { position: fixed; bottom: 20px; right: 20px; background: #25d366; color: #fff; padding: 10px 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.3); display: none; z-index: 1003; }
+@media (max-width: 500px){
+  .header-buttons button { font-size: 13px; padding: 6px 8px; min-width: 80px; }
+  #searchBox { font-size: 14px; padding: 8px; }
+  .product input { width: 40px; }
 }
-.telegram-fixed-btn:hover { background: #009acd; transform: scale(1.05); }
-.info-box { display:none; background:#fff; margin:15px auto; padding:20px; border-radius:12px; max-width:400px; text-align:center; box-shadow:0 2px 10px rgba(0,0,0,0.2); }
-.form-container { max-width:400px; margin:20px auto; background:#fff; padding:20px; border-radius:15px; box-shadow:0 2px 10px rgba(0,0,0,0.1); text-align:right; font-weight:bold; }
-.form-container h3 { text-align:center; color:#8a2be2; margin-bottom:15px; }
-.form-container input, .form-container select { width:100%; padding:12px; margin:10px 0; border-radius:8px; border:1px solid #ccc; font-size:1em; }
-.form-container button { width:100%; padding:12px; border:none; border-radius:10px; font-size:1.1em; font-weight:bold; cursor:pointer; color:#fff; background:#8a2be2; transition:0.3s; }
-.form-container button:hover { background:#6a1fbf; transform:scale(1.02); }
-.modal { display:none; position:fixed; z-index:1000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.6); align-items:center; justify-content:center; }
-.modal-content { background:#fff; padding:20px; border-radius:12px; width:90%; max-width:400px; text-align:center; }
-.modal-content h2 { color:#8a2be2; margin-bottom:15px; }
-.password-box { display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#00bfff; padding:25px; border-radius:50px; max-width:400px; width:90%; box-shadow:0 2px 15px rgba(0,0,0,0.3); text-align:center; z-index:1001; font-weight:bold; color:#fff; }
-.password-box input { width:70%; padding:10px; margin:10px 0; border-radius:8px; border:1px solid #ccc; }
-.password-box button { padding:10px 15px; margin:5px; border:none; border-radius:8px; background:#fff; color:#00bfff; cursor:pointer; font-weight:bold; }
-.support-btn { position:fixed; top:10px; left:10px; padding:10px 15px; border-radius:50%; background:#ff5722; color:#fff; font-weight:bold; cursor:pointer; box-shadow:0 2px 5px rgba(0,0,0,0.3); transition:0.3s; }
-.support-btn:hover { background:#e64a19; transform:scale(1.1); }
 </style>
 </head>
 <body>
 
-<div class="top-bar">🌹 اللهم صلِّ وسلم وبارك على سيدنا محمد ﷺ 🌹</div>
-<div class="blink">✨ أهلاً ومرحباً بكم في مملكة الأصليات✨</div>
-<div class="blink">✨ هنبيع ببلاش واكن الصنف مجاش ✨</div> 
-
 <header>
-<h1>شركة جنة</h1>
-<h2>لجميع خدمات المحمول</h2>
+  📦 جميع منتجات جنة
+  <div class="header-buttons">
+    <button onclick="showTotal()">🛒 السلة <span id="cart-count">0</span></button>
+    <button onclick="showTotal()">💰 إجمالي الفاتورة</button>
+    <button onclick="openSupport()">☎️ الدعم الفني</button>
+    <button onclick="goHome()">🔙 الرجوع للقائمة الرئيسية</button>
+  </div>
 </header>
 
-<div class="top-images">
-<img src="123.jpg" alt="صورة 1">
-<img src="456.jpg" alt="صورة 2">
-<img src="789.jpg" alt="صورة 3">
+<input type="text" id="searchBox" placeholder="🔍 ابحث عن منتج...">
+<div id="products-container"></div>
+
+<div id="totalModal">
+  <h2>إجمالي الفاتورة: <span id="totalAmount">0</span> جنيه</h2>
+  <div id="cartList"></div>
+  <button onclick="sendOrder()">📤 إرسال عبر واتساب</button>
+  <button onclick="closeTotalModal()">❌ إغلاق</button>
+  <div id="orderNumbers" style="margin-top:10px; display:none;">
+    <p>اختر رقم لإرسال الطلب 👇</p>
+    <a href="https://wa.me/201067070423" target="_blank">📞 01067070423</a>
+    <a href="https://wa.me/201022495795" target="_blank">📞 01022495795</a>
+    <a href="https://wa.me/201012253500" target="_blank">📞 01012253500</a>
+  </div>
 </div>
 
-<div class="top-buttons">
-<button onclick="showInfo('العنوان:<br>المنصورة - نبروه سوق المحمول')">🏠 العنوان</button>
-<button onclick="showInfo('تواصل معنا:<br>01067070423<br>01022495795<br>01012253500')">📞 تواصل معنا</button>
-<button onclick="window.open('https://www.facebook.com/share/174s1yLKfA/?mibextid=wwXIfr','_blank')">📘 فيسبوك</button>
-<button class="telegram-style-btn" onclick="showPasswordBox()">🔥 المنتجات والعروض</button>
-<button class="telegram-style-btn" onclick="showTelegramBox()">📲 تليجرام التفعيلات</button>
-</div>
+<div id="toast">تمت الإضافة إلى السلة</div>
 
-<div id="infoBox" class="info-box">
-<h2>تفاصيل</h2>
-<p id="infoText" style="line-height:1.6;"></p>
-<button onclick="closeInfo()">رجوع</button>
-</div>
+<script defer>
+const SCRIPT_PRODUCTS_URL = "https://script.google.com/macros/s/AKfycbxW3_pcjSfffMTLZefZpzFIrbhijiaWY_u_4ZAmXEV2O04SMN5zplucKnAugWWbP8zzmA/exec";
+const container = document.getElementById("products-container");
+let productsData = [];
+let cart = [];
 
-<div class="form-container">
-<h3>📑 لتلقي العروض قم بتسجيل بياناتك</h3>
-<input type="text" id="name" placeholder="الاسم أو اسم المحل" required>
-<input type="tel" id="phone" placeholder="رقم الموبايل" required>
-<input type="text" id="address" placeholder="العنوان" required>
-<select id="field" required>
-  <option value="">اختر المجال</option>
-  <option value="داخلي">داخلي</option>
-  <option value="خارجي">خارجي</option>
-</select>
-<button id="submitBtn">🚀 سجل الان</button>
-</div>
-
-<div id="successModal" class="modal">
-<div class="modal-content">
-<h2>🎉 تم التسجيل بنجاح نورت المملكة😍 🎉</h2>
-<button onclick="closeModal()">إغلاق</button>
-</div>
-</div>
-
-<div id="passwordBox" class="password-box">
-<h2>ادخل كلمه السر لمشاهده الاسعار والمنتجات 🔑</h2>
-<input type="password" id="offerPass" placeholder="كلمة السر">
-<div style="margin:10px 0;">إذا أردت كلمة السر الخاصه بك، تواصل مع المندوب الخاص بك</div>
-<button onclick="checkPassword()">دخول</button>
-<button onclick="closePasswordBox()">رجوع</button>
-</div>
-
-<div id="telegramBox" class="password-box">
-<h2>ادخل تليجرام التفعيلات 🔑</h2>
-<input type="text" id="telegramPass" placeholder="فارغ حالياً">
-<div style="margin:10px 0;">سيتم وضع الرابط لاحقاً</div>
-<button onclick="checkTelegram()">دخول</button>
-<button onclick="closeTelegramBox()">رجوع</button>
-</div>
-
-<button class="support-btn" onclick="window.open('https://wa.me/201022495795','_blank')">الدعم الفني</button>
-
-<script>
-// العناصر
-const infoBox = document.getElementById('infoBox');
-const infoText = document.getElementById('infoText');
-const passwordBox = document.getElementById('passwordBox');
-const submitBtn = document.getElementById("submitBtn");
-const successModal = document.getElementById("successModal");
-
-// كلمة السر الافتراضية للبرنامج
-const defaultPass = "055"; 
-let currentPass = defaultPass; // هنا غير الكلمة اللي عايزها وسيتم اقفال الصفحات القديمة
-
-// تحقق من كلمة السر عند تحميل الصفحة (اقفال للمستخدمين القدامى)
-window.addEventListener('load', function() {
-    const savedPass = localStorage.getItem("productsPass");
-    if(savedPass && savedPass !== currentPass){
-        alert("❌ تم تغيير كلمة السر، يرجى التواصل مع الدعم الفني: 01022495795");
-        localStorage.removeItem("productsPass");
-        window.location.href = "index.html";
-    } else {
-        localStorage.setItem("productsPass", currentPass);
-    }
-});
-
-// دوال الدخول للمنتجات
-function checkPassword() {
-    const pass = document.getElementById('offerPass').value;
-    if(pass === currentPass){
-        window.open('products.html', '_blank');
-    } else {
-        alert("❌ كلمة السر غير صحيحة");
-    }
+// عرض المنتجات مع حفظ index الأصلي
+function renderProducts(data){
+    let html = "";
+    data.forEach(item=>{
+        html += `
+        <div class="product">
+            <img src="${item.image || 'https://via.placeholder.com/150'}" alt="صورة المنتج">
+            <div class="name">${item.name}</div>
+            <div class="price">السعر: ${item.price} جنيه</div>
+            <input type="number" min="1" value="1" data-index="${item.originalIndex}">
+            <button onclick="addToCart(${item.originalIndex})">أضف إلى السلة</button>
+        </div>`;
+    });
+    container.innerHTML = html;
 }
 
-// دوال المعلومات
-function showInfo(text){ infoText.innerHTML = text; infoBox.style.display = 'block'; }
-function closeInfo(){ infoBox.style.display = 'none'; }
-function showPasswordBox(){ passwordBox.style.display='block'; }
-function closePasswordBox(){ passwordBox.style.display='none'; }
-function showTelegramBox(){ document.getElementById('telegramBox').style.display='block'; }
-function closeTelegramBox(){ document.getElementById('telegramBox').style.display='none'; }
-function checkTelegram(){ alert("سيتم وضع الرابط لاحقاً"); }
+// تحميل المنتجات
+(async function(){
+   if(localStorage.getItem("products")){
+      productsData = JSON.parse(localStorage.getItem("products"));
+      productsData.forEach((p,i)=>p.originalIndex=i);
+      renderProducts(productsData);
+   }
+   try {
+     const res = await fetch(SCRIPT_PRODUCTS_URL, {cache:"no-store"});
+     const data = await res.json();
+     productsData = data.reverse().map((p,i)=>({...p, originalIndex:i}));
+     localStorage.setItem("products", JSON.stringify(productsData));
+     renderProducts(productsData);
+   } catch(err){ 
+     console.log("❌ خطأ في جلب المنتجات:",err); 
+     container.innerHTML = "<p style='text-align:center;color:red'>❌ لا توجد منتجات للعرض</p>";
+   }
+})();
 
-// تسجيل بيانات المستخدم
-submitBtn.addEventListener("click", (e)=>{
-  e.preventDefault();
-  const nameVal = document.getElementById("name").value.trim();
-  const phoneVal = document.getElementById("phone").value.trim();
-  const addressVal = document.getElementById("address").value.trim();
-  const fieldVal = document.getElementById("field").value;
-  if(!nameVal){ alert("الرجاء إدخال الاسم أو اسم المحل"); return; }
-  if(!phoneVal){ alert("الرجاء إدخال رقم الموبايل بالانجليزي"); return; }
-  if(!addressVal){ alert("الرجاء إدخال العنوان"); return; }
-  if(!fieldVal){ alert("الرجاء اختيار المجال"); return; }
-  const phonePattern = /^01[0-2,5][0-9]{8}$/;
-  if (!phonePattern.test(phoneVal)){ alert('من فضلك أدخل رقم موبايل مصري صحيح'); return; }
-  successModal.style.display='flex';
-  document.getElementById("name").value='';
-  document.getElementById("phone").value='';
-  document.getElementById("address").value='';
-  document.getElementById("field").value='';
+function showToast(msg){ const toast = document.getElementById("toast"); toast.innerText = msg; toast.style.display = "block"; setTimeout(()=>toast.style.display="none",1200); }
+function updateCartCount(){ const count = cart.reduce((sum, qty)=> qty ? sum+qty : sum, 0); const badge = document.getElementById("cart-count"); if(count>0){ badge.style.display = "inline-block"; badge.innerText = count; } else { badge.style.display = "none"; } }
+function addToCart(index){ const input = container.querySelector(`input[data-index='${index}']`); const quantity = parseInt(input.value); if(quantity <=0) return; cart[index] = (cart[index] || 0) + quantity; localStorage.setItem("cartData", JSON.stringify(cart)); updateCartCount(); showToast(`${productsData[index].name} تم إضافته/تحديثه في السلة`); }
+(function loadCart(){ const storedCart = JSON.parse(localStorage.getItem("cartData")); if(storedCart) { cart = storedCart; updateCartCount(); } })();
+
+function showTotal(){
+  let total = 0;
+  const cartList = document.getElementById("cartList");
+  cartList.innerHTML = "";
+  cart.forEach((qty, idx)=>{
+      if(qty){
+          total += qty*productsData[idx].price;
+          const itemDiv = document.createElement("div");
+          itemDiv.className = "cart-item";
+          itemDiv.innerHTML = `
+              <span>${productsData[idx].name}</span>
+              <span>السعر: ${productsData[idx].price} × 
+              <input type="number" min="1" value="${qty}" style="width:40px;" onchange="updateQty(${idx},this.value)"> = <strong>${productsData[idx].price*qty}</strong> جنيه</span>
+              <button onclick="removeItem(${idx})">حذف</button>
+          `;
+          cartList.appendChild(itemDiv);
+      }
+  });
+  document.getElementById("totalAmount").innerText = total;
+  document.getElementById("totalModal").style.display = "block";
+}
+
+function updateQty(idx, value){ value = parseInt(value); if(value<=0) { delete cart[idx]; } else { cart[idx]=value; } localStorage.setItem("cartData", JSON.stringify(cart)); updateCartCount(); showTotal(); }
+function removeItem(idx){ delete cart[idx]; localStorage.setItem("cartData", JSON.stringify(cart)); updateCartCount(); showTotal(); }
+function closeTotalModal(){ document.getElementById("totalModal").style.display = 'none'; }
+function sendOrder(){ const orderDiv = document.getElementById("orderNumbers"); orderDiv.style.display = "block"; orderDiv.querySelectorAll("a").forEach(a=>{ a.onclick = (e)=>{ e.preventDefault(); let orderText = "طلبية:%0A"; cart.forEach((qty, idx)=>{ if(qty){ orderText += `${productsData[idx].name} × ${qty} = ${productsData[idx].price*qty} جنيه%0A`; } }); const total = cart.reduce((sum, qty, idx) => qty ? sum + qty*productsData[idx].price : sum, 0); orderText += `المجموع الكلي: ${total} جنيه`; window.open(`${a.href}?text=${orderText}`, "_blank"); }; }); }
+function openSupport(){ window.open("https://wa.me/201022495795", "_blank"); }
+function goHome(){ window.location.href="index.html"; }
+
+// البحث مع الحفاظ على index الأصلي
+document.getElementById("searchBox").addEventListener("input", function(){
+    const keyword = this.value.trim().toLowerCase();
+    if(!keyword){
+        renderProducts(productsData);
+        return;
+    }
+    const filteredData = productsData.filter(p => p.name.toLowerCase().includes(keyword));
+    if(filteredData.length){
+        renderProducts(filteredData);
+    } else {
+        container.innerHTML = "<p style='text-align:center;color:red'>❌ لا توجد منتجات مطابقة للبحث</p>";
+    }
 });
-
-function closeModal(){ successModal.style.display='none'; }
 </script>
 </body>
 </html>
