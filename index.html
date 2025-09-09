@@ -12,76 +12,91 @@ header { background:#8a2be2; color:#fff; padding:25px 10px; }
 header h1 { margin:0; font-size:2.2em; font-weight:bold; }
 header h2 { margin:5px 0 0; font-size:1.2em; font-weight:normal; }
 
-/* الصور */
 .top-images { display:flex; justify-content:center; gap:10px; margin:15px 0; }
 .top-images img { width:120px; height:auto; border-radius:10px; }
 
-/* أزرار أعلى الصفحة */
 .top-buttons { display:flex; flex-wrap:wrap; justify-content:center; margin:15px 0; gap:10px; }
 .top-buttons button { padding:12px 18px; font-size:1em; font-weight:bold; border:none; border-radius:8px; background:#8a2be2; color:#fff; cursor:pointer; transition:0.3s; }
 .top-buttons button:hover { background:#6a1fbf; transform:scale(1.05); }
 
-/* مربع المعلومات */
+.telegram-fixed-btn {
+    position: fixed;
+    bottom: 20px;      /* المسافة من أسفل الشاشة */
+    right: 20px;       /* المسافة من يمين الشاشة */
+    padding: 12px 18px;
+    border-radius: 50px;
+    background: #00bfff;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    z-index: 1002;
+    transition: 0.3s;
+}
+.telegram-fixed-btn:hover {
+    background: #009acd;
+    transform: scale(1.05);
+}
+
 .info-box { display:none; background:#fff; margin:15px auto; padding:20px; border-radius:12px; max-width:400px; text-align:center; box-shadow:0 2px 10px rgba(0,0,0,0.2); }
 
-/* نموذج التسجيل */
 .form-container { max-width:400px; margin:20px auto; background:#fff; padding:20px; border-radius:15px; box-shadow:0 2px 10px rgba(0,0,0,0.1); text-align:right; font-weight:bold; }
 .form-container h3 { text-align:center; color:#8a2be2; margin-bottom:15px; }
 .form-container input, .form-container select { width:100%; padding:12px; margin:10px 0; border-radius:8px; border:1px solid #ccc; font-size:1em; }
 .form-container button { width:100%; padding:12px; border:none; border-radius:10px; font-size:1.1em; font-weight:bold; cursor:pointer; color:#fff; background:#8a2be2; transition:0.3s; }
 .form-container button:hover { background:#6a1fbf; transform:scale(1.02); }
 
-/* مودال نجاح التسجيل */
 .modal { display:none; position:fixed; z-index:1000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.6); align-items:center; justify-content:center; }
 .modal-content { background:#fff; padding:20px; border-radius:12px; width:90%; max-width:400px; text-align:center; }
 .modal-content h2 { color:#8a2be2; margin-bottom:15px; }
 
-/* مربع كلمة السر يظهر على الصفحة */
-.password-box { display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#fff; padding:25px; border-radius:12px; max-width:400px; width:90%; box-shadow:0 2px 15px rgba(0,0,0,0.3); text-align:center; z-index:1001; font-weight:bold; }
+.password-box { display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#00bfff; padding:25px; border-radius:50px; max-width:400px; width:90%; box-shadow:0 2px 15px rgba(0,0,0,0.3); text-align:center; z-index:1001; font-weight:bold; color:#fff; }
 .password-box input { width:70%; padding:10px; margin:10px 0; border-radius:8px; border:1px solid #ccc; }
-.password-box button { padding:10px 15px; margin:5px; border:none; border-radius:8px; background:#8a2be2; color:#fff; cursor:pointer; font-weight:bold; }
+.password-box button { padding:10px 15px; margin:5px; border:none; border-radius:8px; background:#fff; color:#00bfff; cursor:pointer; font-weight:bold; }
 
-/* زر الدعم الفني */
 .support-btn { position:fixed; top:10px; left:10px; padding:10px 15px; border-radius:50%; background:#ff5722; color:#fff; font-weight:bold; cursor:pointer; box-shadow:0 2px 5px rgba(0,0,0,0.3); transition:0.3s; }
 .support-btn:hover { background:#e64a19; transform:scale(1.1); }
 
+.product-card { margin:10px; padding:10px; border:1px solid #ccc; border-radius:8px; display:inline-block; text-align:center; }
+.product-card img { width:120px; height:auto; }
+.product-card strong { display:block; margin:5px 0; }
+.product-card input[type="number"] { width:50px; margin:5px 0; }
+.product-card button { padding:5px 10px; border:none; background:#8a2be2; color:#fff; border-radius:5px; cursor:pointer; }
+.product-card button:hover { background:#6a1fbf; }
 </style>
 </head>
 <body>
 
 <div class="top-bar">🌹 اللهم صلِّ وسلم وبارك على سيدنا محمد ﷺ 🌹</div>
-<div class="blink">✨ أهلاً ومرحباً بكم في مملكة الأصليات ✨</div>
-  /
-  هنبيع ببلاش واكن الصنف مجاش✨</div>
+<div class="blink">✨ أهلاً ومرحباً بكم في مملكة الأصليات✨</div>
+<div class="blink">✨ هنبيع ببلاش واكن الصنف مجاش ✨</div> 
 
 <header>
 <h1>شركة جنة</h1>
 <h2>لجميع خدمات المحمول</h2>
 </header>
 
-<!-- صور أعلى -->
 <div class="top-images">
 <img src="123.jpg" alt="صورة 1">
 <img src="456.jpg" alt="صورة 2">
 <img src="789.jpg" alt="صورة 3">
 </div>
 
-<!-- أزرار أعلى الصفحة -->
 <div class="top-buttons">
 <button onclick="showInfo('العنوان:<br>المنصورة - نبروه سوق المحمول')">🏠 العنوان</button>
-<button onclick="showInfo('تواصل معنا:<br>01022495795<br>01067070423<br>01012253500')">📞 تواصل معنا</button>
+<button onclick="showInfo('تواصل معنا:<br>01067070423<br>01022495795<br>01012253500')">📞 تواصل معنا</button>
 <button onclick="window.open('https://www.facebook.com/share/174s1yLKfA/?mibextid=wwXIfr','_blank')">📘 فيسبوك</button>
-<button onclick="showPasswordBox()">🔥 المنتجات والعروض</button>
+<!-- زر المنتجات مع كلمة السر بنفس شكل التليجرام -->
+<button class="telegram-style-btn" onclick="showPasswordBox()">🔥 المنتجات والعروض</button>
+<button class="telegram-style-btn" onclick="showTelegramBox()">📲 تليجرام التفعيلات</button>
 </div>
 
-<!-- مربع المعلومات -->
 <div id="infoBox" class="info-box">
 <h2>تفاصيل</h2>
 <p id="infoText" style="line-height:1.6;"></p>
 <button onclick="closeInfo()">رجوع</button>
 </div>
 
-<!-- نموذج التسجيل -->
 <div class="form-container">
 <h3>📑 لتلقي العروض قم بتسجيل بياناتك</h3>
 <input type="text" id="name" placeholder="الاسم أو اسم المحل" required>
@@ -95,7 +110,6 @@ header h2 { margin:5px 0 0; font-size:1.2em; font-weight:normal; }
 <button id="submitBtn">🚀 سجل الان</button>
 </div>
 
-<!-- نجاح التسجيل -->
 <div id="successModal" class="modal">
 <div class="modal-content">
 <h2>🎉 تم التسجيل بنجاح نورت المملكة😍 🎉</h2>
@@ -103,7 +117,7 @@ header h2 { margin:5px 0 0; font-size:1.2em; font-weight:normal; }
 </div>
 </div>
 
-<!-- مربع كلمة السر -->
+<!-- مربع كلمة السر للمنتجات بنفس ستايل التليجرام -->
 <div id="passwordBox" class="password-box">
 <h2>ادخل كلمه السر لمشاهده الاسعار والمنتجات 🔑</h2>
 <input type="password" id="offerPass" placeholder="كلمة السر">
@@ -112,7 +126,14 @@ header h2 { margin:5px 0 0; font-size:1.2em; font-weight:normal; }
 <button onclick="closePasswordBox()">رجوع</button>
 </div>
 
-<!-- زر الدعم الفني -->
+<div id="telegramBox" class="password-box">
+<h2>ادخل تليجرام التفعيلات 🔑</h2>
+<input type="text" id="telegramPass" placeholder="فارغ حالياً">
+<div style="margin:10px 0;">سيتم وضع الرابط لاحقاً</div>
+<button onclick="checkTelegram()">دخول</button>
+<button onclick="closeTelegramBox()">رجوع</button>
+</div>
+
 <button class="support-btn" onclick="window.open('https://wa.me/201022495795','_blank')">الدعم الفني</button>
 
 <script>
@@ -123,64 +144,54 @@ const submitBtn = document.getElementById("submitBtn");
 const successModal = document.getElementById("successModal");
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw_Yc2ii6bu0iLOJEt0iXwnNjzZFLo0djFODlZIDORzWrVopf653DuJmvywGIbZa3PYJA/exec";
 
-// عرض التفاصيل داخل الصفحة
-function showInfo(text){
-  infoText.innerHTML = text;
-  infoBox.style.display = 'block';
-}
+// دوال المعلومات
+function showInfo(text){ infoText.innerHTML = text; infoBox.style.display = 'block'; }
 function closeInfo(){ infoBox.style.display = 'none'; }
-
-// عرض مربع كلمة السر أمام العميل
 function showPasswordBox(){ passwordBox.style.display='block'; }
 function closePasswordBox(){ passwordBox.style.display='none'; }
+function showTelegramBox(){ document.getElementById('telegramBox').style.display='block'; }
+function closeTelegramBox(){ document.getElementById('telegramBox').style.display='none'; }
+function checkTelegram(){ alert("سيتم وضع الرابط لاحقاً"); }
 
-function checkPassword(){
-  const pass = document.getElementById("offerPass").value;
-  if(pass === "010024"){
-    alert("✅ كلمة السر صحيحة - سيتم عرض المنتجات قريباً");
-    closePasswordBox();
-  } else alert("❌ كلمة السر غير صحيحة");
+// دالة تحقق كلمة السر للمنتجات
+function checkPassword() {
+  const pass = document.getElementById('offerPass').value;
+  if(pass === "010024") {
+    window.open('products.html', '_blank');
+  } else {
+    alert("❌ كلمة السر غير صحيحة");
+  }
 }
 
-// تسجيل البيانات للشيت مع التحقق من الحقول
-submitBtn.addEventListener("click", async (e)=>{
+// تسجيل بيانات المستخدم
+submitBtn.addEventListener("click", (e)=>{
   e.preventDefault();
+  
   const nameVal = document.getElementById("name").value.trim();
   const phoneVal = document.getElementById("phone").value.trim();
   const addressVal = document.getElementById("address").value.trim();
   const fieldVal = document.getElementById("field").value;
-
+  
   if(!nameVal){ alert("الرجاء إدخال الاسم أو اسم المحل"); return; }
   if(!phoneVal){ alert("الرجاء إدخال رقم الموبايل بالانجليزي"); return; }
   if(!addressVal){ alert("الرجاء إدخال العنوان"); return; }
   if(!fieldVal){ alert("الرجاء اختيار المجال"); return; }
-
-  submitBtn.disabled=true;
-  submitBtn.textContent='جارٍ الإرسال...';
-
-  const data = { name:nameVal, phone:phoneVal, address:addressVal, field:fieldVal };
+  
   const phonePattern = /^01[0-2,5][0-9]{8}$/;
-  if (!phonePattern.test(data.phone)) { alert('من فضلك أدخل رقم موبايل مصري صحيح'); submitBtn.disabled=false; submitBtn.textContent='🚀 سجل الان'; return; }
-
+  if (!phonePattern.test(phoneVal)){ alert('من فضلك أدخل رقم موبايل مصري صحيح'); return; }
+  
+  successModal.style.display='flex';
+  document.getElementById("name").value='';
+  document.getElementById("phone").value='';
+  document.getElementById("address").value='';
+  document.getElementById("field").value='';
+  
+  const data = { name:nameVal, phone:phoneVal, address:addressVal, field:fieldVal };
   const params = new URLSearchParams();
   for (let key in data) params.append(key,data[key]);
-
-  try{
-    fetch(SCRIPT_URL,{ method:'POST', body:params })
-    .then(res=>res.text())
-    .then(text=>{
-      let resp={};
-      try{ resp=JSON.parse(text); } catch(e){ resp={result:'error', message:text}; }
-      if(resp.result==="success"){ successModal.style.display='flex'; document.getElementById("name").value=''; document.getElementById("phone").value=''; document.getElementById("address").value=''; document.getElementById("field").value=''; }
-      else alert('❌ حدث خطأ: '+(resp.message||'خطأ غير معروف'));
-    })
-    .catch(err=>alert('❌ خطأ في الاتصال: '+err.message))
-    .finally(()=>{ submitBtn.disabled=false; submitBtn.textContent='🚀 سجل الان'; });
-  }catch(err){
-    alert('❌ خطأ غير متوقع: '+err.message);
-    submitBtn.disabled=false;
-    submitBtn.textContent='🚀 سجل الان';
-  }
+  
+  fetch(SCRIPT_URL, { method:'POST', body:params })
+    .catch(err=>console.log('❌ خطأ في الاتصال: '+err.message));
 });
 
 function closeModal(){ successModal.style.display='none'; }
@@ -188,4 +199,3 @@ function closeModal(){ successModal.style.display='none'; }
 
 </body>
 </html>
-
