@@ -5,11 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>جميع منتجات جنة</title>
 <style>
-body {
-  font-family: Tahoma, sans-serif;
-  margin: 0;
-  background: #f9f9f9;
-}
+body { font-family: Tahoma, sans-serif; margin: 0; background: #f9f9f9; }
 
 /* الهيدر */
 header {
@@ -116,31 +112,11 @@ header {
   transition: 0.3s;
 }
 .product:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
-.product img {
-  width: 100%;
-  height: 120px;
-  object-fit: contain;
-  margin-bottom: 8px;
-}
+.product img { width: 100%; height: 120px; object-fit: contain; margin-bottom: 8px; }
 .name { font-size: 16px; margin: 5px 0; color: #333; }
 .price { font-weight: bold; margin-bottom: 5px; }
-.product input {
-  width: 50px;
-  margin: 5px 0;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  text-align: center;
-}
-.product button {
-  padding: 5px 10px;
-  border: none;
-  border-radius: 5px;
-  background: #8a2be2;
-  color: #fff;
-  cursor: pointer;
-  font-weight: bold;
-  transition: 0.3s;
-}
+.product input { width: 50px; margin: 5px 0; border-radius: 5px; border: 1px solid #ccc; text-align: center; }
+.product button { padding: 5px 10px; border: none; border-radius: 5px; background: #8a2be2; color: #fff; cursor: pointer; font-weight: bold; transition: 0.3s; }
 .product button:hover { background: #6a1fbf; transform: scale(1.05); }
 
 /* نافذة اجمالي الفاتورة */
@@ -160,33 +136,13 @@ header {
   max-height: 80%;
   overflow-y: auto;
 }
-#totalModal h2 {
-  font-size: 20px;
-  margin-bottom: 15px;
-  color: #8a2be2;
-}
-#totalModal button {
-  margin: 5px;
-  padding: 8px 15px;
-  border: none;
-  border-radius: 10px;
-  background: #8a2be2;
-  color: #fff;
-  cursor: pointer;
-  font-weight: bold;
-  transition: 0.3s;
-}
+#totalModal h2 { font-size: 20px; margin-bottom: 15px; color: #8a2be2; }
+#totalModal button { margin: 5px; padding: 8px 15px; border: none; border-radius: 10px; background: #8a2be2; color: #fff; cursor: pointer; font-weight: bold; transition: 0.3s; }
 #totalModal button:hover { background: #6a1fbf; }
 
 /* قائمة السلة */
 #cartList { text-align: right; margin-bottom: 10px; }
-.cart-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #ccc;
-  padding: 5px 0;
-}
+.cart-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ccc; padding: 5px 0; }
 .cart-item span { margin: 0 5px; }
 .cart-item button { padding: 2px 8px; font-size: 14px; }
 
@@ -199,10 +155,7 @@ header {
   font-weight: bold;
   text-decoration: none;
 }
-#orderNumbers a:hover {
-  color: #6a1fbf;
-  text-decoration: underline;
-}
+#orderNumbers a:hover { color: #6a1fbf; text-decoration: underline; }
 
 #toast {
   position: fixed;
@@ -234,6 +187,12 @@ header {
 <!-- مربع البحث -->
 <input type="text" id="searchBox" placeholder="🔍 ابحث عن منتج...">
 
+<!-- إدخال كلمة السر لتحديد السعر -->
+<div style="text-align:center; margin:10px;">
+  <input type="password" id="pricePass" placeholder="ادخل كلمة السر للسعر">
+  <button onclick="checkPricePassword(document.getElementById('pricePass').value)">تفعيل السعر</button>
+</div>
+
 <div id="products-container"></div>
 
 <div id="totalModal">
@@ -256,17 +215,36 @@ const SCRIPT_PRODUCTS_URL = "https://script.google.com/macros/s/AKfycbxW3_pcjSff
 const container = document.getElementById("products-container");
 let productsData = [];
 let cart = [];
+let priceMode = null; // 'retail' أو 'wholesale'
 
-// عرض المنتجات
+// دالة لتحديد نوع السعر حسب كلمة السر
+function checkPricePassword(pass){
+  if(pass === "010024"){ // جملة
+    priceMode = "wholesale";
+    alert("تم تفعيل عرض جملة ✅");
+  } else if(pass === "567"){ // قطاعي
+    priceMode = "retail";
+    alert("تم تفعيل عرض قطاعي ✅");
+  } else {
+    alert("❌ كلمة السر غير صحيحة");
+  }
+  renderProducts(productsData);
+}
+
+// عرض المنتجات حسب السعر المحدد
 function renderProducts(data){
     let html = "";
     for(let i=0;i<data.length;i++){
         const item = data[i];
+        let displayPrice = item.price; // السعر الافتراضي
+        if(priceMode==="wholesale" && item.wholesalePrice) displayPrice = item.wholesalePrice;
+        if(priceMode==="retail" && item.retailPrice) displayPrice = item.retailPrice;
+
         html += `
             <div class="product">
                 <img src="${item.image || 'https://via.placeholder.com/150'}" alt="صورة المنتج">
                 <div class="name">${item.name}</div>
-                <div class="price">السعر: ${item.price} جنيه</div>
+                <div class="price">السعر: ${displayPrice} جنيه</div>
                 <input type="number" min="1" value="1" data-index="${i}">
                 <button onclick="addToCart(${i})">أضف إلى السلة</button>
             </div>
@@ -301,7 +279,7 @@ function showToast(msg){
 }
 
 function updateCartCount(){
-  const count = cart.reduce((sum, qty)=> qty ? sum+qty : sum, 0);
+  const count = Object.values(cart).reduce((sum, item)=> sum + (item?.qty || 0),0);
   const badge = document.getElementById("cart-count");
   if(count>0){
     badge.style.display = "inline-block";
@@ -315,28 +293,33 @@ function addToCart(index){
   const input = container.querySelector(`input[data-index='${index}']`);
   const quantity = parseInt(input.value);
   if(quantity <=0) return;
-  cart[index] = (cart[index] || 0) + quantity;
+
+  const item = productsData[index];
+  let price = item.price;
+  if(priceMode==="wholesale" && item.wholesalePrice) price = item.wholesalePrice;
+  if(priceMode==="retail" && item.retailPrice) price = item.retailPrice;
+
+  cart[index] = { qty: (cart[index]?.qty || 0) + quantity, price: price, name: item.name };
   updateCartCount();
-  showToast(`${productsData[index].name} تم إضافته/تحديثه في السلة`);
+  showToast(`${item.name} تم إضافته/تحديثه في السلة`);
 }
 
 function showTotal(){
   let total = 0;
   const cartList = document.getElementById("cartList");
   cartList.innerHTML = "";
-  cart.forEach((qty, idx)=>{
-      if(qty){
-          total += qty*productsData[idx].price;
-          const itemDiv = document.createElement("div");
-          itemDiv.className = "cart-item";
-          itemDiv.innerHTML = `
-              <span>${productsData[idx].name}</span>
-              <span>السعر: ${productsData[idx].price} × 
-              <input type="number" min="1" value="${qty}" style="width:40px;" onchange="updateQty(${idx},this.value)"> = <strong>${productsData[idx].price*qty}</strong> جنيه</span>
-              <button onclick="removeItem(${idx})">حذف</button>
-          `;
-          cartList.appendChild(itemDiv);
-      }
+  Object.keys(cart).forEach(idx=>{
+    const c = cart[idx];
+    total += c.price * c.qty;
+    const itemDiv = document.createElement("div");
+    itemDiv.className = "cart-item";
+    itemDiv.innerHTML = `
+      <span>${c.name}</span>
+      <span>السعر: ${c.price} × 
+      <input type="number" min="1" value="${c.qty}" style="width:40px;" onchange="updateQty(${idx},this.value)"> = <strong>${c.price*c.qty}</strong> جنيه</span>
+      <button onclick="removeItem(${idx})">حذف</button>
+    `;
+    cartList.appendChild(itemDiv);
   });
   document.getElementById("totalAmount").innerText = total;
   document.getElementById("totalModal").style.display = "block";
@@ -344,40 +327,31 @@ function showTotal(){
 
 function updateQty(idx, value){
   value = parseInt(value);
-  if(value<=0) { delete cart[idx]; } else { cart[idx]=value; }
+  if(value<=0) { delete cart[idx]; } else { cart[idx].qty=value; }
   updateCartCount();
   showTotal();
 }
-function removeItem(idx){
-  delete cart[idx];
-  updateCartCount();
-  showTotal();
-}
+function removeItem(idx){ delete cart[idx]; updateCartCount(); showTotal(); }
 function closeTotalModal(){ document.getElementById("totalModal").style.display = 'none'; }
 
 function sendOrder(){
   const orderDiv = document.getElementById("orderNumbers");
   orderDiv.style.display = "block";
-
   orderDiv.querySelectorAll("a").forEach(a=>{
     a.onclick = (e)=>{
       e.preventDefault();
       let orderText = "طلبية:%0A";
-      cart.forEach((qty, idx)=>{
-          if(qty){
-              orderText += `${productsData[idx].name} × ${qty} = ${productsData[idx].price*qty} جنيه%0A`;
-          }
+      Object.values(cart).forEach(c=>{
+        orderText += `${c.name} × ${c.qty} = ${c.price*c.qty} جنيه%0A`;
       });
-      const total = cart.reduce((sum, qty, idx) => qty ? sum + qty*productsData[idx].price : sum, 0);
+      const total = Object.values(cart).reduce((sum, c)=> sum + c.price*c.qty,0);
       orderText += `المجموع الكلي: ${total} جنيه`;
       window.open(`${a.href}?text=${orderText}`, "_blank");
     };
   });
 }
 
-function openSupport(){
-  window.open("https://wa.me/201022495795", "_blank");
-}
+function openSupport(){ window.open("https://wa.me/201022495795", "_blank"); }
 
 // 🔔 التحقق من المنتجات الجديدة
 function checkNewProducts(){
