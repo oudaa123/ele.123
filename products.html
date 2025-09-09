@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>عرض المنتجات</title>
+<title>مملكة الأصليات - عرض المنتجات</title>
 <style>
 body { font-family: Tahoma, sans-serif; text-align:center; padding:10px; margin:0; background:#f9f9f9; }
-.logo { background:#25d366; color:white; font-size:20px; font-weight:bold; padding:15px; border-radius:10px; margin-bottom:20px; display:inline-block; }
+.logo { background:#25d366; color:white; font-size:20px; font-weight:bold; padding:15px; border-radius:10px; margin-bottom:15px; display:inline-block; }
 h1 { font-size:22px; margin-bottom:15px; }
 
 #products-container { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; }
@@ -15,6 +15,7 @@ h1 { font-size:22px; margin-bottom:15px; }
 .product:hover { box-shadow:0 4px 12px rgba(0,0,0,0.2); }
 .product img { width:100%; height:150px; object-fit:cover; border-radius:5px; }
 .name { font-size:16px; margin:5px 0; color:#333; }
+.price { font-weight:bold; margin-bottom:5px; }
 .product input { width:50px; margin:5px 0; border-radius:5px; border:1px solid #ccc; text-align:center; }
 .product button { padding:5px 10px; border:none; border-radius:5px; background:#8a2be2; color:#fff; cursor:pointer; font-weight:bold; transition:0.3s; }
 .product button:hover { background:#6a1fbf; transform:scale(1.05); }
@@ -52,13 +53,9 @@ h1 { font-size:22px; margin-bottom:15px; }
 <h1>المنتجات</h1>
 <div id="products-container"></div>
 
-<!-- زر الدعم الفني -->
 <button class="support-btn" onclick="window.open('https://wa.me/201022495795','_blank')">الدعم الفني</button>
-
-<!-- زر اجمالي الفاتورة -->
 <button class="total-btn" onclick="showTotal()">اجمالي الفاتورة</button>
 
-<!-- نافذة اجمالي الفاتورة -->
 <div id="totalModal">
     <h2>اجمالي الفاتورة: <span id="totalAmount">0</span> جنيه</h2>
     <button onclick="sendOrder()">ارسال</button>
@@ -76,51 +73,36 @@ const container = document.getElementById("products-container");
 let productsData = [];
 let cart = [];
 
-// جلب المنتجات مع التحميل التدريجي
-function fetchProducts(batchSize = 20){
-    fetch(SCRIPT_PRODUCTS_URL)
-      .then(res => res.json())
-      .then(data => {
-          productsData = data;
-          container.innerHTML = "";
-          loadBatch(0, batchSize);
-      })
-      .catch(err => console.log("❌ خطأ في جلب المنتجات: ", err));
-}
-
-function loadBatch(start, batchSize){
-    const end = Math.min(start + batchSize, productsData.length);
-    for(let i=start; i<end; i++){
+// جلب كل المنتجات دفعة واحدة لتسريع التحميل
+fetch(SCRIPT_PRODUCTS_URL)
+.then(res => res.json())
+.then(data => {
+    productsData = data;
+    container.innerHTML = "";
+    for(let i=0;i<productsData.length;i++){
         const item = productsData[i];
         const div = document.createElement("div");
         div.className = "product";
         div.innerHTML = `
             <img src="${item.image}" alt="${item.name}" loading="lazy">
             <div class="name">${item.name}</div>
-            <div>السعر: ${item.price} جنيه</div>
+            <div class="price">السعر: ${item.price} جنيه</div>
             <input type="number" min="1" value="1" data-index="${i}">
             <button onclick="addToCart(${i})">أضف إلى السلة</button>
         `;
         container.appendChild(div);
     }
-
-    // تحميل المزيد عند التمرير
-    if(end < productsData.length){
-        const observer = new IntersectionObserver(entries => {
-            if(entries[0].isIntersecting){
-                observer.disconnect();
-                loadBatch(end, batchSize);
-            }
-        });
-        observer.observe(container.lastChild);
-    }
-}
+})
+.catch(err=>console.log("❌ خطأ في جلب المنتجات:",err));
 
 function addToCart(index){
     const input = container.querySelector(`input[data-index='${index}']`);
     const quantity = parseInt(input.value);
     cart[index] = quantity;
-    alert(`${productsData[index].name} تمت اضافته/تحديثه في السلة`);
+    // بدل alert نغير اللون لفترة قصيرة لتقليل التوقف
+    const btn = input.nextElementSibling;
+    btn.style.background = "#00bfff";
+    setTimeout(()=>btn.style.background="#8a2be2",300);
 }
 
 function showTotal(){
@@ -135,10 +117,7 @@ function closeTotalModal(){ document.getElementById("totalModal").style.display 
 
 function sendOrder(){
     document.getElementById("contactNumbers").style.display = 'block';
-    alert("تم ارسال اجمالي الفاتورة\nيمكن التواصل عبر الأرقام الظاهرة الآن");
 }
-
-fetchProducts();
 </script>
 </body>
 </html>
