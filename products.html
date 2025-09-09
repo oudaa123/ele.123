@@ -69,13 +69,13 @@ h1 { font-size:22px; margin-bottom:15px; }
 <div id="products-container"></div>
 
 <button class="support-btn" onclick="window.open('https://wa.me/201022495795','_blank')">الدعم الفني</button>
-<button class="total-btn" onclick="showTotal()">اجمالي الفاتورة</button>
+<button class="total-btn" onclick="showTotalAmountOnly()">اجمالي الفاتورة</button>
 <button class="cart-btn" onclick="showTotal()">🛒 عرض السلة</button>
 
 <div id="totalModal">
     <h2>اجمالي الفاتورة: <span id="totalAmount">0</span> جنيه</h2>
     <div id="cartList"></div>
-    <button onclick="sendOrder()">ارسال</button>
+    <button onclick="sendOrder()">ارسال عبر واتساب</button>
     <button onclick="closeTotalModal()">اغلاق</button>
     <div id="contactNumbers">
         <a href="https://wa.me/201067070423" target="_blank">📞 01067070423</a>
@@ -130,7 +130,7 @@ function addToCart(index){
     showToast(`${productsData[index].name} تم إضافته/تحديثه في السلة`);
 }
 
-// عرض السلة داخل المودال
+// عرض السلة مع تفاصيل تعديل وحذف
 function showTotal(){
     let total = 0;
     const cartList = document.getElementById("cartList");
@@ -154,6 +154,16 @@ function showTotal(){
     document.getElementById("contactNumbers").style.display = 'none';
 }
 
+// عرض المجموع فقط بدون تفاصيل
+function showTotalAmountOnly(){
+    let total = 0;
+    cart.forEach((qty, idx)=>{ if(qty) total += qty*productsData[idx].price; });
+    document.getElementById("cartList").innerHTML = "";
+    document.getElementById("totalAmount").innerText = total;
+    document.getElementById("totalModal").style.display = "block";
+    document.getElementById("contactNumbers").style.display = 'none';
+}
+
 // تعديل الكمية في السلة
 function updateQty(idx, value){
     value = parseInt(value);
@@ -170,9 +180,17 @@ function removeItem(idx){
 // اغلاق المودال
 function closeTotalModal(){ document.getElementById("totalModal").style.display = 'none'; }
 
-// عرض أرقام واتساب
+// إرسال الفاتورة عبر واتساب (يفتح نافذة جديدة)
 function sendOrder(){
-    document.getElementById("contactNumbers").style.display = 'block';
+    let orderText = "طلبية:%0A";
+    cart.forEach((qty, idx)=>{
+        if(qty){
+            orderText += `${productsData[idx].name} × ${qty} = ${productsData[idx].price*qty} جنيه%0A`;
+        }
+    });
+    const total = cart.reduce((sum, qty, idx) => qty ? sum + qty*productsData[idx].price : sum, 0);
+    orderText += `المجموع الكلي: ${total} جنيه`;
+    window.open(`https://wa.me/201022495795?text=${orderText}`,'_blank');
 }
 </script>
 </body>
