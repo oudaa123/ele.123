@@ -68,8 +68,8 @@ header h2 { margin:5px 0 0; font-size:1.2em; font-weight:normal; }
 <button onclick="showInfo('العنوان:<br>المنصورة - نبروه سوق المحمول')">🏠 العنوان</button>
 <button onclick="showInfo('تواصل معنا:<br>01067070423<br>01022495795<br>01012253500')">📞 تواصل معنا</button>
 <button onclick="window.open('https://www.facebook.com/share/174s1yLKfA/?mibextid=wwXIfr','_blank')">📘 فيسبوك</button>
-<button onclick="showPasswordBox()">🔥 المنتجات والعروض</button>
-<button onclick="showTelegramBox()">📲 تليجرام التفعيلات</button>
+<button class="telegram-style-btn" onclick="showPasswordBox()">🔥 المنتجات والعروض</button>
+<button class="telegram-style-btn" onclick="showTelegramBox()">📲 تليجرام التفعيلات</button>
 </div>
 
 <div id="infoBox" class="info-box">
@@ -125,12 +125,25 @@ const submitBtn = document.getElementById("submitBtn");
 const successModal = document.getElementById("successModal");
 
 // كلمة السر الافتراضية للبرنامج
-const defaultPass = "010024";
+const defaultPass = "055"; 
+let currentPass = defaultPass; // هنا غير الكلمة اللي عايزها وسيتم اقفال الصفحات القديمة
 
-// تحقق كلمة السر عند الدخول للمنتجات
+// تحقق من كلمة السر عند تحميل الصفحة (اقفال للمستخدمين القدامى)
+window.addEventListener('load', function() {
+    const savedPass = localStorage.getItem("productsPass");
+    if(savedPass && savedPass !== currentPass){
+        alert("❌ تم تغيير كلمة السر، يرجى التواصل مع الدعم الفني: 01022495795");
+        localStorage.removeItem("productsPass");
+        window.location.href = "index.html";
+    } else {
+        localStorage.setItem("productsPass", currentPass);
+    }
+});
+
+// دوال الدخول للمنتجات
 function checkPassword() {
     const pass = document.getElementById('offerPass').value;
-    if(pass === defaultPass){
+    if(pass === currentPass){
         window.open('products.html', '_blank');
     } else {
         alert("❌ كلمة السر غير صحيحة");
