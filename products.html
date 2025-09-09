@@ -189,7 +189,7 @@ header {
     <button onclick="showTotal()">🛒 السلة <span id="cart-count">0</span></button>
     <button onclick="showTotal()">💰 إجمالي الفاتورة</button>
     <button onclick="openSupport()">☎️ الدعم الفني</button>
-    <button onclick="goHome()">🏠 الرجوع للقائمة الرئيسية</button>
+    <button onclick="goHome()">🔙 الرجوع للقائمة الرئيسية</button>
   </div>
 </header>
 
@@ -217,18 +217,34 @@ header {
 const SCRIPT_PRODUCTS_URL = "https://script.google.com/macros/s/AKfycbxW3_pcjSfffMTLZefZpzFIrbhijiaWY_u_4ZAmXEV2O04SMN5zplucKnAugWWbP8zzmA/exec";
 const container = document.getElementById("products-container");
 let productsData = [];
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let cart = [];
 
-// التحقق من صلاحية كلمة السر عند فتح الصفحة
+// =================== كلمة السر مع مدة صلاحية 15 دقيقة ===================
+function setPassword(pass){
+  const expire = new Date().getTime() + 15*60*1000;
+  localStorage.setItem("productsPass", JSON.stringify({pass, expire}));
+}
+
+// التحقق من كلمة السر عند فتح الصفحة
 (function checkPassValidity(){
     const stored = JSON.parse(localStorage.getItem("productsPass"));
     if(!stored || new Date().getTime() > stored.expire){
-        alert("انتهت صلاحية كلمة السر، يرجى إعادة الدخول!");
+        alert("انتهت صلاحية كلمة السر، يرجى إعادة إدخالها!");
         window.location.href = "index.html";
     }
 })();
 
-// عرض المنتجات
+function checkPassword(input){
+  const stored = JSON.parse(localStorage.getItem("productsPass"));
+  if(stored && input === stored.pass){
+      return true;
+  } else {
+      alert("كلمة السر غير صحيحة، يرجى إدخال الباسورد الجديد!");
+      return false;
+  }
+}
+
+// =================== تحميل المنتجات ===================
 function renderProducts(data){
     let html = "";
     for(let i=0;i<data.length;i++){
@@ -261,6 +277,7 @@ function renderProducts(data){
    } catch(err){ console.log("❌ خطأ في جلب المنتجات:",err); }
 })();
 
+// =================== إدارة السلة ===================
 function showToast(msg){
   const toast = document.getElementById("toast");
   toast.innerText = msg;
@@ -284,10 +301,16 @@ function addToCart(index){
   const quantity = parseInt(input.value);
   if(quantity <=0) return;
   cart[index] = (cart[index] || 0) + quantity;
-  localStorage.setItem("cart", JSON.stringify(cart));
+  localStorage.setItem("cartData", JSON.stringify(cart)); // حفظ السلة
   updateCartCount();
   showToast(`${productsData[index].name} تم إضافته/تحديثه في السلة`);
 }
+
+// إعادة تحميل السلة عند العودة
+(function loadCart(){
+  const storedCart = JSON.parse(localStorage.getItem("cartData"));
+  if(storedCart) { cart = storedCart; updateCartCount(); }
+})();
 
 function showTotal(){
   let total = 0;
@@ -314,13 +337,13 @@ function showTotal(){
 function updateQty(idx, value){
   value = parseInt(value);
   if(value<=0) { delete cart[idx]; } else { cart[idx]=value; }
-  localStorage.setItem("cart", JSON.stringify(cart));
+  localStorage.setItem("cartData", JSON.stringify(cart));
   updateCartCount();
   showTotal();
 }
 function removeItem(idx){
   delete cart[idx];
-  localStorage.setItem("cart", JSON.stringify(cart));
+  localStorage.setItem("cartData", JSON.stringify(cart));
   updateCartCount();
   showTotal();
 }
@@ -346,10 +369,7 @@ function sendOrder(){
   });
 }
 
-function openSupport(){
-  window.open("https://wa.me/201022495795", "_blank");
-}
-
+function openSupport(){ window.open("https://wa.me/201022495795", "_blank"); }
 function goHome(){ window.location.href="index.html"; }
 
 // 🔍 البحث
@@ -358,9 +378,6 @@ document.getElementById("searchBox").addEventListener("input", function(){
   const filtered = productsData.filter(p => p.name.toLowerCase().includes(keyword));
   renderProducts(filtered);
 });
-
-// تحديث عداد السلة عند تحميل الصفحة
-updateCartCount();
 </script>
 </body>
 </html>
