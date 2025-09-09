@@ -189,6 +189,7 @@ header {
     <button onclick="showTotal()">🛒 السلة <span id="cart-count">0</span></button>
     <button onclick="showTotal()">💰 إجمالي الفاتورة</button>
     <button onclick="openSupport()">☎️ الدعم الفني</button>
+    <button onclick="goHome()">🏠 الرجوع للقائمة الرئيسية</button>
   </div>
 </header>
 
@@ -216,7 +217,16 @@ header {
 const SCRIPT_PRODUCTS_URL = "https://script.google.com/macros/s/AKfycbxW3_pcjSfffMTLZefZpzFIrbhijiaWY_u_4ZAmXEV2O04SMN5zplucKnAugWWbP8zzmA/exec";
 const container = document.getElementById("products-container");
 let productsData = [];
-let cart = [];
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+// التحقق من صلاحية كلمة السر عند فتح الصفحة
+(function checkPassValidity(){
+    const stored = JSON.parse(localStorage.getItem("productsPass"));
+    if(!stored || new Date().getTime() > stored.expire){
+        alert("انتهت صلاحية كلمة السر، يرجى إعادة الدخول!");
+        window.location.href = "index.html";
+    }
+})();
 
 // عرض المنتجات
 function renderProducts(data){
@@ -274,6 +284,7 @@ function addToCart(index){
   const quantity = parseInt(input.value);
   if(quantity <=0) return;
   cart[index] = (cart[index] || 0) + quantity;
+  localStorage.setItem("cart", JSON.stringify(cart));
   updateCartCount();
   showToast(`${productsData[index].name} تم إضافته/تحديثه في السلة`);
 }
@@ -303,11 +314,13 @@ function showTotal(){
 function updateQty(idx, value){
   value = parseInt(value);
   if(value<=0) { delete cart[idx]; } else { cart[idx]=value; }
+  localStorage.setItem("cart", JSON.stringify(cart));
   updateCartCount();
   showTotal();
 }
 function removeItem(idx){
   delete cart[idx];
+  localStorage.setItem("cart", JSON.stringify(cart));
   updateCartCount();
   showTotal();
 }
@@ -337,12 +350,17 @@ function openSupport(){
   window.open("https://wa.me/201022495795", "_blank");
 }
 
+function goHome(){ window.location.href="index.html"; }
+
 // 🔍 البحث
 document.getElementById("searchBox").addEventListener("input", function(){
   const keyword = this.value.trim().toLowerCase();
   const filtered = productsData.filter(p => p.name.toLowerCase().includes(keyword));
   renderProducts(filtered);
 });
+
+// تحديث عداد السلة عند تحميل الصفحة
+updateCartCount();
 </script>
 </body>
 </html>
