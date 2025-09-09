@@ -33,10 +33,7 @@ header h2 { margin:5px 0 0; font-size:1.2em; font-weight:normal; }
     z-index: 1002;
     transition: 0.3s;
 }
-.telegram-fixed-btn:hover {
-    background: #009acd;
-    transform: scale(1.05);
-}
+.telegram-fixed-btn:hover { background: #009acd; transform: scale(1.05); }
 
 .info-box { display:none; background:#fff; margin:15px auto; padding:20px; border-radius:12px; max-width:400px; text-align:center; box-shadow:0 2px 10px rgba(0,0,0,0.2); }
 
@@ -88,6 +85,8 @@ header h2 { margin:5px 0 0; font-size:1.2em; font-weight:normal; }
 <button onclick="window.open('https://www.facebook.com/share/174s1yLKfA/?mibextid=wwXIfr','_blank')">📘 فيسبوك</button>
 <button class="telegram-style-btn" onclick="showPasswordBox()">🔥 المنتجات والعروض</button>
 <button class="telegram-style-btn" onclick="showTelegramBox()">📲 تليجرام التفعيلات</button>
+<!-- زر خاص لتغيير كلمة السر -->
+<button onclick="showAdminPassBox()" style="background:#ff4081;">خاص</button>
 </div>
 
 <div id="infoBox" class="info-box">
@@ -132,16 +131,13 @@ header h2 { margin:5px 0 0; font-size:1.2em; font-weight:normal; }
 <button onclick="closeTelegramBox()">رجوع</button>
 </div>
 
-<!-- زر تغيير كلمة السر الجديد -->
-<button id="changePassBtn" class="support-btn" style="top:70px; left:10px; background:#4caf50;">تغيير كلمة السر</button>
-
-<div id="changePassBox" class="password-box">
-  <h2>ادخل كلمة السر الخاصة بك للتحكم 🔑</h2>
-  <input type="password" id="adminPass" placeholder="كلمة السر الخاصة بك">
-  <div style="margin:10px 0;">أدخل كلمة السر الجديدة للمنتجات:</div>
-  <input type="password" id="newProductsPass" placeholder="كلمة السر الجديدة">
-  <button onclick="updateProductsPass()">تغيير</button>
-  <button onclick="closeChangePassBox()">رجوع</button>
+<!-- مربع تغيير كلمة السر الخاصة -->
+<div id="adminPassBox" class="password-box">
+<h2>ادخل كلمة السر الخاصة لتغيير كلمة سر المنتجات 🔑</h2>
+<input type="password" id="adminPass" placeholder="كلمة السر الخاصة">
+<input type="text" id="newProductsPass" placeholder="كلمة السر الجديدة">
+<button onclick="changeProductsPass()">تغيير</button>
+<button onclick="closeAdminPassBox()">رجوع</button>
 </div>
 
 <button class="support-btn" onclick="window.open('https://wa.me/201022495795','_blank')">الدعم الفني</button>
@@ -163,11 +159,10 @@ function showTelegramBox(){ document.getElementById('telegramBox').style.display
 function closeTelegramBox(){ document.getElementById('telegramBox').style.display='none'; }
 function checkTelegram(){ alert("سيتم وضع الرابط لاحقاً"); }
 
-// دالة تحقق كلمة السر للمنتجات مع تخزينها
+// دالة تحقق كلمة السر للمنتجات
 function checkPassword() {
   const pass = document.getElementById('offerPass').value;
-  const storedPass = localStorage.getItem("productsPass") || "010024"; // كلمة السر الافتراضية
-
+  const storedPass = localStorage.getItem("productsPass") || "010024"; 
   if(pass === storedPass) {
     window.open('products.html', '_blank');
   } else {
@@ -208,38 +203,22 @@ submitBtn.addEventListener("click", (e)=>{
 
 function closeModal(){ successModal.style.display='none'; }
 
-// --- كود تغيير كلمة السر ---
-const changePassBtn = document.getElementById("changePassBtn");
-const changePassBox = document.getElementById("changePassBox");
-
-changePassBtn.addEventListener("click", ()=>{
-  changePassBox.style.display = 'block';
-});
-
-function closeChangePassBox(){ changePassBox.style.display='none'; }
-
-function updateProductsPass(){
-  const adminInput = document.getElementById("adminPass").value;
-  const newPass = document.getElementById("newProductsPass").value;
-
-  const myAdminPass = "777"; // كودك الخاص لتغيير الباسورد
-
-  if(adminInput !== myAdminPass){
-    alert("❌ كلمة السر الخاصة بك غير صحيحة");
-    return;
+// دوال تغيير كلمة السر الخاصة
+function showAdminPassBox(){ document.getElementById('adminPassBox').style.display='block'; }
+function closeAdminPassBox(){ document.getElementById('adminPassBox').style.display='none'; }
+function changeProductsPass(){
+  const adminPass = document.getElementById('adminPass').value;
+  const newPass = document.getElementById('newProductsPass').value;
+  const correctAdminPass = "777"; // كلمة السر الخاصة بك
+  if(adminPass === correctAdminPass && newPass){
+    localStorage.setItem("productsPass", newPass);
+    alert("✅ تم تغيير كلمة السر بنجاح!");
+    document.getElementById('adminPass').value='';
+    document.getElementById('newProductsPass').value='';
+    closeAdminPassBox();
+  } else {
+    alert("❌ كلمة السر الخاصة خاطئة أو كلمة السر الجديدة فارغة!");
   }
-
-  if(!newPass){
-    alert("❌ أدخل كلمة السر الجديدة");
-    return;
-  }
-
-  localStorage.setItem("productsPass", newPass);
-  alert("✅ تم تحديث كلمة السر للمنتجات بنجاح");
-
-  document.getElementById("adminPass").value = '';
-  document.getElementById("newProductsPass").value = '';
-  closeChangePassBox();
 }
 </script>
 
