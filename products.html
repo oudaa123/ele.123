@@ -8,25 +8,8 @@
 body { font-family: Tahoma, sans-serif; margin: 0; background: #f9f9f9; }
 /* الهيدر */
 header { background: #131921; color: white; padding: 15px; text-align: center; font-size: 20px; font-weight: bold; position: sticky; top: 0; z-index: 1000; }
-.header-buttons {
-  margin-top: 10px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center; /* توسيط الأزرار */
-  gap: 8px; /* مسافة بين الأزرار مناسبة للموبايل */
-}
-.header-buttons button {
-  position: relative;
-  background: #ffd814;
-  border: 1px solid #fcd200;
-  padding: 8px 10px; /* حجم مناسب للموبايل */
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 14px;
-  min-width: 90px; /* عرض أدنى */
-  box-sizing: border-box;
-}
+.header-buttons { margin-top: 10px; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.header-buttons button { position: relative; background: #ffd814; border: 1px solid #fcd200; padding: 8px 10px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 14px; min-width: 90px; box-sizing: border-box; }
 .header-buttons button:hover { background: #f7ca00; }
 /* عداد السلة */
 #cart-count { position: absolute; top: -6px; right: -6px; background: red; color: #fff; font-size: 11px; font-weight: bold; padding: 2px 5px; border-radius: 50%; display: none; }
@@ -57,11 +40,7 @@ header { background: #131921; color: white; padding: 15px; text-align: center; f
 #orderNumbers a:hover { color: #6a1fbf; text-decoration: underline; }
 #toast { position: fixed; bottom: 20px; right: 20px; background: #25d366; color: #fff; padding: 10px 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.3); display: none; z-index: 1003; }
 /* responsive adjustments */
-@media (max-width: 500px){
-  .header-buttons button { font-size: 13px; padding: 6px 8px; min-width: 80px; }
-  #searchBox { font-size: 14px; padding: 8px; }
-  .product input { width: 40px; }
-}
+@media (max-width: 500px){ .header-buttons button { font-size: 13px; padding: 6px 8px; min-width: 80px; } #searchBox { font-size: 14px; padding: 8px; } .product input { width: 40px; } }
 </style>
 </head>
 <body>
@@ -100,62 +79,29 @@ const container = document.getElementById("products-container");
 let productsData = [];
 let cart = [];
 
-// ترتيب الأقسام
-const categoriesOrder = ["الصابات","الكابلات","السماعات","الشواحن","الجرابات","الاسكرينات","الحلويات"];
-
-// عرض المنتجات مع ترتيب الأقسام
+// عرض المنتجات
 function renderProducts(data){
     let html = "";
-    const displayed = new Set();
-
-    // الأقسام المحددة
-    categoriesOrder.forEach(cat=>{
-        const items = data.filter(p=>p.category === cat);
-        if(items.length){
-            html += `<h3 style="margin:10px 0; color:#8a2be2;">${cat}</h3>`;
-            items.forEach(item=>{
-                html += `
-                <div class="product">
-                    <img src="${item.image || 'https://via.placeholder.com/150'}" alt="صورة المنتج">
-                    <div class="name">${item.name}</div>
-                    <div class="price">السعر: ${item.price} جنيه</div>
-                    <input type="number" min="1" value="1" data-index="${data.indexOf(item)}">
-                    <button onclick="addToCart(${data.indexOf(item)})">أضف إلى السلة</button>
-                </div>`;
-                displayed.add(item);
-            });
-        }
+    data.forEach((item,index)=>{
+        html += `
+        <div class="product">
+            <img src="${item.image || 'https://via.placeholder.com/150'}" alt="صورة المنتج">
+            <div class="name">${item.name}</div>
+            <div class="price">السعر: ${item.price} جنيه</div>
+            <input type="number" min="1" value="1" data-index="${item.originalIndex || index}">
+            <button onclick="addToCart(${item.originalIndex || index})">أضف إلى السلة</button>
+        </div>`;
     });
-
-    // المنتجات غير المصنفة
-    const otherItems = data.filter(p=>!categoriesOrder.includes(p.category));
-    if(otherItems.length){
-        html += `<h3 style="margin:10px 0; color:#8a2be2;">أخرى</h3>`;
-        otherItems.forEach(item=>{
-            html += `
-            <div class="product">
-                <img src="${item.image || 'https://via.placeholder.com/150'}" alt="صورة المنتج">
-                <div class="name">${item.name}</div>
-                <div class="price">السعر: ${item.price} جنيه</div>
-                <input type="number" min="1" value="1" data-index="${data.indexOf(item)}">
-                <button onclick="addToCart(${data.indexOf(item)})">أضف إلى السلة</button>
-            </div>`;
-        });
-    }
-
     container.innerHTML = html;
 }
 
 // تحميل المنتجات
 (async function(){
-   if(localStorage.getItem("products")){
-      productsData = JSON.parse(localStorage.getItem("products"));
-      renderProducts(productsData);
-   }
    try {
      const res = await fetch(SCRIPT_PRODUCTS_URL, {cache:"no-store"});
      const data = await res.json();
      productsData = data.reverse();
+     productsData.forEach((p,i)=>p.originalIndex=i); // index ثابت للسلة
      localStorage.setItem("products", JSON.stringify(productsData));
      renderProducts(productsData);
    } catch(err){ 
@@ -247,10 +193,13 @@ function sendOrder(){
 function openSupport(){ window.open("https://wa.me/201022495795", "_blank"); }
 function goHome(){ window.location.href="index.html"; }
 
+// 🔍 البحث مباشر أثناء الكتابة
 document.getElementById("searchBox").addEventListener("input", function(){
-  const keyword = this.value.trim().toLowerCase();
-  const filtered = productsData.filter(p => p.name.toLowerCase().includes(keyword));
-  renderProducts(filtered);
+    const keyword = this.value.trim().toLowerCase();
+    if(!keyword){ renderProducts(productsData); return; }
+    const filteredData = productsData.filter(p => p.name.toLowerCase().includes(keyword));
+    if(filteredData.length){ renderProducts(filteredData); }
+    else{ container.innerHTML = "<p style='text-align:center;color:red'>❌ لا توجد منتجات مطابقة للبحث</p>"; }
 });
 </script>
 </body>
