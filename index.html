@@ -21,8 +21,8 @@ header h2 { margin:5px 0 0; font-size:1.2em; font-weight:normal; }
 
 .telegram-fixed-btn {
     position: fixed;
-    bottom: 20px;      /* المسافة من أسفل الشاشة */
-    right: 20px;       /* المسافة من يمين الشاشة */
+    bottom: 20px;
+    right: 20px;
     padding: 12px 18px;
     border-radius: 50px;
     background: #00bfff;
@@ -56,13 +56,6 @@ header h2 { margin:5px 0 0; font-size:1.2em; font-weight:normal; }
 
 .support-btn { position:fixed; top:10px; left:10px; padding:10px 15px; border-radius:50%; background:#ff5722; color:#fff; font-weight:bold; cursor:pointer; box-shadow:0 2px 5px rgba(0,0,0,0.3); transition:0.3s; }
 .support-btn:hover { background:#e64a19; transform:scale(1.1); }
-
-.product-card { margin:10px; padding:10px; border:1px solid #ccc; border-radius:8px; display:inline-block; text-align:center; }
-.product-card img { width:120px; height:auto; }
-.product-card strong { display:block; margin:5px 0; }
-.product-card input[type="number"] { width:50px; margin:5px 0; }
-.product-card button { padding:5px 10px; border:none; background:#8a2be2; color:#fff; border-radius:5px; cursor:pointer; }
-.product-card button:hover { background:#6a1fbf; }
 </style>
 </head>
 <body>
@@ -86,7 +79,6 @@ header h2 { margin:5px 0 0; font-size:1.2em; font-weight:normal; }
 <button onclick="showInfo('العنوان:<br>المنصورة - نبروه سوق المحمول')">🏠 العنوان</button>
 <button onclick="showInfo('تواصل معنا:<br>01067070423<br>01022495795<br>01012253500')">📞 تواصل معنا</button>
 <button onclick="window.open('https://www.facebook.com/share/174s1yLKfA/?mibextid=wwXIfr','_blank')">📘 فيسبوك</button>
-<!-- زر المنتجات مع كلمة السر بنفس شكل التليجرام -->
 <button class="telegram-style-btn" onclick="showPasswordBox()">🔥 المنتجات والعروض</button>
 <button class="telegram-style-btn" onclick="showTelegramBox()">📲 تليجرام التفعيلات</button>
 </div>
@@ -117,7 +109,6 @@ header h2 { margin:5px 0 0; font-size:1.2em; font-weight:normal; }
 </div>
 </div>
 
-<!-- مربع كلمة السر للمنتجات بنفس ستايل التليجرام -->
 <div id="passwordBox" class="password-box">
 <h2>ادخل كلمه السر لمشاهده الاسعار والمنتجات 🔑</h2>
 <input type="password" id="offerPass" placeholder="كلمة السر">
@@ -151,51 +142,4 @@ function showPasswordBox(){ passwordBox.style.display='block'; }
 function closePasswordBox(){ passwordBox.style.display='none'; }
 function showTelegramBox(){ document.getElementById('telegramBox').style.display='block'; }
 function closeTelegramBox(){ document.getElementById('telegramBox').style.display='none'; }
-function checkTelegram(){ alert("سيتم وضع الرابط لاحقاً"); }
-
-// دالة تحقق كلمة السر للمنتجات
-function checkPassword() {
-  const pass = document.getElementById('offerPass').value;
-  if(pass === "010024") {
-    window.open('products.html', '_blank');
-  } else {
-    alert("❌ كلمة السر غير صحيحة");
-  }
-}
-
-// تسجيل بيانات المستخدم
-submitBtn.addEventListener("click", (e)=>{
-  e.preventDefault();
-  
-  const nameVal = document.getElementById("name").value.trim();
-  const phoneVal = document.getElementById("phone").value.trim();
-  const addressVal = document.getElementById("address").value.trim();
-  const fieldVal = document.getElementById("field").value;
-  
-  if(!nameVal){ alert("الرجاء إدخال الاسم أو اسم المحل"); return; }
-  if(!phoneVal){ alert("الرجاء إدخال رقم الموبايل بالانجليزي"); return; }
-  if(!addressVal){ alert("الرجاء إدخال العنوان"); return; }
-  if(!fieldVal){ alert("الرجاء اختيار المجال"); return; }
-  
-  const phonePattern = /^01[0-2,5][0-9]{8}$/;
-  if (!phonePattern.test(phoneVal)){ alert('من فضلك أدخل رقم موبايل مصري صحيح'); return; }
-  
-  successModal.style.display='flex';
-  document.getElementById("name").value='';
-  document.getElementById("phone").value='';
-  document.getElementById("address").value='';
-  document.getElementById("field").value='';
-  
-  const data = { name:nameVal, phone:phoneVal, address:addressVal, field:fieldVal };
-  const params = new URLSearchParams();
-  for (let key in data) params.append(key,data[key]);
-  
-  fetch(SCRIPT_URL, { method:'POST', body:params })
-    .catch(err=>console.log('❌ خطأ في الاتصال: '+err.message));
-});
-
-function closeModal(){ successModal.style.display='none'; }
-</script>
-
-</body>
-</html>
+function checkTelegram(){ alert("سي
