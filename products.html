@@ -25,6 +25,7 @@ header {
 }
 .header-buttons { margin-top: 10px; }
 .header-buttons button {
+  position: relative;
   background: #ffd814;
   border: 1px solid #fcd200;
   padding: 6px 12px;
@@ -34,6 +35,20 @@ header {
   font-weight: bold;
 }
 .header-buttons button:hover { background: #f7ca00; }
+
+/* عداد السلة */
+#cart-count {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: red;
+  color: #fff;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 50%;
+  display: none;
+}
 
 /* المنتجات */
 #products-container {
@@ -82,7 +97,7 @@ header {
 }
 .product button:hover { background: #6a1fbf; transform: scale(1.05); }
 
-/* المودال */
+/* نافذة اجمالي الفاتورة */
 #totalModal {
   display: none;
   position: fixed;
@@ -129,7 +144,16 @@ header {
 .cart-item span { margin: 0 5px; }
 .cart-item button { padding: 2px 8px; font-size: 14px; }
 
-/* إشعار */
+#contactNumbers { margin-top: 15px; display: none; }
+#contactNumbers a {
+  display: block;
+  color: #25d366;
+  font-weight: bold;
+  text-decoration: none;
+  margin: 5px 0;
+}
+#contactNumbers a:hover { text-decoration: underline; }
+
 #toast {
   position: fixed;
   bottom: 20px; right: 20px;
@@ -154,7 +178,7 @@ header {
 <header>
   📦 جميع منتجات جنة
   <div class="header-buttons">
-    <button onclick="showCart()">🛒 السلة</button>
+    <button onclick="showTotal()">🛒 السلة <span id="cart-count">0</span></button>
     <button onclick="showTotal()">💰 إجمالي الفاتورة</button>
     <button onclick="openSupport()">☎️ الدعم الفني</button>
   </div>
@@ -163,10 +187,15 @@ header {
 <div id="products-container"></div>
 
 <div id="totalModal">
-  <h2 id="modalTitle">إجمالي الفاتورة: <span id="totalAmount">0</span> جنيه</h2>
+  <h2>إجمالي الفاتورة: <span id="totalAmount">0</span> جنيه</h2>
   <div id="cartList"></div>
-  <button id="sendBtn" onclick="sendOrder()">📤 إرسال عبر واتساب</button>
+  <button onclick="sendOrder()">📤 إرسال عبر واتساب</button>
   <button onclick="closeTotalModal()">❌ إغلاق</button>
+  <div id="contactNumbers">
+    <a href="https://wa.me/201067070423" target="_blank">📞 01067070423</a>
+    <a href="https://wa.me/201022495795" target="_blank">📞 01022495795</a>
+    <a href="https://wa.me/201012253500" target="_blank">📞 01012253500</a>
+  </div>
 </div>
 
 <div id="toast">تمت الإضافة إلى السلة</div>
@@ -177,7 +206,6 @@ const container = document.getElementById("products-container");
 let productsData = [];
 let cart = [];
 
-// تحميل المنتجات
 fetch(SCRIPT_PRODUCTS_URL)
 .then(res => res.json())
 .then(data => {
@@ -206,17 +234,28 @@ function showToast(msg){
   setTimeout(()=>toast.style.display="none",1500);
 }
 
-// إضافة للسلة
+// تحديث عداد السلة
+function updateCartCount(){
+  const count = cart.reduce((sum, qty)=> qty ? sum+qty : sum, 0);
+  const badge = document.getElementById("cart-count");
+  if(count>0){
+    badge.style.display = "inline-block";
+    badge.innerText = count;
+  } else {
+    badge.style.display = "none";
+  }
+}
+
 function addToCart(index){
   const input = container.querySelector(`input[data-index='${index}']`);
   const quantity = parseInt(input.value);
   if(quantity <=0) return;
   cart[index] = (cart[index] || 0) + quantity;
-  showToast(`${productsData[index].name} تمت إضافته/تحديثه في السلة`);
+  updateCartCount();
+  showToast(`${productsData[index].name} تم إضافته/تحديثه في السلة`);
 }
 
-// عرض السلة (بتعديل)
-function showCart(){
+function showTotal(){
   let total = 0;
   const cartList = document.getElementById("cartList");
   cartList.innerHTML = "";
@@ -234,45 +273,48 @@ function showCart(){
           cartList.appendChild(itemDiv);
       }
   });
-  document.getElementById("modalTitle").innerHTML = `إجمالي الفاتورة: <span id="totalAmount">${total}</span> جنيه`;
-  document.getElementById("sendBtn").style.display = "inline-block";
+  document.getElementById("totalAmount").innerText = total;
   document.getElementById("totalModal").style.display = "block";
-}
-
-// عرض إجمالي فقط (بدون تعديل)
-function showTotal(){
-  const total = cart.reduce((sum, qty, idx) => qty ? sum + qty*productsData[idx].price : sum, 0);
-  document.getElementById("cartList").innerHTML = "";
-  document.getElementById("modalTitle").innerHTML = `إجمالي الفاتورة: <span id="totalAmount">${total}</span> جنيه`;
-  document.getElementById("sendBtn").style.display = "none";
-  document.getElementById("totalModal").style.display = "block";
+  document.getElementById("contactNumbers").style.display = 'none';
 }
 
 function updateQty(idx, value){
   value = parseInt(value);
   if(value<=0) { delete cart[idx]; } else { cart[idx]=value; }
-  showCart();
+  updateCartCount();
+  showTotal();
 }
 function removeItem(idx){
   delete cart[idx];
-  showCart();
+  updateCartCount();
+  showTotal();
 }
 function closeTotalModal(){ document.getElementById("totalModal").style.display = 'none'; }
 
 function sendOrder(){
-  let orderText = "طلبية:%0A";
-  cart.forEach((qty, idx)=>{
-      if(qty){
-          orderText += `${productsData[idx].name} × ${qty} = ${productsData[idx].price*qty} جنيه%0A`;
-      }
+  const contactDiv = document.getElementById("contactNumbers");
+  contactDiv.style.display = 'block';
+  contactDiv.querySelectorAll('a').forEach(a=>{
+      a.onclick = (e)=>{
+          e.preventDefault();
+          let orderText = "طلبية:%0A";
+          cart.forEach((qty, idx)=>{
+              if(qty){
+                  orderText += `${productsData[idx].name} × ${qty} = ${productsData[idx].price*qty} جنيه%0A`;
+              }
+          });
+          const total = cart.reduce((sum, qty, idx) => qty ? sum + qty*productsData[idx].price : sum, 0);
+          orderText += `المجموع الكلي: ${total} جنيه`;
+          window.open(`${a.href}?text=${orderText}`, '_blank');
+      };
   });
-  const total = cart.reduce((sum, qty, idx) => qty ? sum + qty*productsData[idx].price : sum, 0);
-  orderText += `المجموع الكلي: ${total} جنيه`;
-  window.open(`https://wa.me/201022495795?text=${orderText}`, '_blank');
 }
 
 function openSupport(){
-  window.open("https://wa.me/201022495795", "_blank");
+  document.getElementById("totalModal").style.display = "block";
+  document.getElementById("cartList").innerHTML = "<p>اختر رقم للتواصل مع الدعم الفني 👇</p>";
+  document.getElementById("totalAmount").innerText = 0;
+  document.getElementById("contactNumbers").style.display = 'block';
 }
 </script>
 </body>
