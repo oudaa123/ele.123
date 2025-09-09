@@ -63,16 +63,16 @@ const SCRIPT_PRODUCTS_URL = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/e
 const container = document.getElementById("products-container");
 let productsData = [], cart = [];
 
-// جلب كل المنتجات دفعة واحدة بسرعة
+// جلب كل المنتجات دفعة واحدة بدون lazy load ثقيل
 fetch(SCRIPT_PRODUCTS_URL)
-  .then(res => res.json())
-  .then(data => {
+  .then(res=>res.json())
+  .then(data=>{
       productsData = data;
-      const fragment = document.createDocumentFragment();
+      const fragment=document.createDocumentFragment();
       data.forEach((item,i)=>{
-          const div = document.createElement("div");
+          const div=document.createElement("div");
           div.className="product";
-          div.innerHTML = `
+          div.innerHTML=`
               <img src="${item.image}" alt="${item.name}" loading="lazy">
               <div class="name">${item.name}</div>
               <div>السعر: ${item.price || 0} جنيه</div>
@@ -83,26 +83,26 @@ fetch(SCRIPT_PRODUCTS_URL)
       });
       container.appendChild(fragment);
   })
-  .catch(err=>console.log("❌ خطأ في جلب المنتجات: ", err));
+  .catch(err=>console.log("❌ خطأ في جلب المنتجات:",err));
 
 // إضافة للسلة بدون alert ثقيل
 function addToCart(index){
     const input = container.querySelector(`input[data-index='${index}']`);
     const quantity = parseInt(input.value);
-    cart[index] = quantity;
+    cart[index]=quantity;
     showToast(`${productsData[index].name} تم إضافته/تحديثه`);
 }
 
 function showToast(msg){
-    const toast = document.getElementById("toast");
-    toast.innerText = msg;
-    toast.style.opacity = 1;
+    const toast=document.getElementById("toast");
+    toast.innerText=msg;
+    toast.style.opacity=1;
     setTimeout(()=>{toast.style.opacity=0},1500);
 }
 
 function showTotal(){
     let total=0;
-    cart.forEach((qty,idx)=>{ if(qty) total += qty*productsData[idx].price; });
+    cart.forEach((qty,idx)=>{if(qty) total+=qty*productsData[idx].price;});
     document.getElementById("totalAmount").innerText=total;
     document.getElementById("totalModal").style.display='block';
     document.getElementById("contactNumbers").style.display='none';
