@@ -12,19 +12,19 @@ header { background: #131921; color: white; padding: 15px; text-align: center; f
   margin-top: 10px;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center; /* توسيط الأزرار */
-  gap: 8px; /* مسافة بين الأزرار مناسبة للموبايل */
+  justify-content: center;
+  gap: 8px;
 }
 .header-buttons button {
   position: relative;
   background: #ffd814;
   border: 1px solid #fcd200;
-  padding: 8px 10px; /* حجم مناسب للموبايل */
+  padding: 8px 10px;
   border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
   font-size: 14px;
-  min-width: 90px; /* عرض أدنى */
+  min-width: 90px;
   box-sizing: border-box;
 }
 .header-buttons button:hover { background: #f7ca00; }
@@ -95,25 +95,58 @@ header { background: #131921; color: white; padding: 15px; text-align: center; f
 <div id="toast">تمت الإضافة إلى السلة</div>
 
 <script defer>
+/* ===== كلمة السر الثابتة والتحقق ===== */
+const PASSWORD = "010024"; 
+(function checkPassword(){
+    const storedPass = localStorage.getItem("secretPass");
+    if(storedPass !== PASSWORD){
+        localStorage.clear(); // مسح كل بيانات السلة والمنتجات
+        alert("❌ تم تعديل كلمة السر، سيتم تسجيل خروج الكل");
+        window.location.href = "logout.html"; // إعادة التوجيه لصفحة تسجيل الخروج
+    }
+})();
+
+/* ===== الكود الأساسي للمنتجات والسلة ===== */
 const SCRIPT_PRODUCTS_URL = "https://script.google.com/macros/s/AKfycbxW3_pcjSfffMTLZefZpzFIrbhijiaWY_u_4ZAmXEV2O04SMN5zplucKnAugWWbP8zzmA/exec";
 const container = document.getElementById("products-container");
 let productsData = [];
 let cart = [];
 
-// عرض المنتجات
+// ترتيب الأقسام
+const categoriesOrder = ["الصابات","الكابلات","السماعات","الشواحن","الجرابات","الاسكرينات","الحلويات"];
+
+// عرض المنتجات مع ترتيب الأقسام
 function renderProducts(data){
     let html = "";
-    for(let i=0;i<data.length;i++){
-        const item = data[i];
-        html += `
+    categoriesOrder.forEach(cat=>{
+        const items = data.filter(p=>p.category === cat);
+        if(items.length){
+            html += `<h3 style="margin:10px 0; color:#8a2be2;">${cat}</h3>`;
+            items.forEach(item=>{
+                html += `
+                <div class="product">
+                    <img src="${item.image || 'https://via.placeholder.com/150'}" alt="صورة المنتج">
+                    <div class="name">${item.name}</div>
+                    <div class="price">السعر: ${item.price} جنيه</div>
+                    <input type="number" min="1" value="1" data-index="${data.indexOf(item)}">
+                    <button onclick="addToCart(${data.indexOf(item)})">أضف إلى السلة</button>
+                </div>`;
+            });
+        }
+    });
+    const otherItems = data.filter(p=>!categoriesOrder.includes(p.category));
+    if(otherItems.length){
+        html += `<h3 style="margin:10px 0; color:#8a2be2;">أخرى</h3>`;
+        otherItems.forEach(item=>{
+            html += `
             <div class="product">
                 <img src="${item.image || 'https://via.placeholder.com/150'}" alt="صورة المنتج">
                 <div class="name">${item.name}</div>
                 <div class="price">السعر: ${item.price} جنيه</div>
-                <input type="number" min="1" value="1" data-index="${i}">
-                <button onclick="addToCart(${i})">أضف إلى السلة</button>
-            </div>
-        `;
+                <input type="number" min="1" value="1" data-index="${data.indexOf(item)}">
+                <button onclick="addToCart(${data.indexOf(item)})">أضف إلى السلة</button>
+            </div>`;
+        });
     }
     container.innerHTML = html;
 }
