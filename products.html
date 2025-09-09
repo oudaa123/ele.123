@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>عرض المنتجات</title>
+<style>
+body { font-family: Tahoma, sans-serif; text-align:center; padding:10px; margin:0; background:#f9f9f9; }
+.logo { background:#25d366; color:white; font-size:20px; font-weight:bold; padding:15px; border-radius:10px; margin-bottom:20px; display:inline-block; }
+h1 { font-size:22px; margin-bottom:15px; }
+
+#products-container { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; }
+
+.product { border:1px solid #ccc; border-radius:10px; padding:10px; text-align:center; width:45%; max-width:180px; background:#fff; box-shadow:0 2px 5px rgba(0,0,0,0.1); transition:0.3s; }
+.product:hover { box-shadow:0 4px 12px rgba(0,0,0,0.2); }
+.product img { width:100%; height:auto; border-radius:5px; }
+.name { font-size:16px; margin:5px 0; color:#333; }
+.product input { width:50px; margin:5px 0; border-radius:5px; border:1px solid #ccc; text-align:center; }
+.product button { padding:5px 10px; border:none; border-radius:5px; background:#8a2be2; color:#fff; cursor:pointer; font-weight:bold; transition:0.3s; }
+.product button:hover { background:#6a1fbf; transform:scale(1.05); }
+
+.support-btn, .total-btn {
+    position: fixed; padding:15px 20px; border-radius:50px; color: #fff; font-weight:bold; cursor: pointer;
+    box-shadow:0 2px 5px rgba(0,0,0,0.3); transition:0.3s; z-index:1001;
+}
+.support-btn { top:10px; left:10px; background:#ff5722; }
+.support-btn:hover { background:#e64a19; transform:scale(1.1); }
+.total-btn { bottom:20px; right:20px; background:#00bfff; font-size:18px; padding:20px 25px; }
+.total-btn:hover { background:#009acd; transform:scale(1.05); }
+
+#totalModal { display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%);
+    background:#fff; padding:20px; border-radius:15px; box-shadow:0 3px 15px rgba(0,0,0,0.3); text-align:center; z-index:1002; width:90%; max-width:400px; }
+#totalModal h2 { font-size:20px; margin-bottom:15px; color:#8a2be2; }
+#totalModal button { margin:10px; padding:10px 20px; border:none; border-radius:10px; background:#8a2be2; color:#fff; cursor:pointer; font-weight:bold; transition:0.3s; }
+#totalModal button:hover { background:#6a1fbf; }
+
+#contactNumbers { margin-top:15px; display:none; }
+#contactNumbers a { display:block; color:#25d366; font-weight:bold; text-decoration:none; margin:5px 0; }
+#contactNumbers a:hover { text-decoration:underline; }
+
+@media(max-width:600px){
+    .product { width:45%; max-width:45%; }
+    h1 { font-size:20px; }
+    .logo { font-size:18px; padding:10px; }
+}
+</style>
+</head>
+<body>
+
+<div class="logo">🌟 مملكة الأصليات – شركه جنه 🌟</div>
+<h1>المنتجات</h1>
+<div id="products-container"></div>
+
+<!-- زر الدعم الفني -->
+<button class="support-btn" onclick="window.open('https://wa.me/201022495795','_blank')">الدعم الفني</button>
+
+<!-- زر اجمالي الفاتورة -->
+<button class="total-btn" onclick="showTotal()">اجمالي الفاتورة</button>
+
+<!-- نافذة اجمالي الفاتورة -->
+<div id="totalModal">
+    <h2>اجمالي الفاتورة: <span id="totalAmount">0</span> جنيه</h2>
+    <button onclick="sendOrder()">ارسال</button>
+    <button onclick="closeTotalModal()">اغلاق</button>
+    <div id="contactNumbers">
+        <a href="https://wa.me/01067070423" target="_blank">📞 01067070423</a>
+        <a href="https://wa.me/01022495795" target="_blank">📞 01022495795</a>
+        <a href="https://wa.me/01012253500" target="_blank">📞 01012253500</a>
+    </div>
+</div>
+
+<script>
+const SCRIPT_PRODUCTS_URL = "https://script.google.com/macros/s/AKfycbxW3_pcjSfffMTLZefZpzFIrbhijiaWY_u_4ZAmXEV2O04SMN5zplucKnAugWWbP8zzmA/exec";
+const container = document.getElementById("products-container");
+let productsData = [];
+
+function fetchProducts(){
+    fetch(SCRIPT_PRODUCTS_URL)
+      .then(res => res.json())
+      .then(data => {
+          productsData = data;
+          container.innerHTML = "";
+          data.forEach((item, index) => {
+              const div = document.createElement("div");
+              div.className = "product";
+              div.innerHTML = `
+                  <img src="${item.image}" alt="${item.name}" loading="lazy">
+                  <div class="name">${item.name}</div>
+                  <div>السعر: ${item.price} جنيه</div>
+                  <input type="number" min="1" value="1" data-index="${index}">
+                  <button onclick="addToCart(${index})">أضف إلى السلة</button>
+              `;
+              container.appendChild(div);
+          });
+      })
+      .catch(err => console.log("❌ خطأ في جلب المنتجات: ", err));
+}
+
+let cart = [];
+function addToCart(index){
+    const input = container.querySelector(`input[data-index='${index}']`);
+    const quantity = parseInt(input.value);
+    cart[index] = quantity;
+    alert(`${productsData[index].name} تمت اضافته/تحديثه في السلة`);
+}
+
+function showTotal(){
+    let total = 0;
+    cart.forEach((qty, idx) => { if(qty) total += qty * productsData[idx].price; });
+    document.getElementById("totalAmount").innerText = total;
+    document.getElementById("totalModal").style.display = 'block';
+    document.getElementById("contactNumbers").style.display = 'none'; // اخفاء الارقام قبل الضغط على ارسال
+}
+
+function closeTotalModal(){ document.getElementById("totalModal").style.display = 'none'; }
+
+function sendOrder(){
+    document.getElementById("contactNumbers").style.display = 'block';
+    alert("تم ارسال اجمالي الفاتورة\nيمكن التواصل عبر الأرقام الظاهرة الآن");
+}
+
+fetchProducts();
+</script>
+</body>
+</html>
