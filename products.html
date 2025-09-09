@@ -53,27 +53,30 @@ h1 { font-size:22px; margin-bottom:15px; }
 <h1>المنتجات</h1>
 <div id="products-container"></div>
 
+<!-- أزرار الدعم والسلة -->
 <button class="support-btn" onclick="window.open('https://wa.me/201022495795','_blank')">الدعم الفني</button>
 <button class="total-btn" onclick="showTotal()">اجمالي الفاتورة</button>
 
+<!-- نافذة اجمالي الفاتورة -->
 <div id="totalModal">
     <h2>اجمالي الفاتورة: <span id="totalAmount">0</span> جنيه</h2>
     <button onclick="sendOrder()">ارسال</button>
     <button onclick="closeTotalModal()">اغلاق</button>
     <div id="contactNumbers">
-        <a href="https://wa.me/01067070423" target="_blank">📞 01067070423</a>
-        <a href="https://wa.me/01022495795" target="_blank">📞 01022495795</a>
-        <a href="https://wa.me/01012253500" target="_blank">📞 01012253500</a>
+        <a href="https://wa.me/201067070423" target="_blank">📞 01067070423</a>
+        <a href="https://wa.me/201022495795" target="_blank">📞 01022495795</a>
+        <a href="https://wa.me/201012253500" target="_blank">📞 01012253500</a>
     </div>
 </div>
 
 <script>
+// رابط جوجل شيت أو سكريبت المنتجات
 const SCRIPT_PRODUCTS_URL = "https://script.google.com/macros/s/AKfycbxW3_pcjSfffMTLZefZpzFIrbhijiaWY_u_4ZAmXEV2O04SMN5zplucKnAugWWbP8zzmA/exec";
 const container = document.getElementById("products-container");
 let productsData = [];
 let cart = [];
 
-// جلب كل المنتجات دفعة واحدة لتسريع التحميل
+// جلب المنتجات دفعة واحدة (30 منتج بسرعة)
 fetch(SCRIPT_PRODUCTS_URL)
 .then(res => res.json())
 .then(data => {
@@ -95,16 +98,17 @@ fetch(SCRIPT_PRODUCTS_URL)
 })
 .catch(err=>console.log("❌ خطأ في جلب المنتجات:",err));
 
+// إضافة للسلة مع تغيير لون مؤقت بدل alert
 function addToCart(index){
     const input = container.querySelector(`input[data-index='${index}']`);
     const quantity = parseInt(input.value);
     cart[index] = quantity;
-    // بدل alert نغير اللون لفترة قصيرة لتقليل التوقف
     const btn = input.nextElementSibling;
     btn.style.background = "#00bfff";
     setTimeout(()=>btn.style.background="#8a2be2",300);
 }
 
+// اجمالي الفاتورة
 function showTotal(){
     let total = 0;
     cart.forEach((qty, idx) => { if(qty) total += qty * productsData[idx].price; });
@@ -113,8 +117,10 @@ function showTotal(){
     document.getElementById("contactNumbers").style.display = 'none';
 }
 
+// اغلاق نافذة الفاتورة
 function closeTotalModal(){ document.getElementById("totalModal").style.display = 'none'; }
 
+// عرض أرقام واتساب للعميل
 function sendOrder(){
     document.getElementById("contactNumbers").style.display = 'block';
 }
