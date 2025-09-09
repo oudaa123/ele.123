@@ -52,9 +52,8 @@ header {
 
 /* المنتجات */
 #products-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   gap: 12px;
   padding: 15px;
 }
@@ -63,13 +62,17 @@ header {
   border-radius: 10px;
   padding: 10px;
   text-align: center;
-  width: 45%;
-  max-width: 180px;
   background: #fff;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   transition: 0.3s;
 }
 .product:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+.product img {
+  width: 100%;
+  height: 120px;
+  object-fit: contain;
+  margin-bottom: 8px;
+}
 
 .name { font-size: 16px; margin: 5px 0; color: #333; }
 .price { font-weight: bold; margin-bottom: 5px; }
@@ -139,16 +142,6 @@ header {
 .cart-item span { margin: 0 5px; }
 .cart-item button { padding: 2px 8px; font-size: 14px; }
 
-#contactNumbers { margin-top: 15px; display: none; }
-#contactNumbers a {
-  display: block;
-  color: #25d366;
-  font-weight: bold;
-  text-decoration: none;
-  margin: 5px 0;
-}
-#contactNumbers a:hover { text-decoration: underline; }
-
 #toast {
   position: fixed;
   bottom: 20px; right: 20px;
@@ -159,11 +152,6 @@ header {
   box-shadow: 0 2px 5px rgba(0,0,0,0.3);
   display: none;
   z-index: 1003;
-}
-
-@media(max-width:600px){
-  .product { width: 90%; max-width: 90%; }
-  h1 { font-size: 20px; }
 }
 </style>
 </head>
@@ -185,7 +173,8 @@ header {
   <div id="cartList"></div>
   <button onclick="sendOrder()">📤 إرسال عبر واتساب</button>
   <button onclick="closeTotalModal()">❌ إغلاق</button>
-  <div id="contactNumbers">
+  <div id="orderNumbers" style="margin-top:10px; display:none;">
+    <p>اختر رقم لإرسال الطلب 👇</p>
     <a href="https://wa.me/201067070423" target="_blank">📞 01067070423</a>
     <a href="https://wa.me/201022495795" target="_blank">📞 01022495795</a>
     <a href="https://wa.me/201012253500" target="_blank">📞 01012253500</a>
@@ -200,13 +189,14 @@ const container = document.getElementById("products-container");
 let productsData = [];
 let cart = [];
 
-// دالة لعرض المنتجات
+// عرض المنتجات
 function renderProducts(data){
     let html = "";
     for(let i=0;i<data.length;i++){
         const item = data[i];
         html += `
             <div class="product">
+                <img src="${item.image || 'https://via.placeholder.com/150'}" alt="صورة المنتج">
                 <div class="name">${item.name}</div>
                 <div class="price">السعر: ${item.price} جنيه</div>
                 <input type="number" min="1" value="1" data-index="${i}">
@@ -217,7 +207,7 @@ function renderProducts(data){
     container.innerHTML = html;
 }
 
-// تحميل المنتجات من localStorage أو السيرفر
+// تحميل المنتجات
 if(localStorage.getItem("products")){
    productsData = JSON.parse(localStorage.getItem("products"));
    renderProducts(productsData);
@@ -225,9 +215,10 @@ if(localStorage.getItem("products")){
 fetch(SCRIPT_PRODUCTS_URL)
 .then(res => res.json())
 .then(data => {
-    productsData = data;
-    localStorage.setItem("products", JSON.stringify(data));
-    renderProducts(data);
+    // نخلي الجديد يظهر الأول
+    productsData = data.reverse();
+    localStorage.setItem("products", JSON.stringify(productsData));
+    renderProducts(productsData);
 })
 .catch(err=>console.log("❌ خطأ في جلب المنتجات:",err));
 
@@ -278,7 +269,6 @@ function showTotal(){
   });
   document.getElementById("totalAmount").innerText = total;
   document.getElementById("totalModal").style.display = "block";
-  document.getElementById("contactNumbers").style.display = 'none';
 }
 
 function updateQty(idx, value){
@@ -295,29 +285,27 @@ function removeItem(idx){
 function closeTotalModal(){ document.getElementById("totalModal").style.display = 'none'; }
 
 function sendOrder(){
-  const contactDiv = document.getElementById("contactNumbers");
-  contactDiv.style.display = 'block';
-  contactDiv.querySelectorAll('a').forEach(a=>{
-      a.onclick = (e)=>{
-          e.preventDefault();
-          let orderText = "طلبية:%0A";
-          cart.forEach((qty, idx)=>{
-              if(qty){
-                  orderText += `${productsData[idx].name} × ${qty} = ${productsData[idx].price*qty} جنيه%0A`;
-              }
-          });
-          const total = cart.reduce((sum, qty, idx) => qty ? sum + qty*productsData[idx].price : sum, 0);
-          orderText += `المجموع الكلي: ${total} جنيه`;
-          window.open(`${a.href}?text=${orderText}`, '_blank');
-      };
+  const orderDiv = document.getElementById("orderNumbers");
+  orderDiv.style.display = "block";
+
+  orderDiv.querySelectorAll("a").forEach(a=>{
+    a.onclick = (e)=>{
+      e.preventDefault();
+      let orderText = "طلبية:%0A";
+      cart.forEach((qty, idx)=>{
+          if(qty){
+              orderText += `${productsData[idx].name} × ${qty} = ${productsData[idx].price*qty} جنيه%0A`;
+          }
+      });
+      const total = cart.reduce((sum, qty, idx) => qty ? sum + qty*productsData[idx].price : sum, 0);
+      orderText += `المجموع الكلي: ${total} جنيه`;
+      window.open(`${a.href}?text=${orderText}`, "_blank");
+    };
   });
 }
 
 function openSupport(){
-  document.getElementById("totalModal").style.display = "block";
-  document.getElementById("cartList").innerHTML = "<p>اختر رقم للتواصل مع الدعم الفني 👇</p>";
-  document.getElementById("totalAmount").innerText = 0;
-  document.getElementById("contactNumbers").style.display = 'block';
+  window.open("https://wa.me/201022495795", "_blank");
 }
 </script>
 </body>
