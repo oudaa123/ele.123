@@ -50,6 +50,19 @@ header {
   display: none;
 }
 
+/* مربع البحث */
+#searchBox {
+  display: block;
+  margin: 15px auto;
+  padding: 10px;
+  width: 90%;
+  max-width: 400px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
 /* المنتجات */
 #products-container {
   display: grid;
@@ -73,7 +86,6 @@ header {
   object-fit: contain;
   margin-bottom: 8px;
 }
-
 .name { font-size: 16px; margin: 5px 0; color: #333; }
 .price { font-weight: bold; margin-bottom: 5px; }
 .product input {
@@ -166,6 +178,9 @@ header {
   </div>
 </header>
 
+<!-- مربع البحث -->
+<input type="text" id="searchBox" placeholder="🔍 ابحث عن منتج...">
+
 <div id="products-container"></div>
 
 <div id="totalModal">
@@ -207,26 +222,26 @@ function renderProducts(data){
     container.innerHTML = html;
 }
 
-// تحميل المنتجات
-if(localStorage.getItem("products")){
-   productsData = JSON.parse(localStorage.getItem("products"));
-   renderProducts(productsData);
-}
-fetch(SCRIPT_PRODUCTS_URL)
-.then(res => res.json())
-.then(data => {
-    // نخلي الجديد يظهر الأول
-    productsData = data.reverse();
-    localStorage.setItem("products", JSON.stringify(productsData));
-    renderProducts(productsData);
-})
-.catch(err=>console.log("❌ خطأ في جلب المنتجات:",err));
+// تحميل المنتجات بسرعة
+(async function(){
+   if(localStorage.getItem("products")){
+      productsData = JSON.parse(localStorage.getItem("products"));
+      renderProducts(productsData);
+   }
+   try {
+     const res = await fetch(SCRIPT_PRODUCTS_URL, {cache:"no-store"});
+     const data = await res.json();
+     productsData = data.reverse();
+     localStorage.setItem("products", JSON.stringify(productsData));
+     renderProducts(productsData);
+   } catch(err){ console.log("❌ خطأ في جلب المنتجات:",err); }
+})();
 
 function showToast(msg){
   const toast = document.getElementById("toast");
   toast.innerText = msg;
   toast.style.display = "block";
-  setTimeout(()=>toast.style.display="none",1500);
+  setTimeout(()=>toast.style.display="none",1200);
 }
 
 function updateCartCount(){
@@ -307,6 +322,13 @@ function sendOrder(){
 function openSupport(){
   window.open("https://wa.me/201022495795", "_blank");
 }
+
+// 🔍 البحث
+document.getElementById("searchBox").addEventListener("input", function(){
+  const keyword = this.value.trim().toLowerCase();
+  const filtered = productsData.filter(p => p.name.toLowerCase().includes(keyword));
+  renderProducts(filtered);
+});
 </script>
 </body>
 </html>
