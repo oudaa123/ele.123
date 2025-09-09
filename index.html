@@ -132,6 +132,18 @@ header h2 { margin:5px 0 0; font-size:1.2em; font-weight:normal; }
 <button onclick="closeTelegramBox()">رجوع</button>
 </div>
 
+<!-- زر تغيير كلمة السر الجديد -->
+<button id="changePassBtn" class="support-btn" style="top:70px; left:10px; background:#4caf50;">تغيير كلمة السر</button>
+
+<div id="changePassBox" class="password-box">
+  <h2>ادخل كلمة السر الخاصة بك للتحكم 🔑</h2>
+  <input type="password" id="adminPass" placeholder="كلمة السر الخاصة بك">
+  <div style="margin:10px 0;">أدخل كلمة السر الجديدة للمنتجات:</div>
+  <input type="password" id="newProductsPass" placeholder="كلمة السر الجديدة">
+  <button onclick="updateProductsPass()">تغيير</button>
+  <button onclick="closeChangePassBox()">رجوع</button>
+</div>
+
 <button class="support-btn" onclick="window.open('https://wa.me/201022495795','_blank')">الدعم الفني</button>
 
 <script>
@@ -154,9 +166,9 @@ function checkTelegram(){ alert("سيتم وضع الرابط لاحقاً"); }
 // دالة تحقق كلمة السر للمنتجات مع تخزينها
 function checkPassword() {
   const pass = document.getElementById('offerPass').value;
-  const correctPass = "010024"; // كلمة السر الحالية
-  if(pass === correctPass) {
-    localStorage.setItem("productsPass", correctPass); // ✅ تخزين كلمة السر
+  const storedPass = localStorage.getItem("productsPass") || "010024"; // كلمة السر الافتراضية
+
+  if(pass === storedPass) {
     window.open('products.html', '_blank');
   } else {
     alert("❌ كلمة السر غير صحيحة");
@@ -195,6 +207,40 @@ submitBtn.addEventListener("click", (e)=>{
 });
 
 function closeModal(){ successModal.style.display='none'; }
+
+// --- كود تغيير كلمة السر ---
+const changePassBtn = document.getElementById("changePassBtn");
+const changePassBox = document.getElementById("changePassBox");
+
+changePassBtn.addEventListener("click", ()=>{
+  changePassBox.style.display = 'block';
+});
+
+function closeChangePassBox(){ changePassBox.style.display='none'; }
+
+function updateProductsPass(){
+  const adminInput = document.getElementById("adminPass").value;
+  const newPass = document.getElementById("newProductsPass").value;
+
+  const myAdminPass = "777"; // كودك الخاص لتغيير الباسورد
+
+  if(adminInput !== myAdminPass){
+    alert("❌ كلمة السر الخاصة بك غير صحيحة");
+    return;
+  }
+
+  if(!newPass){
+    alert("❌ أدخل كلمة السر الجديدة");
+    return;
+  }
+
+  localStorage.setItem("productsPass", newPass);
+  alert("✅ تم تحديث كلمة السر للمنتجات بنجاح");
+
+  document.getElementById("adminPass").value = '';
+  document.getElementById("newProductsPass").value = '';
+  closeChangePassBox();
+}
 </script>
 
 </body>
