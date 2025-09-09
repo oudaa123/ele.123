@@ -68,9 +68,8 @@ header h2 { margin:5px 0 0; font-size:1.2em; font-weight:normal; }
 <button onclick="showInfo('العنوان:<br>المنصورة - نبروه سوق المحمول')">🏠 العنوان</button>
 <button onclick="showInfo('تواصل معنا:<br>01067070423<br>01022495795<br>01012253500')">📞 تواصل معنا</button>
 <button onclick="window.open('https://www.facebook.com/share/174s1yLKfA/?mibextid=wwXIfr','_blank')">📘 فيسبوك</button>
-<button class="telegram-style-btn" onclick="showPasswordBox()">🔥 المنتجات والعروض</button>
-<button class="telegram-style-btn" onclick="showTelegramBox()">📲 تليجرام التفعيلات</button>
-<button onclick="showAdminPassBox()" style="background:#ff4081;">خاص</button>
+<button onclick="showPasswordBox()">🔥 المنتجات والعروض</button>
+<button onclick="showTelegramBox()">📲 تليجرام التفعيلات</button>
 </div>
 
 <div id="infoBox" class="info-box">
@@ -115,14 +114,6 @@ header h2 { margin:5px 0 0; font-size:1.2em; font-weight:normal; }
 <button onclick="closeTelegramBox()">رجوع</button>
 </div>
 
-<div id="adminPassBox" class="password-box">
-<h2>ادخل كلمة السر الخاصة لتغيير كلمة سر البرنامج 🔑</h2>
-<input type="password" id="adminPass" placeholder="كلمة السر الخاصة">
-<input type="text" id="newProductsPass" placeholder="كلمة السر الجديدة">
-<button onclick="changeProductsPass()">تغيير</button>
-<button onclick="closeAdminPassBox()">رجوع</button>
-</div>
-
 <button class="support-btn" onclick="window.open('https://wa.me/201022495795','_blank')">الدعم الفني</button>
 
 <script>
@@ -134,67 +125,15 @@ const submitBtn = document.getElementById("submitBtn");
 const successModal = document.getElementById("successModal");
 
 // كلمة السر الافتراضية للبرنامج
-let defaultPass = "010024"; 
-let currentPass = localStorage.getItem("productsPass");
-let passExpiry = localStorage.getItem("productsPassExpiry");
-
-// ضبط القيمة الافتراضية عند أول استخدام
-if(!currentPass){
-    currentPass = defaultPass;
-    localStorage.setItem("productsPass", currentPass);
-}
-if(!passExpiry){
-    passExpiry = Date.now() + 15*60*1000; // 15 دقيقة
-    localStorage.setItem("productsPassExpiry", passExpiry);
-} else {
-    passExpiry = Number(passExpiry);
-}
+const defaultPass = "010024";
 
 // تحقق كلمة السر عند الدخول للمنتجات
 function checkPassword() {
     const pass = document.getElementById('offerPass').value;
-    const now = Date.now();
-    
-    if(now > passExpiry){ 
-        alert("❌ انتهت صلاحية كلمة السر، يرجى الحصول على كلمة جديدة من المندوب");
-        return;
-    }
-
-    if(pass === currentPass){
-        // تحديث الصلاحية تلقائي عند الدخول الصحيح
-        localStorage.setItem("productsPassExpiry", Date.now() + 15*60*1000);
+    if(pass === defaultPass){
         window.open('products.html', '_blank');
     } else {
         alert("❌ كلمة السر غير صحيحة");
-    }
-}
-
-// زرار الخاص لتغيير كلمة السر
-function showAdminPassBox(){ 
-    document.getElementById('adminPassBox').style.display='block'; 
-}
-function closeAdminPassBox(){ 
-    document.getElementById('adminPassBox').style.display='none'; 
-}
-
-function changeProductsPass(){
-    const adminPass = document.getElementById('adminPass').value;
-    const newPass = document.getElementById('newProductsPass').value;
-    const correctAdminPass = "777"; // كلمة السر للتحكم بالبرنامج
-
-    if(adminPass === correctAdminPass && newPass){
-        // حفظ كلمة السر الجديدة في localStorage للبرنامج نفسه
-        currentPass = newPass;
-        localStorage.setItem("productsPass", newPass);
-        localStorage.setItem("productsPassExpiry", Date.now() + 15*60*1000); // مدة الصلاحية 15 دقيقة
-        alert("✅ تم تغيير كلمة السر للبرنامج بنجاح! المستخدمين الحاليين سيحتاجون الرقم الجديد.");
-        
-        // تنظيف الحقول
-        document.getElementById('adminPass').value='';
-        document.getElementById('newProductsPass').value='';
-        closeAdminPassBox();
-    } else {
-        alert("❌ كلمة السر الخاصة خاطئة أو كلمة السر الجديدة فارغة!");
     }
 }
 
