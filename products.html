@@ -25,6 +25,7 @@ header {
   flex-wrap: wrap; 
   justify-content: center; 
   gap:10px;
+  align-items: center;
 }
 .header-buttons button {
   background: #ffd814;
@@ -34,10 +35,33 @@ header {
   cursor: pointer;
   font-weight: bold;
   font-size: 16px;
+  position: relative;
 }
 .header-buttons button:hover { background: #f7ca00; }
 
-/* زر الجرس */
+/* عداد السلة فوق السلة */
+#cartBtn #cart-count {
+  position: absolute;
+  top: -12px;
+  right: -10px;
+  background: red;
+  color: #fff;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 50%;
+  display: none;
+}
+
+/* زر الجرس وتحريكه */
+@keyframes shake {
+  0% { transform: rotate(0deg); }
+  25% { transform: rotate(20deg); }
+  50% { transform: rotate(-20deg); }
+  75% { transform: rotate(20deg); }
+  100% { transform: rotate(0deg); }
+}
+
 #notifBtn {
   position: relative;
   background: #ff4444;
@@ -61,6 +85,24 @@ header {
   display: none;
 }
 
+/* زر صل على الحبيب */
+#loveBtn {
+  background: #ff69b4;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+  margin-left:5px;
+  animation: bounce 1s infinite alternate;
+}
+@keyframes bounce {
+  from { transform: translateY(0); }
+  to { transform: translateY(-5px); }
+}
+
 /* بانر المنتج الجديد */
 #newBanner {
   display: none;
@@ -70,20 +112,6 @@ header {
   padding: 10px;
   font-size: 20px;
   font-weight: bold;
-}
-
-/* عداد السلة */
-#cart-count {
-  position: absolute;
-  top: -8px;
-  right: -8px;
-  background: red;
-  color: #fff;
-  font-size: 14px;
-  font-weight: bold;
-  padding: 2px 6px;
-  border-radius: 50%;
-  display: none;
 }
 
 /* مربع البحث */
@@ -234,6 +262,7 @@ header {
     <button id="supportBtn">☎️ الدعم الفني</button>
     <button onclick="window.location.href='index.html'">🔙 القائمة الرئيسية</button>
     <button id="notifBtn">🔔 <span id="notif-count">0</span></button>
+    <button id="loveBtn">صل على الحبيب</button>
   </div>
   <input type="text" id="searchBox" placeholder="🔍 ابحث عن منتج...">
 </header>
@@ -260,7 +289,7 @@ header {
 const SCRIPT_PRODUCTS_URL = "https://script.google.com/macros/s/AKfycbxW3_pcjSfffMTLZefZpzFIrbhijiaWY_u_4ZAmXEV2O04SMN5zplucKnAugWWbP8zzmA/exec";
 const container = document.getElementById("products-container");
 let productsData = [];
-let cart = [];
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
 // عرض المنتجات
 function renderProducts(data){
@@ -272,7 +301,7 @@ function renderProducts(data){
                   <div class="product-info">
                     <div class="name">${item.name}</div>
                     <div class="price">${item.price} جنيه</div>
-                    <input type="number" min="1" value="1" data-index="${i}">
+                    <input type="number" min="1" value="${cart[i] || 1}" data-index="${i}">
                     <button onclick="addToCart(${i})">أضف إلى السلة</button>
                   </div>
                </div>`;
@@ -308,13 +337,14 @@ function updateCartCount(){
   const badge = document.getElementById("cart-count");
   badge.style.display = count>0?"inline-block":"none";
   badge.innerText = count;
+  localStorage.setItem("cart", JSON.stringify(cart));
 }
 
 function addToCart(index){
   const input = container.querySelector(`input[data-index='${index}']`);
   const quantity = parseInt(input.value);
   if(quantity<=0) return;
-  cart[index] = (cart[index] || 0) + quantity;
+  cart[index] = quantity;
   updateCartCount();
   showToast(`${productsData[index].name} تم إضافته/تحديثه في السلة`);
 }
@@ -368,19 +398,24 @@ document.getElementById("sendBtn").onclick = function(){
   });
 }
 
+// الهيدر أزرار
 document.getElementById("cartBtn").onclick=showTotal;
 document.getElementById("totalBtn").onclick=showTotal;
 document.getElementById("supportBtn").onclick=()=>window.open("https://wa.me/201022495795","_blank");
+document.getElementById("loveBtn").onclick=()=>window.open("https://wa.me/201022495795","_blank");
 
+// الجرس والمنتجات الجديدة
 function checkNewProducts(){
   const today=(new Date()).toISOString().split("T")[0];
   let newCount=0;
   productsData.forEach(p=>{ if(p.date&&p.date.startsWith(today)) newCount++; });
   if(newCount>0){
+    const notifBtn=document.getElementById("notifBtn");
     document.getElementById("notif-count").innerText=newCount;
     document.getElementById("notif-count").style.display="inline-block";
     document.getElementById("newBanner").style.display="block";
-    let audio=new Audio("https://www.soundjay.com/buttons/sounds/button-3.mp3"); audio.play();
+    notifBtn.style.animation="shake 0.5s infinite";
+    let audio=new Audio("https://www.soundjay.com/button/beep-07.mp3"); audio.play();
     if(Notification.permission==="granted") new Notification(`تم إضافة ${newCount} منتجات جديدة اليوم 🎉`);
     else if(Notification.permission!=="denied") Notification.requestPermission().then(p=>{ if(p==="granted") new Notification(`تم إضافة ${newCount} منتجات جديدة اليوم 🎉`); });
   }
@@ -391,6 +426,9 @@ document.getElementById("searchBox").addEventListener("input", function(){
   const filtered=productsData.filter(p=>p.name.toLowerCase().includes(keyword));
   renderProducts(filtered);
 });
+
+// تحديث عداد السلة عند التحميل
+updateCartCount();
 </script>
 </body>
 </html>
