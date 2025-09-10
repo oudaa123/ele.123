@@ -21,22 +21,21 @@ header {
 }
 .header-buttons { margin-top: 10px; display: flex; flex-wrap: wrap; justify-content: center; gap:5px;}
 .header-buttons button {
-  position: relative;
   background: #ffd814;
   border: 1px solid #fcd200;
   padding: 6px 12px;
   border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
+  position: relative;
 }
 .header-buttons button:hover { background: #f7ca00; }
 
 /* عداد السلة فوق الزر */
 #cart-count {
   position: absolute;
-  top: -12px;
-  left: 50%;
-  transform: translateX(-50%);
+  top: -10px;
+  right: -10px;
   background: red;
   color: #fff;
   font-size: 12px;
@@ -111,7 +110,12 @@ header {
   transition: 0.3s;
 }
 .product:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
-.product img { width: 100%; height: 120px; object-fit: contain; margin-bottom: 8px; }
+.product img {
+  width: 100%;
+  height: 120px;
+  object-fit: contain;
+  margin-bottom: 8px;
+}
 .name { font-size: 16px; margin: 5px 0; color: #333; word-break: break-word; }
 .price { font-weight: bold; margin-bottom: 5px; }
 .product input { width: 50px; margin: 5px 0; border-radius: 5px; border: 1px solid #ccc; text-align: center; }
@@ -140,33 +144,63 @@ header {
   text-align: center;
   z-index: 1002;
   width: 90%;
-  max-width: 500px;
+  max-width: 450px;
   max-height: 80%;
   overflow-y: auto;
 }
-#totalModal h2 { font-size: 20px; margin-bottom: 15px; color: #8a2be2; }
-#totalModal button { margin: 5px; padding: 8px 15px; border: none; border-radius: 10px; background: #8a2be2; color: #fff; cursor: pointer; font-weight: bold; transition: 0.3s; }
+#totalModal h2 {
+  font-size: 20px;
+  margin-bottom: 15px;
+  color: #8a2be2;
+}
+#totalModal button {
+  margin: 5px;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 10px;
+  background: #8a2be2;
+  color: #fff;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+}
 #totalModal button:hover { background: #6a1fbf; }
 
-/* قائمة السلة كجدول ثابت الأعمدة */
-#cartList {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr auto;
-  gap: 10px;
-  text-align: center;
-  margin-bottom: 10px;
+/* قائمة السلة */
+#cartList { text-align: right; margin-bottom: 10px; }
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+  padding: 5px 0;
 }
-.cart-item { display: contents; }
-.cart-item span { padding: 5px; word-break: break-word; }
-.cart-item button { padding: 4px 8px; font-size: 14px; }
+.cart-item span { margin: 0 5px; }
+.cart-item button { padding: 2px 8px; font-size: 14px; }
 
 /* الأرقام تحت بعض */
-#orderNumbers a { display: block; margin: 5px 0; font-size: 16px; color: #8a2be2; font-weight: bold; text-decoration: none; }
+#orderNumbers a {
+  display: block;
+  margin: 5px 0;
+  font-size: 16px;
+  color: #8a2be2;
+  font-weight: bold;
+  text-decoration: none;
+}
 #orderNumbers a:hover { color: #6a1fbf; text-decoration: underline; }
 
 /* Toast */
-#toast { position: fixed; bottom: 20px; right: 20px; background: #25d366; color: #fff; padding: 10px 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.3); display: none; z-index: 1003; }
-
+#toast {
+  position: fixed;
+  bottom: 20px; right: 20px;
+  background: #25d366;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  display: none;
+  z-index: 1003;
+}
 </style>
 </head>
 <body>
@@ -201,13 +235,13 @@ header {
 
 <div id="toast">تمت الإضافة إلى السلة</div>
 
-<script>
+<script defer>
 const SCRIPT_PRODUCTS_URL = "https://script.google.com/macros/s/AKfycbxW3_pcjSfffMTLZefZpzFIrbhijiaWY_u_4ZAmXEV2O04SMN5zplucKnAugWWbP8zzmA/exec";
 const container = document.getElementById("products-container");
 let productsData = [];
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let cart = JSON.parse(localStorage.getItem("cart") || "{}");
 
-// حفظ السلة تلقائياً
+// حفظ السلة تلقائي
 function saveCart(){ localStorage.setItem("cart", JSON.stringify(cart)); }
 
 // عرض المنتجات
@@ -242,70 +276,6 @@ function renderProducts(data){
    } catch(err){ console.log("❌ خطأ في جلب المنتجات:",err); }
 })();
 
-// تحديث عدد السلة
-function updateCartCount(){
-  const count = cart.reduce((sum, qty)=> qty ? sum+qty : sum, 0);
-  const badge = document.getElementById("cart-count");
-  badge.style.display = count>0?"inline-block":"none";
-  badge.innerText = count;
-}
-
-// إضافة للسلة
-function addToCart(index){
-  const input = container.querySelector(`input[data-index='${index}']`);
-  const quantity = parseInt(input.value);
-  if(quantity<=0) return;
-  cart[index] = (cart[index] || 0) + quantity;
-  updateCartCount();
-  saveCart();
-  showToast(`${productsData[index].name} تم إضافته/تحديثه في السلة`);
-}
-
-// عرض الفاتورة
-function showTotal(){
-  let total=0;
-  const cartList=document.getElementById("cartList");
-  cartList.innerHTML="";
-  cart.forEach((qty,idx)=>{
-    if(qty){
-      const price = productsData[idx].price;
-      const lineTotal = qty*price;
-      total+=lineTotal;
-      const div=document.createElement("div");
-      div.className="cart-item";
-      div.innerHTML=`<span>${productsData[idx].name}</span>
-                     <span>الكمية: <input type="number" min="1" value="${qty}" style="width:40px;" onchange="updateQty(${idx},this.value)"></span>
-                     <span>السعر: ${price}</span>
-                     <span>الإجمالي: ${lineTotal}</span>
-                     <span><button onclick="removeItem(${idx})">حذف</button></span>`;
-      cartList.appendChild(div);
-    }
-  });
-  document.getElementById("totalAmount").innerText=total;
-  document.getElementById("totalModal").style.display="block";
-}
-
-// تعديل الكمية
-function updateQty(idx,value){ 
-  value=parseInt(value); 
-  if(value<=0) delete cart[idx]; 
-  else cart[idx]=value; 
-  updateCartCount(); 
-  saveCart();
-  showTotal(); 
-}
-
-// حذف عنصر
-function removeItem(idx){ 
-  delete cart[idx]; 
-  updateCartCount(); 
-  saveCart();
-  showTotal(); 
-}
-
-function closeTotalModal(){ document.getElementById("totalModal").style.display='none'; }
-
-// Toast
 function showToast(msg){
   const toast = document.getElementById("toast");
   toast.innerText = msg;
@@ -313,57 +283,78 @@ function showToast(msg){
   setTimeout(()=>toast.style.display="none",1200);
 }
 
-// إرسال الطلب عبر واتساب
+function updateCartCount(){
+  const count = Object.values(cart).reduce((sum, qty)=> qty ? sum+qty : sum, 0);
+  const badge = document.getElementById("cart-count");
+  badge.style.display = count>0?"inline-block":"none";
+  badge.innerText = count;
+  saveCart();
+}
+
+function addToCart(index){
+  const input = container.querySelector(`input[data-index='${index}']`);
+  const quantity = parseInt(input.value);
+  if(quantity<=0) return;
+  cart[index] = (cart[index] || 0) + quantity;
+  updateCartCount();
+  showToast(`${productsData[index].name} تم إضافته/تحديثه في السلة`);
+}
+
+function showTotal(){
+  let total=0;
+  const cartList=document.getElementById("cartList");
+  cartList.innerHTML="";
+  for(let idx in cart){
+    const qty = cart[idx];
+    if(qty){
+      const product = productsData[idx];
+      const lineTotal = qty * product.price;
+      total += lineTotal;
+      const div = document.createElement("div");
+      div.className = "cart-item";
+      div.innerHTML = `<span>${product.name}</span>
+                       <span>السعر: ${product.price} × الكمية: <input type="number" min="1" value="${qty}" style="width:40px;" onchange="updateQty(${idx},this.value)"> = <strong>${lineTotal}</strong> جنيه</span>
+                       <button onclick="removeItem(${idx})">حذف</button>`;
+      cartList.appendChild(div);
+    }
+  }
+  document.getElementById("totalAmount").innerText = total;
+  document.getElementById("totalModal").style.display="block";
+}
+
+function updateQty(idx,value){ 
+  value=parseInt(value); 
+  if(value<=0) delete cart[idx]; 
+  else cart[idx]=value; 
+  updateCartCount(); 
+  showTotal(); 
+}
+
+function removeItem(idx){ delete cart[idx]; updateCartCount(); showTotal(); }
+function closeTotalModal(){ document.getElementById("totalModal").style.display='none'; }
+
+// إرسال الطلب عبر واتساب مع السعر
 document.getElementById("sendBtn").onclick = function(){
   const orderDiv = document.getElementById("orderNumbers");
   orderDiv.style.display="block";
   orderDiv.querySelectorAll("a").forEach(a=>{
     a.onclick=(e)=>{
       e.preventDefault();
-      let text="طلبية:%0A%0A";
+      let text="🧾 *طلبية جديدة*%0A%0A";
       let total=0;
-      cart.forEach((qty,idx)=>{
+      for(let idx in cart){
+        const qty = cart[idx];
         if(qty){
-          const lineTotal=qty*productsData[idx].price;
-          total+=lineTotal;
-          text+=`${productsData[idx].name} × ${qty} = ${lineTotal} جنيه%0A`;
+          const product = productsData[idx];
+          const lineTotal = qty * product.price;
+          total += lineTotal;
+          text += `• ${product.name}%0A  السعر: ${product.price} × الكمية: ${qty} = ${lineTotal} جنيه%0A%0A`;
         }
-      });
-      text+=`%0Aالمجموع الكلي: ${total} جنيه`;
+      }
+      text += `💰 المجموع الكلي: ${total} جنيه`;
       window.open(`${a.href}?text=${text}`,"_blank");
     }
   });
 }
 
-// أزرار الهيدر
-document.getElementById("cartBtn").onclick=showTotal;
-document.getElementById("totalBtn").onclick=showTotal;
-document.getElementById("supportBtn").onclick=()=>window.open("https://wa.me/201022495795","_blank");
-
-// إشعارات المنتجات الجديدة
-function checkNewProducts(){
-  const today=(new Date()).toISOString().split("T")[0];
-  let newCount=0;
-  productsData.forEach(p=>{ if(p.date&&p.date.startsWith(today)) newCount++; });
-  if(newCount>0){
-    document.getElementById("notif-count").innerText=newCount;
-    document.getElementById("notif-count").style.display="inline-block";
-    document.getElementById("newBanner").style.display="block";
-    let audio=new Audio("https://www.soundjay.com/buttons/sounds/button-3.mp3"); audio.play();
-    if(Notification.permission==="granted") new Notification(`تم إضافة ${newCount} منتجات جديدة اليوم 🎉`);
-    else if(Notification.permission!=="denied") Notification.requestPermission().then(p=>{ if(p==="granted") new Notification(`تم إضافة ${newCount} منتجات جديدة اليوم 🎉`); });
-  }
-}
-
-// البحث
-document.getElementById("searchBox").addEventListener("input", function(){
-  const keyword=this.value.trim().toLowerCase();
-  const filtered=productsData.filter(p=>p.name.toLowerCase().includes(keyword));
-  renderProducts(filtered);
-});
-
-// عداد السلة أول ما تحمل الصفحة
-updateCartCount();
-</script>
-</body>
-</html>
+// أزرار اله
