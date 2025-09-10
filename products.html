@@ -352,6 +352,15 @@ header {
   background: #6a1fbf;
 }
 
+/* زر جديد لحفظ السلة */
+#saveCartBtn {
+  background: #25d366 !important;
+}
+
+#saveCartBtn:hover {
+  background: #1da851 !important;
+}
+
 /* تحسين الموبايل - تم التعديل لتحسين عرض الفاتورة */
 @media (max-width: 480px){
   body { font-size: 13px; }
@@ -521,6 +530,7 @@ header {
 
     <div class="modal-buttons">
       <button id="sendBtn">📤 إرسال بالواتساب</button>
+      <button id="saveCartBtn">💾 حفظ السلة</button>
       <button onclick="closeTotalModal()">❌ إغلاق</button>
     </div>
     
@@ -547,6 +557,21 @@ function formatPrice(price) {
   return parseFloat(price).toFixed(2);
 }
 
+// تحميل السلة من localStorage عند بدء التحميل
+function loadCartFromStorage() {
+  const savedCart = localStorage.getItem('jannah_cart');
+  if (savedCart) {
+    cart = JSON.parse(savedCart);
+    updateCartCount();
+  }
+}
+
+// حفظ السلة في localStorage
+function saveCartToStorage() {
+  localStorage.setItem('jannah_cart', JSON.stringify(cart));
+  showToast("تم حفظ السلة بنجاح");
+}
+
 // عرض المنتجات
 function renderProducts(data){
   let html = "";
@@ -554,13 +579,15 @@ function renderProducts(data){
       const item = data[i];
       // استخدام السعر المنسق
       const formattedPrice = formatPrice(item.price);
+      // تحديد الكمية من السلة إذا كانت موجودة
+      const cartQty = cart[i] || 0;
       html += `<div class="product">
                   <img src="${item.image || 'https://via.placeholder.com/150'}">
                   <div class="product-info">
                     <div class="name">${item.name}</div>
                     <div class="price">${formattedPrice} جنيه</div>
-                    <input type="number" min="1" value="1" data-index="${i}">
-                    <button onclick="addToCart(${i})">أضف إلى السلة</button>
+                    <input type="number" min="1" value="${cartQty > 0 ? cartQty : 1}" data-index="${i}">
+                    <button onclick="addToCart(${i})">${cartQty > 0 ? 'تحديث' : 'أضف إلى'} السلة</button>
                   </div>
                </div>`;
   }
@@ -569,6 +596,9 @@ function renderProducts(data){
 
 // تحميل سريع للمنتجات
 (async function(){
+   // تحميل السلة أولاً من التخزين المحلي
+   loadCartFromStorage();
+   
    if(localStorage.getItem("products")){
       productsData = JSON.parse(localStorage.getItem("products"));
       renderProducts(productsData);
@@ -601,8 +631,9 @@ function addToCart(index){
   const input = container.querySelector(`input[data-index='${index}']`);
   const quantity = parseInt(input.value);
   if(quantity<=0) return;
-  cart[index] = (cart[index] || 0) + quantity;
+  cart[index] = quantity;
   updateCartCount();
+  saveCartToStorage(); // حفظ السلة بعد التحديث
   showToast(`${productsData[index].name} تم إضافته/تحديثه في السلة`);
 }
 
@@ -653,14 +684,29 @@ function updateQty(idx,value){
   if(value<=0) delete cart[idx];
   else cart[idx]=value;
   updateCartCount();
+  saveCartToStorage(); // حفظ السلة بعد التحديث
   showTotal();
 }
+
 function removeItem(idx){
   delete cart[idx];
   updateCartCount();
+  saveCartToStorage(); // حفظ السلة بعد الحذف
   showTotal();
 }
-function closeTotalModal(){ document.getElementById("totalModal").style.display='none'; }
+
+function closeTotalModal(){ 
+  document.getElementById("totalModal").style.display='none'; 
+}
+
+function clearCart() {
+  cart = [];
+  updateCartCount();
+  saveCartToStorage(); // حفظ السلة الفارغة
+  showToast("تم مسح السلة");
+  renderProducts(productsData); // إعادة عرض المنتجات لتحديث الكميات
+  closeTotalModal();
+}
 
 document.getElementById("sendBtn").onclick = function(){
   const orderDiv = document.getElementById("orderNumbers");
@@ -680,9 +726,17 @@ document.getElementById("sendBtn").onclick = function(){
       });
       text+=`المجموع الكلي: ${formatPrice(total)} جنيه`;
       window.open(`${a.href}?text=${encodeURIComponent(text)}`,"_blank");
+      
+      // مسح السلة بعد إرسال الطلب
+      setTimeout(clearCart, 1000);
     }
   });
 }
+
+// زر حفظ السلة
+document.getElementById("saveCartBtn").onclick = function() {
+  saveCartToStorage();
+};
 
 document.getElementById("cartBtn").onclick=showTotal;
 document.getElementById("totalBtn").onclick=showTotal;
