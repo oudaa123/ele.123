@@ -338,11 +338,58 @@ function updateQty(idx,value){ value=parseInt(value); if(value<=0) delete cart[i
 function removeItem(idx){ delete cart[idx]; updateCartCount(); showTotal(); }
 function closeTotalModal(){ document.getElementById("totalModal").style.display='none'; }
 
-// دالة إرسال الطلب بالشكل المطلوب
+// إرسال الواتساب بنفس تنسيق الفاتورة
 document.getElementById("sendBtn").onclick = function(){
   const orderDiv = document.getElementById("orderNumbers");
   orderDiv.style.display="block";
   orderDiv.querySelectorAll("a").forEach(a=>{
     a.onclick=(e)=>{
       e.preventDefault();
-      let text="
+      let text="🧾 طلبية جديدة\n\n";
+      text+="📦 المنتج | 🔢 الكمية | 💵 السعر | 📊 الإجمالي\n";
+      text+="--------------------------------\n";
+      let total=0;
+      cart.forEach((qty, idx)=>{
+        if(qty){
+          const price=productsData[idx].price;
+          const lineTotal=qty*price;
+          total+=lineTotal;
+          text+=`${productsData[idx].name} | ${qty} | ${price} | ${lineTotal}\n`;
+        }
+      });
+      text+="--------------------------------\n";
+      text+=`✅ المجموع الكلي: ${total} جنيه`;
+      window.open(`${a.href}?text=${encodeURIComponent(text)}`,"_blank");
+    }
+  });
+}
+
+// أزرار الهيدر
+document.getElementById("cartBtn").onclick=showTotal;
+document.getElementById("totalBtn").onclick=showTotal;
+document.getElementById("supportBtn").onclick=()=>window.open("https://wa.me/201022495795","_blank");
+
+// إشعارات المنتجات الجديدة
+function checkNewProducts(){
+  const today=(new Date()).toISOString().split("T")[0];
+  let newCount=0;
+  productsData.forEach(p=>{ if(p.date&&p.date.startsWith(today)) newCount++; });
+  if(newCount>0){
+    document.getElementById("notif-count").innerText=newCount;
+    document.getElementById("notif-count").style.display="inline-block";
+    document.getElementById("newBanner").style.display="block";
+    let audio=new Audio("https://www.soundjay.com/buttons/sounds/button-3.mp3"); audio.play();
+    if(Notification.permission==="granted") new Notification(`تم إضافة ${newCount} منتجات جديدة اليوم 🎉`);
+    else if(Notification.permission!=="denied") Notification.requestPermission().then(p=>{ if(p==="granted") new Notification(`تم إضافة ${newCount} منتجات جديدة اليوم 🎉`); });
+  }
+}
+
+// البحث
+document.getElementById("searchBox").addEventListener("input", function(){
+  const keyword=this.value.trim().toLowerCase();
+  const filtered=productsData.filter(p=>p.name.toLowerCase().includes(keyword));
+  renderProducts(filtered);
+});
+</script>
+</body>
+</html>
