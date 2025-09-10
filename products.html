@@ -19,9 +19,8 @@ header {
   top: 0;
   z-index: 1000;
 }
-.header-buttons { margin-top: 10px; display: flex; flex-wrap: wrap; justify-content: center; gap:5px; }
+.header-buttons { margin-top: 10px; display: flex; flex-wrap: wrap; justify-content: center; gap:5px;}
 .header-buttons button {
-  position: relative;
   background: #ffd814;
   border: 1px solid #fcd200;
   padding: 6px 12px;
@@ -55,6 +54,17 @@ header {
   display: none;
 }
 
+/* بانر المنتج الجديد */
+#newBanner {
+  display: none;
+  background: red;
+  color: white;
+  text-align: center;
+  padding: 10px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
 /* عداد السلة */
 #cart-count {
   position: absolute;
@@ -67,17 +77,6 @@ header {
   padding: 2px 6px;
   border-radius: 50%;
   display: none;
-}
-
-/* بانر المنتج الجديد */
-#newBanner {
-  display: none;
-  background: red;
-  color: white;
-  text-align: center;
-  padding: 10px;
-  font-size: 20px;
-  font-weight: bold;
 }
 
 /* مربع البحث */
@@ -148,7 +147,11 @@ header {
   max-height: 80%;
   overflow-y: auto;
 }
-#totalModal h2 { font-size: 20px; margin-bottom: 15px; color: #8a2be2; }
+#totalModal h2 {
+  font-size: 20px;
+  margin-bottom: 15px;
+  color: #8a2be2;
+}
 #totalModal button {
   margin: 5px;
   padding: 8px 15px;
@@ -164,11 +167,8 @@ header {
 
 /* قائمة السلة */
 #cartList { text-align: right; margin-bottom: 10px; }
-.cart-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ccc; padding: 5px 0; }
-.cart-item span { margin: 0 5px; }
-.cart-item button { padding: 2px 8px; font-size: 14px; }
 
-/* أرقام الواتساب */
+/* الأرقام تحت بعض */
 #orderNumbers a {
   display: block;
   margin: 5px 0;
@@ -211,7 +211,7 @@ header {
 <div id="products-container"></div>
 
 <div id="totalModal">
-  <h2>إجمالي الفاتورة</h2>
+  <h2>إجمالي الفاتورة: <span id="totalAmount">0</span> جنيه</h2>
   <div id="cartList"></div>
   <button id="sendBtn">📤 إرسال عبر واتساب</button>
   <button onclick="closeTotalModal()">❌ إغلاق</button>
@@ -286,50 +286,48 @@ function addToCart(index){
   showToast(`${productsData[index].name} تم إضافته/تحديثه في السلة`);
 }
 
+// ✅ تعديل showTotal فقط
 function showTotal(){
-  let total=0;
-  const cartList=document.getElementById("cartList");
-  cartList.innerHTML="";
-  cart.forEach((qty,idx)=>{
+  let total = 0;
+  let text = "📦 المنتج | 🔢 الكمية | 💵 السعر | 📊 الإجمالي<br>--------------------------------<br>";
+
+  cart.forEach((qty, idx) => {
     if(qty){
-      total+=qty*productsData[idx].price;
-      const div=document.createElement("div");
-      div.className="cart-item";
-      div.innerHTML=`<span>${productsData[idx].name}</span>
-                     <span>السعر: ${productsData[idx].price} × 
-                     <input type="number" min="1" value="${qty}" style="width:40px;" onchange="updateQty(${idx},this.value)"> = <strong>${productsData[idx].price*qty}</strong> جنيه</span>
-                     <button onclick="removeItem(${idx})">حذف</button>`;
-      cartList.appendChild(div);
+      const lineTotal = qty * productsData[idx].price;
+      total += lineTotal;
+      text += `${productsData[idx].name} | ${qty} | ${productsData[idx].price}ج | ${lineTotal}ج<br>`;
     }
   });
-  document.getElementById("totalAmount").innerText=total;
-  document.getElementById("totalModal").style.display="block";
+
+  text += "--------------------------------<br>";
+  text += `✅ المجموع الكلي: ${total} جنيه`;
+
+  document.getElementById("cartList").innerHTML = text;
+  document.getElementById("totalAmount").innerText = total;
+  document.getElementById("totalModal").style.display = "block";
 }
 
 function updateQty(idx,value){ value=parseInt(value); if(value<=0) delete cart[idx]; else cart[idx]=value; updateCartCount(); showTotal(); }
 function removeItem(idx){ delete cart[idx]; updateCartCount(); showTotal(); }
 function closeTotalModal(){ document.getElementById("totalModal").style.display='none'; }
 
-// إرسال الطلب بالصيغة الجديدة
+// دالة إرسال الطلب
 document.getElementById("sendBtn").onclick = function(){
   const orderDiv = document.getElementById("orderNumbers");
   orderDiv.style.display="block";
   orderDiv.querySelectorAll("a").forEach(a=>{
     a.onclick=(e)=>{
       e.preventDefault();
-      let text=`📦 المنتج | 🔢 الكمية | 💵 السعر | 📊 الإجمالي%0A`;
-      text+=`--------------------------------%0A`;
+      let text="📦 المنتج | 🔢 الكمية | 💵 السعر | 📊 الإجمالي%0A--------------------------------%0A";
       let total=0;
       cart.forEach((qty,idx)=>{
         if(qty){
-          const price=productsData[idx].price;
-          const lineTotal=qty*price;
+          const lineTotal=qty*productsData[idx].price;
           total+=lineTotal;
-          text+=`${productsData[idx].name} | ${qty} | ${price}ج | ${lineTotal}ج%0A`;
+          text+=`${productsData[idx].name} | ${qty} | ${productsData[idx].price}ج | ${lineTotal}ج%0A`;
         }
       });
-      text+=`--------------------------------%0A`;
-      text+=`✅ *المجموع الكلي:* ${total} جنيه`;
+      text+=`--------------------------------%0A✅ المجموع الكلي: ${total} جنيه`;
       window.open(`${a.href}?text=${text}`,"_blank");
     }
   });
