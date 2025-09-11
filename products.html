@@ -1,3 +1,17 @@
+تحسين تصميم فئات المنتجات
+
+لقد قمت بتحليل الكود وأرى أنك تريد إزالة المربعات الكبيرة حول فئات المنتجات (مثل الكابلات والشواحن) والاحتفاظ بالعناوين فقط. سأقوم بتعديل التصميم لإزالة الخلفيات الملونة والحفاظ على التنظيم مع تحسين المظهر.
+
+التعديلات المطلوبة:
+
+1. إزالة الخلفية الملونة لعناوين الفئات
+2. تحسين التباعد بين الفئات
+3. الحفاظ على التصنيف مع مظهر أنظف
+4. تحسين التصميم للجوال
+
+الكود المعدل:
+
+```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -653,19 +667,19 @@ header {
   margin-top: 10px;
 }
 
-/* فئات المنتجات */
+/* فئات المنتجات - تم التعديل هنا */
 .category-header {
-  background: var(--primary-color);
-  color: white;
-  padding: 10px;
-  margin: 15px 10px 10px;
-  border-radius: 8px;
+  color: var(--primary-color);
+  padding: 15px 10px 5px;
+  margin: 15px 10px 5px;
   font-weight: bold;
-  font-size: 16px;
+  font-size: 18px;
   text-align: center;
   position: sticky;
   top: 120px;
   z-index: 10;
+  background: var(--light-bg);
+  border-bottom: 2px solid var(--primary-color);
 }
 
 /* زر مسح السلة */
@@ -1003,7 +1017,7 @@ function addToCart(index){
   if(quantity<=0) return;
   cart[index] = (cart[index] || 0) + quantity;
   updateCartCount();
-  showToast(`${productsData[index].name} تم إضافته/تحديثه في السلة`);
+  showToast(`${productsData[index].name} تم إضافته/تحديده في السلة`);
 }
 
 function showTotal(){
@@ -1081,7 +1095,8 @@ document.getElementById("sendBtn").onclick = function(){
           const price=parseFloat(productsData[idx].price);
           const lineTotal=qty*price;
           total+=lineTotal;
-          text+=`${productsData[idx].name} | ${qty} | ${formatPrice(price)} | ${formatPrice(lineTotal)}\n`;
+         
+```text+=`${productsData[idx].name} | ${qty} | ${formatPrice(price)} | ${formatPrice(lineTotal)}\n`;
         }
       });
       text+=`المجموع الكلي: ${formatPrice(total)} جنيه`;
@@ -1144,3 +1159,4 @@ setInterval(() => {
 </script>
 </body>
 </html>
+
