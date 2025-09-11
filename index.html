@@ -403,53 +403,6 @@ header h2 {
   color: #666;
 }
 
-/* شاشة الترحيب */
-.welcome-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.8);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 2000;
-  transition: opacity 0.5s ease;
-}
-
-.welcome-content {
-  background: white;
-  padding: 20px;
-  border-radius: 12px;
-  text-align: center;
-  max-width: 90%;
-  width: 400px;
-  animation: zoomIn 0.5s ease;
-}
-
-.welcome-content img {
-  max-width: 100%;
-  border-radius: 8px;
-  margin-bottom: 15px;
-}
-
-.welcome-content h2 {
-  color: #8a2be2;
-  margin-bottom: 15px;
-}
-
-@keyframes zoomIn {
-  from {
-    transform: scale(0.8);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
 /* شاشة الشعار (اللوجو) */
 .logo-overlay {
   position: fixed;
@@ -589,17 +542,7 @@ input, textarea {
   </div>
 </div>
 
-<!-- شاشة الترحيب -->
-<div id="welcomeOverlay" class="welcome-overlay" style="display:none;">
-  <div class="welcome-content">
-    <img src="https://via.placeholder.com/400x200/8a2be2/ffffff?text=مرحباً+بكم+في+مملكة+الأصليات" alt="ترحيب">
-    <h2>أهلاً وسهلاً بكم في مملكة الأصليات</h2>
-    <p>نقدم لكم أفضل الخدمات والعروض الخاصة بجميع منتجات المحمول</p>
-    <button onclick="closeWelcome()" style="padding: 10px 20px; background: #8a2be2; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">ابدء التصفح</button>
-  </div>
-</div>
-
-<div class="app-container">
+<div class="app-container" style="display:none;" id="mainContent">
   <div class="top-bar">🌹 اللهم صلِّ وسلم وبارك على سيدنا محمد ﷺ 🌹</div>
   <div class="blink">✨ هنبيع ببلاش واكن الصنف مجاش ✨</div> 
 
@@ -706,9 +649,9 @@ const successModal = document.getElementById("successModal");
 const partnersContainer = document.getElementById("partnersContainer");
 const servicesContainer = document.getElementById("servicesContainer");
 const partnersGrid = document.getElementById("partnersGrid");
-const welcomeOverlay = document.getElementById("welcomeOverlay");
 const logoOverlay = document.getElementById("logoOverlay");
 const companyLogo = document.getElementById("companyLogo");
+const mainContent = document.getElementById("mainContent");
 
 // بيانات شركاء النجاح (يمكن إضافة المزيد لاحقاً)
 const partnersData = [
@@ -784,28 +727,17 @@ function checkTelegram(){
     alert("سيتم وضع الرابط لاحقاً"); 
 }
 
-// إغلاق شاشة الترحيب
-function closeWelcome() {
-  welcomeOverlay.style.opacity = '0';
-  setTimeout(() => {
-    welcomeOverlay.style.display = 'none';
-  }, 500);
-}
-
-// تأثير انفجار الشعار
+// تأثير انفجار الشعار والانتقال المباشر للموقع
 function explodeLogo() {
   companyLogo.style.animation = 'explode 0.7s forwards';
   setTimeout(() => {
     logoOverlay.style.opacity = '0';
     setTimeout(() => {
       logoOverlay.style.display = 'none';
-      // بعد اختفاء الشعار، إظهار شاشة الترحيب
-      welcomeOverlay.style.display = 'flex';
-      setTimeout(() => {
-        welcomeOverlay.style.opacity = '1';
-      }, 50);
+      // إظهار المحتوى الرئيسي مباشرة بعد انتهاء الانفجار
+      mainContent.style.display = 'block';
     }, 700);
-  }, 2500);
+  }, 2500); // وقت أقل للانتظار (2.5 ثانية بدلاً من 3 ثواني)
 }
 
 // تسجيل بيانات المستخدم
@@ -874,7 +806,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
   initPartners();
   
   // بدء تأثير الشعار ثم الانفجار
-  setTimeout(explodeLogo, 3000);
+  setTimeout(explodeLogo, 100); // بدء سريع بعد تحميل الصفحة
   
   // منع سلوك التكبير/التصغير الافتراضي على الجوال
   document.addEventListener('touchstart', function(event) {
