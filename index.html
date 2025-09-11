@@ -233,6 +233,89 @@ header h2 {
   transform:scale(1.1); 
 }
 
+/* زر شركاء النجاح العائم */
+.success-partners-btn {
+  position: fixed;
+  bottom: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #25d366;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 30px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: 0.3s;
+}
+
+.success-partners-btn:hover {
+  background: #128C7E;
+  transform: translateX(-50%) scale(1.05);
+}
+
+/* قسم شركاء النجاح */
+.success-partners-container {
+  display: none;
+  position: fixed;
+  bottom: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  z-index: 998;
+  width: 90%;
+  max-width: 400px;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.success-partners-container h3 {
+  margin: 0 0 12px 0;
+  color: #8a2be2;
+  font-size: 1.2em;
+}
+
+.partners-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.partner-card {
+  background: #f8f9fa;
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: 0.3s;
+}
+
+.partner-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.partner-name {
+  font-weight: bold;
+  color: #8a2be2;
+  margin-bottom: 5px;
+}
+
+.partner-address {
+  font-size: 0.8em;
+  color: #666;
+}
+
 /* تحسينات للشاشات الصغيرة جداً */
 @media (max-width: 350px) {
   header h1 { 
@@ -252,6 +335,16 @@ header h2 {
   .blink {
     font-size: 1em;
     padding: 5px;
+  }
+  
+  .success-partners-btn {
+    font-size: 14px;
+    padding: 10px 16px;
+    bottom: 60px;
+  }
+  
+  .partners-grid {
+    grid-template-columns: 1fr;
   }
 }
 </style>
@@ -315,6 +408,17 @@ header h2 {
 <button onclick="closeTelegramBox()">رجوع</button>
 </div>
 
+<!-- زر شركاء النجاح العائم -->
+<button class="success-partners-btn" onclick="togglePartners()">🤝 شركاء النجاح</button>
+
+<!-- قسم شركاء النجاح -->
+<div id="partnersContainer" class="success-partners-container">
+  <h3>🤝 شركاء النجاح</h3>
+  <div class="partners-grid" id="partnersGrid">
+    <!-- سيتم ملء هذا القسم بالبيانات من خلال الجافاسكريبت -->
+  </div>
+</div>
+
 <button class="support-btn" onclick="window.open('https://wa.me/201022495795','_blank')">الدعم الفني</button>
 
 <script>
@@ -323,6 +427,43 @@ const infoBox = document.getElementById('infoBox');
 const infoText = document.getElementById('infoText');
 const submitBtn = document.getElementById("submitBtn");
 const successModal = document.getElementById("successModal");
+const partnersContainer = document.getElementById("partnersContainer");
+const partnersGrid = document.getElementById("partnersGrid");
+
+// بيانات شركاء النجاح (يمكن إضافة المزيد لاحقاً)
+const partnersData = [
+  { name: "محل جنة موبايل", address: "المنصورة - نبروه" },
+  { name: "مركز النور للأتصالات", address: "المنصورة - شارع الجلاء" },
+  { name: "موبايل تك", address: "نبروه - سوق المحمول" },
+  { name: "إلكترو ستور", address: "المنصورة - ميدان المسجد" },
+  { name: "تكنو لوجي", address: "نبروه - شارع السوق" },
+  { name: "موبايلات الأصليات", address: "المنصورة - شارع الثانوية" },
+  { name: "جوال للأتصالات", address: "نبروه - منطقة السوق" },
+  { name: "ديجيتال مارت", address: "المنصورة - شارع الجامعة" }
+];
+
+// تهيئة شركاء النجاح
+function initPartners() {
+  partnersGrid.innerHTML = '';
+  partnersData.forEach(partner => {
+    const partnerCard = document.createElement('div');
+    partnerCard.className = 'partner-card';
+    partnerCard.innerHTML = `
+      <div class="partner-name">${partner.name}</div>
+      <div class="partner-address">${partner.address}</div>
+    `;
+    partnersGrid.appendChild(partnerCard);
+  });
+}
+
+// تبديل عرض قسم شركاء النجاح
+function togglePartners() {
+  if (partnersContainer.style.display === 'block') {
+    partnersContainer.style.display = 'none';
+  } else {
+    partnersContainer.style.display = 'block';
+  }
+}
 
 // الانتقال مباشرة إلى صفحة المنتجات بدون باسورد
 function goToProducts() {
@@ -400,6 +541,14 @@ window.addEventListener('click', function(event) {
     if (event.target == document.getElementById('telegramBox')) {
         closeTelegramBox();
     }
+    if (event.target == partnersContainer) {
+        partnersContainer.style.display = 'none';
+    }
+});
+
+// تهيئة الصفحة عند التحميل
+window.addEventListener('DOMContentLoaded', (event) => {
+  initPartners();
 });
 </script>
 </body>
