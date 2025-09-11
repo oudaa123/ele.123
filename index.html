@@ -259,6 +259,32 @@ header h2 {
   transform: scale(1.05);
 }
 
+/* زر خدماتنا العائم */
+.services-btn {
+  position: fixed;
+  top: 120px;
+  left: 10px;
+  background: #ff9800;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 30px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: 0.3s;
+}
+
+.services-btn:hover {
+  background: #f57c00;
+  transform: scale(1.05);
+}
+
 /* قسم شركاء النجاح */
 .success-partners-container {
   display: none;
@@ -281,6 +307,64 @@ header h2 {
   margin: 0 0 12px 0;
   color: #8a2be2;
   font-size: 1.2em;
+}
+
+/* قسم خدماتنا */
+.services-container {
+  display: none;
+  position: fixed;
+  top: 170px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  z-index: 998;
+  width: 90%;
+  max-width: 400px;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.services-container h3 {
+  margin: 0 0 12px 0;
+  color: #8a2be2;
+  font-size: 1.2em;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.service-card {
+  background: #f8f9fa;
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.service-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  background: #e9ecef;
+}
+
+.service-name {
+  font-weight: bold;
+  color: #8a2be2;
+  margin-bottom: 5px;
+}
+
+.service-icon {
+  font-size: 24px;
+  margin-bottom: 5px;
 }
 
 .partners-grid {
@@ -315,6 +399,119 @@ header h2 {
   color: #666;
 }
 
+/* شاشة الترحيب */
+.welcome-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  transition: opacity 0.5s ease;
+}
+
+.welcome-content {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  max-width: 90%;
+  width: 400px;
+  animation: zoomIn 0.5s ease;
+}
+
+.welcome-content img {
+  max-width: 100%;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.welcome-content h2 {
+  color: #8a2be2;
+  margin-bottom: 15px;
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* شاشة الشعار (اللوجو) */
+.logo-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3000;
+  transition: opacity 1s ease;
+}
+
+.logo-content {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo-image {
+  width: 100%;
+  height: auto;
+  animation: logoAnimation 2.5s forwards;
+}
+
+@keyframes logoAnimation {
+  0% {
+    opacity: 0;
+    transform: scale(0.1) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2) rotate(5deg);
+  }
+  70% {
+    transform: scale(1) rotate(-3deg);
+  }
+  85% {
+    transform: scale(1.1) rotate(2deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+    filter: brightness(1.5) contrast(1.2);
+  }
+}
+
+/* تأثير الانفجار */
+@keyframes explode {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2);
+    filter: blur(20px);
+  }
+}
+
 /* تحسينات للشاشات الصغيرة جداً */
 @media (max-width: 350px) {
   header h1 { 
@@ -336,18 +533,42 @@ header h2 {
     padding: 5px;
   }
   
-  .success-partners-btn {
+  .success-partners-btn,
+  .services-btn {
     font-size: 13px;
     padding: 8px 14px;
   }
   
-  .partners-grid {
+  .partners-grid,
+  .services-grid {
     grid-template-columns: 1fr;
+  }
+  
+  .logo-content {
+    width: 200px;
+    height: 200px;
   }
 }
 </style>
 </head>
 <body>
+
+<!-- شاشة الشعار (اللوجو) -->
+<div id="logoOverlay" class="logo-overlay">
+  <div class="logo-content">
+    <img src="555.jpg" alt="شعار شركة جنة" class="logo-image" id="companyLogo">
+  </div>
+</div>
+
+<!-- شاشة الترحيب -->
+<div id="welcomeOverlay" class="welcome-overlay" style="display:none;">
+  <div class="welcome-content">
+    <img src="https://via.placeholder.com/400x200/8a2be2/ffffff?text=مرحباً+بكم+في+مملكة+الأصليات" alt="ترحيب">
+    <h2>أهلاً وسهلاً بكم في مملكة الأصليات</h2>
+    <p>نقدم لكم أفضل الخدمات والعروض الخاصة بجميع منتجات المحمول</p>
+    <button onclick="closeWelcome()" style="padding: 10px 20px; background: #8a2be2; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">ابدء التصفح</button>
+  </div>
+</div>
 
 <div class="top-bar">🌹 اللهم صلِّ وسلم وبارك على سيدنا محمد ﷺ 🌹</div>
 <div class="blink">✨ أهلاً ومرحباً بكم في مملكة الأصليات✨</div>
@@ -412,11 +633,37 @@ header h2 {
 <!-- زر شركاء النجاح تحت زر الدعم الفني -->
 <button class="success-partners-btn" onclick="togglePartners()">🤝 شركاء النجاح</button>
 
+<!-- زر خدماتنا تحت زر شركاء النجاح -->
+<button class="services-btn" onclick="toggleServices()">🛍️ خدماتنا</button>
+
 <!-- قسم شركاء النجاح -->
 <div id="partnersContainer" class="success-partners-container">
-  <h3>😍 شركاءالنجاح</h3>
+  <h3>😍 شركاء النجاح</h3>
   <div class="partners-grid" id="partnersGrid">
     <!-- سيتم ملء هذا القسم بالبيانات من خلال الجافاسكريبت -->
+  </div>
+</div>
+
+<!-- قسم خدماتنا -->
+<div id="servicesContainer" class="services-container">
+  <h3>🛍️ خدماتنا المميزة</h3>
+  <div class="services-grid">
+    <div class="service-card" onclick="showServiceMessage('توفيقات الأسكرينات')">
+      <div class="service-icon">📱</div>
+      <div class="service-name">توفيقات الأسكرينات</div>
+    </div>
+    <div class="service-card" onclick="showServiceMessage('توفيقات الجرابات')">
+      <div class="service-icon">📱</div>
+      <div class="service-name">توفيقات الجرابات</div>
+    </div>
+    <div class="service-card" onclick="showServiceMessage('توفيقات البطاريات')">
+      <div class="service-icon">🔋</div>
+      <div class="service-name">توفيقات البطاريات</div>
+    </div>
+    <div class="service-card" onclick="showServiceMessage('الداخلي بأنواعه')">
+      <div class="service-icon">📞</div>
+      <div class="service-name">الداخلي بأنواعه</div>
+    </div>
   </div>
 </div>
 
@@ -427,7 +674,11 @@ const infoText = document.getElementById('infoText');
 const submitBtn = document.getElementById("submitBtn");
 const successModal = document.getElementById("successModal");
 const partnersContainer = document.getElementById("partnersContainer");
+const servicesContainer = document.getElementById("servicesContainer");
 const partnersGrid = document.getElementById("partnersGrid");
+const welcomeOverlay = document.getElementById("welcomeOverlay");
+const logoOverlay = document.getElementById("logoOverlay");
+const companyLogo = document.getElementById("companyLogo");
 
 // بيانات شركاء النجاح (يمكن إضافة المزيد لاحقاً)
 const partnersData = [
@@ -461,7 +712,23 @@ function togglePartners() {
     partnersContainer.style.display = 'none';
   } else {
     partnersContainer.style.display = 'block';
+    servicesContainer.style.display = 'none';
   }
+}
+
+// تبديل عرض قسم خدماتنا
+function toggleServices() {
+  if (servicesContainer.style.display === 'block') {
+    servicesContainer.style.display = 'none';
+  } else {
+    servicesContainer.style.display = 'block';
+    partnersContainer.style.display = 'none';
+  }
+}
+
+// عرض رسالة الخدمة
+function showServiceMessage(serviceName) {
+  alert(`قريباً خدمة ${serviceName} مجانية بالكامل مع التحديثات`);
 }
 
 // الانتقال مباشرة إلى صفحة المنتجات بدون باسورد
@@ -485,6 +752,30 @@ function closeTelegramBox(){
 }
 function checkTelegram(){ 
     alert("سيتم وضع الرابط لاحقاً"); 
+}
+
+// إغلاق شاشة الترحيب
+function closeWelcome() {
+  welcomeOverlay.style.opacity = '0';
+  setTimeout(() => {
+    welcomeOverlay.style.display = 'none';
+  }, 500);
+}
+
+// تأثير انفجار الشعار
+function explodeLogo() {
+  companyLogo.style.animation = 'explode 0.7s forwards';
+  setTimeout(() => {
+    logoOverlay.style.opacity = '0';
+    setTimeout(() => {
+      logoOverlay.style.display = 'none';
+      // بعد اختفاء الشعار، إظهار شاشة الترحيب
+      welcomeOverlay.style.display = 'flex';
+      setTimeout(() => {
+        welcomeOverlay.style.opacity = '1';
+      }, 50);
+    }, 700);
+  }, 2500);
 }
 
 // تسجيل بيانات المستخدم
@@ -543,11 +834,17 @@ window.addEventListener('click', function(event) {
     if (event.target == partnersContainer) {
         partnersContainer.style.display = 'none';
     }
+    if (event.target == servicesContainer) {
+        servicesContainer.style.display = 'none';
+    }
 });
 
 // تهيئة الصفحة عند التحميل
 window.addEventListener('DOMContentLoaded', (event) => {
   initPartners();
+  
+  // بدء تأثير الشعار ثم الانفجار
+  setTimeout(explodeLogo, 3000);
 });
 </script>
 </body>
