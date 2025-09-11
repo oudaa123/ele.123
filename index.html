@@ -236,9 +236,8 @@ header h2 {
 /* زر شركاء النجاح العائم */
 .success-partners-btn {
   position: fixed;
-  bottom: 70px;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 60px;
+  left: 10px;
   background: #25d366;
   color: white;
   padding: 12px 20px;
@@ -247,7 +246,7 @@ header h2 {
   box-shadow: 0 4px 10px rgba(0,0,0,0.3);
   cursor: pointer;
   font-weight: bold;
-  font-size: 16px;
+  font-size: 14px;
   z-index: 999;
   display: flex;
   align-items: center;
@@ -257,14 +256,14 @@ header h2 {
 
 .success-partners-btn:hover {
   background: #128C7E;
-  transform: translateX(-50%) scale(1.05);
+  transform: scale(1.05);
 }
 
 /* قسم شركاء النجاح */
 .success-partners-container {
   display: none;
   position: fixed;
-  bottom: 120px;
+  top: 110px;
   left: 50%;
   transform: translateX(-50%);
   background: white;
@@ -338,9 +337,8 @@ header h2 {
   }
   
   .success-partners-btn {
-    font-size: 14px;
-    padding: 10px 16px;
-    bottom: 60px;
+    font-size: 13px;
+    padding: 8px 14px;
   }
   
   .partners-grid {
@@ -408,7 +406,10 @@ header h2 {
 <button onclick="closeTelegramBox()">رجوع</button>
 </div>
 
-<!-- زر شركاء النجاح العائم -->
+<!-- زر الدعم الفني -->
+<button class="support-btn" onclick="window.open('https://wa.me/201022495795','_blank')">الدعم الفني</button>
+
+<!-- زر شركاء النجاح تحت زر الدعم الفني -->
 <button class="success-partners-btn" onclick="togglePartners()">🤝 شركاء النجاح</button>
 
 <!-- قسم شركاء النجاح -->
@@ -418,8 +419,6 @@ header h2 {
     <!-- سيتم ملء هذا القسم بالبيانات من خلال الجافاسكريبت -->
   </div>
 </div>
-
-<button class="support-btn" onclick="window.open('https://wa.me/201022495795','_blank')">الدعم الفني</button>
 
 <script>
 // العناصر
