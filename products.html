@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
@@ -689,7 +689,7 @@ const SCRIPT_PRODUCTS_URL = "https://script.google.com/macros/s/AKfycbxW3_pcjSff
 const container = document.getElementById("products-container");
 let productsData = [];
 let cart = [];
-let pricesVisible = localStorage.getItem('pricesVisible') === 'true';
+let pricesVisible = false; // تم التعديل: إخفاء الأسعار افتراضياً
 
 // كلمة السر الافتراضية (يمكن تغييرها)
 const PASSWORD = "12345";
@@ -728,7 +728,6 @@ function checkPassword() {
   const input = document.getElementById('passwordInput').value;
   if (input === PASSWORD) {
     pricesVisible = true;
-    localStorage.setItem('pricesVisible', 'true');
     togglePricesVisibility();
     closePasswordModal();
     showToast('تم عرض الأسعار بنجاح');
@@ -764,7 +763,8 @@ function renderProducts(data){
 
 // تحميل سريع للمنتجات
 (async function(){
-   // التحقق من حالة إظهار الأسعار من localStorage
+   // تم التعديل: إخفاء الأسعار افتراضياً في كل مرة يتم فيها تحميل الصفحة
+   pricesVisible = false;
    togglePricesVisibility();
    
    if(localStorage.getItem("products")){
@@ -942,4 +942,3 @@ document.getElementById('passwordInput').addEventListener('keypress', function(e
 </script>
 </body>
 </html>
-
