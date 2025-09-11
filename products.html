@@ -652,6 +652,37 @@ header {
   font-weight: bold;
   margin-top: 10px;
 }
+
+/* فئات المنتجات */
+.category-header {
+  background: var(--primary-color);
+  color: white;
+  padding: 10px;
+  margin: 15px 10px 10px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 16px;
+  text-align: center;
+  position: sticky;
+  top: 120px;
+  z-index: 10;
+}
+
+/* زر مسح السلة */
+#clearCartBtn {
+  background: #ff4444;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-left: 5px;
+}
+
+#clearCartBtn:hover {
+  background: #cc0000;
+}
 </style>
 </head>
 <body class="hide-price">
@@ -672,6 +703,7 @@ header {
     <button id="supportBtn">☎️ الدعم الفني للبرنامج</button>
     <button onclick="window.location.href='index.html'">🔙 الرئيسية</button>
     <button id="notifBtn">🔔صل علي النبي محمد  <span id="notif-count">0</span></button>
+    <button id="clearCartBtn" onclick="clearCart()">🗑️ مسح السلة</button>
   </div>
 
   <div class="search-container">
@@ -793,7 +825,15 @@ function saveCart() {
     return;
   }
   
-  localStorage.setItem('savedCart', JSON.stringify(cart));
+  // حفظ السلة الحالية فقط مع المنتجات التي بها كميات
+  const cartToSave = {};
+  cart.forEach((qty, idx) => {
+    if (qty > 0) {
+      cartToSave[idx] = qty;
+    }
+  });
+  
+  localStorage.setItem('savedCart', JSON.stringify(cartToSave));
   showToast('تم حفظ السلة بنجاح ✅');
 }
 
@@ -802,7 +842,14 @@ function loadSavedCart() {
   const savedCart = localStorage.getItem('savedCart');
   if (savedCart) {
     try {
-      cart = JSON.parse(savedCart);
+      const parsedCart = JSON.parse(savedCart);
+      
+      // إعادة تهيئة السلة بالكميات المحفوظة فقط
+      cart = [];
+      for (const [idx, qty] of Object.entries(parsedCart)) {
+        cart[parseInt(idx)] = qty;
+      }
+      
       updateCartCount();
       showToast('تم استعادة السلة المحفوظة');
     } catch (e) {
@@ -811,23 +858,96 @@ function loadSavedCart() {
   }
 }
 
-// عرض المنتجات
-function renderProducts(data){
-  let html = "";
-  for(let i=0;i<data.length;i++){
-      const item = data[i];
-      // استخدام السعر المنسق
-      const formattedPrice = formatPrice(item.price);
-      html += `<div class="product">
-                  <img src="${item.image || 'https://via.placeholder.com/150'}">
-                  <div class="product-info">
-                    <div class="name">${item.name}</div>
-                    <div class="price">${formattedPrice} جنيه</div>
-                    <input type="number" min="1" value="1" data-index="${i}">
-                    <button onclick="addToCart(${i})">أضف إلى السلة</button>
-                  </div>
-               </div>`;
+// مسح السلة بالكامل
+function clearCart() {
+  if (confirm('هل تريد مسح السلة بالكامل؟')) {
+    cart = [];
+    updateCartCount();
+    showToast('تم مسح السلة بنجاح');
+    
+    // مسح السلة المحفوظة أيضاً
+    localStorage.removeItem('savedCart');
   }
+}
+
+// تصنيف المنتجات حسب الفئات
+function categorizeProducts(products) {
+  const categories = {};
+  
+  // تحديد الفئات بناءً على الكلمات الرئيسية في اسم المنتج
+  products.forEach((product, index) => {
+    const name = product.name.toLowerCase();
+    let category = "منتجات أخرى";
+    
+    if (name.includes("صب") || name.includes("sp")) {
+      category = "الصب";
+    } else if (name.includes("شاحن") || name.includes("شحن") || name.includes("charger")) {
+      category = "الشواحن";
+    } else if (name.includes("كابل") || name.includes("cable") || name.includes("سلك")) {
+      category = "الكابلات";
+    } else if (name.includes("سماعة") || name.includes("سماعات") || name.includes("earphone")) {
+      category = "السماعات";
+    } else if (name.includes("حافظة") || name.includes("غطاء") || name.includes("case")) {
+      category = "الحافظات والأغطية";
+    } else if (name.includes("حامل") || name.includes("holder") || name.includes("stand")) {
+      category = "الحوامل";
+    } else if (name.includes("باور") || name.includes("power") || name.includes("بنك")) {
+      category = "الباور بانك";
+    } else if (name.includes("عدسة") || name.includes("lens") || name.includes("كاميرا")) {
+      category = "عدسات الكاميرا";
+    } else if (name.includes("فلاش") || name.includes("flash") || name.includes("ذاكرة")) {
+      category = "الفلاش ميموري";
+    }
+    
+    if (!categories[category]) {
+      categories[category] = [];
+    }
+    
+    categories[category].push({...product, index});
+  });
+  
+  return categories;
+}
+
+// عرض المنتجات مصنفة حسب الفئات
+function renderProducts(data){
+  const categorizedProducts = categorizeProducts(data);
+  let html = "";
+  
+  // ترتيب الفئات حسب الأهمية
+  const categoryOrder = [
+    "الصب", 
+    "الشواحن", 
+    "الكابلات", 
+    "السماعات", 
+    "الحافظات والأغطية",
+    "الحوامل",
+    "الباور بانك",
+    "عدسات الكاميرا",
+    "الفلاش ميموري",
+    "منتجات أخرى"
+  ];
+  
+  // عرض كل فئة ومنتجاتها
+  categoryOrder.forEach(category => {
+    if (categorizedProducts[category] && categorizedProducts[category].length > 0) {
+      html += `<div class="category-header">${category}</div>`;
+      
+      categorizedProducts[category].forEach(item => {
+        const formattedPrice = formatPrice(item.price);
+        html += `<div class="product">
+                    <img src="${item.image || 'https://via.placeholder.com/150'}">
+                    <div class="product-info">
+                      <div class="name">${item.name}</div>
+                      <div class="price">${formattedPrice} جنيه</div>
+                      <input type="number" min="1" value="${cart[item.index] || 1}" data-index="${item.index}">
+                      <button onclick="addToCart(${item.index})">أضف إلى السلة</button>
+                    </div>
+                 </div>`;
+      });
+    }
+  });
+  
   container.innerHTML = html;
   
   // تطبيق حالة إظهار/إخفاء الأسعار
@@ -1024,5 +1144,3 @@ setInterval(() => {
 </script>
 </body>
 </html>
-
-
