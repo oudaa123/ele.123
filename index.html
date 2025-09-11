@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <title>مملكة الأصليات - شركة جنة</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#8a2be2">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>
 body { 
   font-family: Tahoma, Arial, sans-serif; 
@@ -12,6 +15,7 @@ body {
   background:#f9f9f9; 
   text-align:center; 
   font-size: 14px;
+  -webkit-tap-highlight-color: transparent;
 }
 .top-bar { 
   background:#ffd54f; 
@@ -549,6 +553,31 @@ header h2 {
     height: 200px;
   }
 }
+
+/* تحسينات لتجربة التطبيق */
+.app-container {
+  max-width: 100%;
+  overflow-x: hidden;
+  padding-bottom: 80px;
+}
+
+/* منع التكبير/التصغير على الجوال */
+* {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+input, textarea {
+  -webkit-user-select: text;
+  -khtml-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
 </style>
 </head>
 <body>
@@ -570,61 +599,62 @@ header h2 {
   </div>
 </div>
 
-<div class="top-bar">🌹 اللهم صلِّ وسلم وبارك على سيدنا محمد ﷺ 🌹</div>
-<div class="blink">✨ أهلاً ومرحباً بكم في مملكة الأصليات✨</div>
-<div class="blink">✨ هنبيع ببلاش واكن الصنف مجاش ✨</div> 
+<div class="app-container">
+  <div class="top-bar">🌹 اللهم صلِّ وسلم وبارك على سيدنا محمد ﷺ 🌹</div>
+  <div class="blink">✨ هنبيع ببلاش واكن الصنف مجاش ✨</div> 
 
-<header>
-<h1>شركة جنة</h1>
-<h2>لجميع خدمات المحمول</h2>
-</header>
+  <header>
+    <h1>شركة جنة</h1>
+    <h2>لجميع خدمات المحمول</h2>
+  </header>
 
-<div class="top-images">
-<img src="123.jpg" alt="صورة 1">
-<img src="456.jpg" alt="صورة 2">
-<img src="789.jpg" alt="صورة 3">
-</div>
+  <div class="top-images">
+    <img src="123.jpg" alt="صورة 1">
+    <img src="456.jpg" alt="صورة 2">
+    <img src="789.jpg" alt="صورة 3">
+  </div>
 
-<div class="top-buttons">
-<button onclick="showInfo('العنوان:<br>المنصورة - نبروه سوق المحمول')">🏠 العنوان</button>
-<button onclick="showInfo('تواصل معنا:<br>01067070423<br>01022495795<br>01012253500')">📞 تواصل معنا</button>
-<button onclick="window.open('https://www.facebook.com/share/174s1yLKfA/?mibextid=wwXIfr','_blank')">📘 فيسبوك</button>
-<button class="telegram-style-btn" onclick="goToProducts()">🔥 المنتجات والعروض</button>
-<button class="telegram-style-btn" onclick="showTelegramBox()">📲 تليجرام التفعيلات</button>
-</div>
+  <div class="top-buttons">
+    <button onclick="showInfo('العنوان:<br>المنصورة - نبروه سوق المحمول')">🏠 العنوان</button>
+    <button onclick="showInfo('تواصل معنا:<br>01067070423<br>01022495795<br>01012253500')">📞 تواصل معنا</button>
+    <button onclick="window.open('https://www.facebook.com/share/174s1yLKfA/?mibextid=wwXIfr','_blank')">📘 فيسبوك</button>
+    <button class="telegram-style-btn" onclick="goToProducts()">🔥 المنتجات والعروض</button>
+    <button class="telegram-style-btn" onclick="showTelegramBox()">📲 تليجرام التفعيلات</button>
+  </div>
 
-<div id="infoBox" class="info-box">
-<h2>تفاصيل</h2>
-<p id="infoText" style="line-height:1.6;"></p>
-<button onclick="closeInfo()">رجوع</button>
-</div>
+  <div id="infoBox" class="info-box">
+    <h2>تفاصيل</h2>
+    <p id="infoText" style="line-height:1.6;"></p>
+    <button onclick="closeInfo()">رجوع</button>
+  </div>
 
-<div class="form-container">
-<h3>📑 لتلقي العروض قم بتسجيل بياناتك</h3>
-<input type="text" id="name" placeholder="الاسم أو اسم المحل" required>
-<input type="tel" id="phone" placeholder="رقم الموبايل" required>
-<input type="text" id="address" placeholder="العنوان" required>
-<select id="field" required>
-  <option value="">اختر المجال</option>
-  <option value="داخلي">داخلي</option>
-  <option value="خارجي">خارجي</option>
-</select>
-<button id="submitBtn">🚀 سجل الان</button>
-</div>
+  <div class="form-container">
+    <h3>📑 لتلقي العروض قم بتسجيل بياناتك</h3>
+    <input type="text" id="name" placeholder="الاسم أو اسم المحل" required>
+    <input type="tel" id="phone" placeholder="رقم الموبايل" required>
+    <input type="text" id="address" placeholder="العنوان" required>
+    <select id="field" required>
+      <option value="">اختر المجال</option>
+      <option value="داخلي">داخلي</option>
+      <option value="خارجي">خارجي</option>
+    </select>
+    <button id="submitBtn">🚀 سجل الان</button>
+  </div>
 
-<div id="successModal" class="modal">
-<div class="modal-content">
-<h2>🎉 تم التسجيل بنجاح نورت المملكة😍 🎉</h2>
-<button onclick="closeModal()">إغلاق</button>
-</div>
-</div>
+  <div id="successModal" class="modal">
+    <div class="modal-content">
+      <h2>🎉 تم التسجيل بنجاح نورت المملكة😍 🎉</h2>
+      <button onclick="closeModal()">إغلاق</button>
+    </div>
+  </div>
 
-<div id="telegramBox" class="password-box">
-<h2>ادخل تليجرام التفعيلات 🔑</h2>
-<input type="text" id="telegramPass" placeholder="فارغ حالياً">
-<div style="margin:10px 0;">سيتم وضع الرابط لاحقاً</div>
-<button onclick="checkTelegram()">دخول</button>
-<button onclick="closeTelegramBox()">رجوع</button>
+  <div id="telegramBox" class="password-box">
+    <h2>ادخل تليجرام التفعيلات 🔑</h2>
+    <input type="text" id="telegramPass" placeholder="فارغ حالياً">
+    <div style="margin:10px 0;">سيتم وضع الرابط لاحقاً</div>
+    <button onclick="checkTelegram()">دخول</button>
+    <button onclick="closeTelegramBox()">رجوع</button>
+  </div>
 </div>
 
 <!-- زر الدعم الفني -->
@@ -634,7 +664,7 @@ header h2 {
 <button class="success-partners-btn" onclick="togglePartners()">🤝 شركاء النجاح</button>
 
 <!-- زر خدماتنا تحت زر شركاء النجاح -->
-<button class="services-btn" onclick="toggleServices()">🛍️ خدماتنا</button>
+<button class="services-btn" onclick="toggleServices()">📋 ارشادك</button>
 
 <!-- قسم شركاء النجاح -->
 <div id="partnersContainer" class="success-partners-container">
@@ -646,7 +676,7 @@ header h2 {
 
 <!-- قسم خدماتنا -->
 <div id="servicesContainer" class="services-container">
-  <h3>🛍️ارشادك</h3>
+  <h3>📋 ارشادك</h3>
   <div class="services-grid">
     <div class="service-card" onclick="showServiceMessage('توفيقات الأسكرينات')">
       <div class="service-icon">📱</div>
@@ -845,8 +875,28 @@ window.addEventListener('DOMContentLoaded', (event) => {
   
   // بدء تأثير الشعار ثم الانفجار
   setTimeout(explodeLogo, 3000);
+  
+  // منع سلوك التكبير/التصغير الافتراضي على الجوال
+  document.addEventListener('touchstart', function(event) {
+    if (event.touches.length > 1) {
+      event.preventDefault();
+    }
+  }, { passive: false });
+
+  let lastTouchEnd = 0;
+  document.addEventListener('touchend', function(event) {
+    const now = (new Date()).getTime();
+    if (now - lastTouchEnd <= 300) {
+      event.preventDefault();
+    }
+    lastTouchEnd = now;
+  }, false);
 });
+
+// منع التكبير على الجوال عند النقر المزدوج
+document.addEventListener('dblclick', function(e) {
+  e.preventDefault();
+}, { passive: false });
 </script>
 </body>
 </html>
-
