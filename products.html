@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+الكود مش جايب اي بضاعه بص عدب علي الكود ده <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
@@ -352,15 +352,6 @@ header {
   background: #6a1fbf;
 }
 
-/* زر جديد لحفظ السلة */
-#saveCartBtn {
-  background: #25d366 !important;
-}
-
-#saveCartBtn:hover {
-  background: #1da851 !important;
-}
-
 /* تحسين الموبايل - تم التعديل لتحسين عرض الفاتورة */
 @media (max-width: 480px){
   body { font-size: 13px; }
@@ -490,9 +481,141 @@ header {
     grid-column: 1;
   }
 }
+
+/* نافذة كلمة السر */
+#passwordModal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 1004;
+  overflow-y: auto;
+  padding: 15px;
+}
+
+.password-content {
+  background: #fff;
+  margin: 100px auto;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 95%;
+  width: 400px;
+  position: relative;
+  text-align: center;
+}
+
+.password-close {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #ff4444;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#passwordInput {
+  width: 100%;
+  padding: 12px;
+  margin: 15px 0;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  text-align: center;
+}
+
+.password-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.password-buttons button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+#submitPassword {
+  background: var(--primary-color);
+  color: white;
+}
+
+#cancelPassword {
+  background: #ccc;
+  color: #333;
+}
+
+.password-support {
+  margin-top: 20px;
+  padding: 15px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.password-support a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* شريط عرض الأسعار */
+#showPricesBar {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--primary-color);
+  color: white;
+  padding: 15px 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  z-index: 999;
+  cursor: pointer;
+  font-weight: bold;
+  text-align: center;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -50%) scale(1.05); }
+  100% { transform: translate(-50%, -50%) scale(1); }
+}
+
+/* إخفاء الأسعار */
+.hide-price .product-info .price,
+.hide-price .product button {
+  display: none;
+}
+
+.hide-price .product-info::after {
+  content: "🔒 السعر مخفي";
+  display: block;
+  color: #ff4444;
+  font-weight: bold;
+  margin-top: 10px;
+}
 </style>
 </head>
-<body>
+<body class="hide-price">
+
+<!-- شريط عرض الأسعار -->
+<div id="showPricesBar" onclick="showPasswordModal()">
+  👁️ اعرض الأسعار
+</div>
 
 <header>
   📦 جميع منتجات جنة
@@ -513,6 +636,23 @@ header {
 <div id="newBanner">🎉 منتجات جديدة اليوم!</div>
 <div id="products-container"></div>
 
+<!-- نافذة كلمة السر -->
+<div id="passwordModal">
+  <div class="password-content">
+    <button class="password-close" onclick="closePasswordModal()">×</button>
+    <h2>أدخل كلمة السر لعرض الأسعار</h2>
+    <input type="password" id="passwordInput" placeholder="كلمة السر">
+    <div class="password-buttons">
+      <button id="submitPassword" onclick="checkPassword()">تأكيد</button>
+      <button id="cancelPassword" onclick="closePasswordModal()">إلغاء</button>
+    </div>
+    <div class="password-support">
+      <p>إذا أردت كلمة السر، تواصل مع المندوب الخاص بك أو</p>
+      <a href="https://wa.me/201022495795" target="_blank">☎️ تواصل مع الدعم الفني</a>
+    </div>
+  </div>
+</div>
+
 <div id="totalModal">
   <div class="modal-content">
     <button class="modal-close" onclick="closeTotalModal()">×</button>
@@ -530,7 +670,6 @@ header {
 
     <div class="modal-buttons">
       <button id="sendBtn">📤 إرسال بالواتساب</button>
-      <button id="saveCartBtn">💾 حفظ السلة</button>
       <button onclick="closeTotalModal()">❌ إغلاق</button>
     </div>
     
@@ -550,6 +689,10 @@ const SCRIPT_PRODUCTS_URL = "https://script.google.com/macros/s/AKfycbxW3_pcjSff
 const container = document.getElementById("products-container");
 let productsData = [];
 let cart = [];
+let pricesVisible = localStorage.getItem('pricesVisible') === 'true';
+
+// كلمة السر الافتراضية (يمكن تغييرها)
+const PASSWORD = "12345";
 
 // دالة لتنسيق الأسعار بشكل عشري
 function formatPrice(price) {
@@ -557,19 +700,43 @@ function formatPrice(price) {
   return parseFloat(price).toFixed(2);
 }
 
-// تحميل السلة من localStorage عند بدء التحميل
-function loadCartFromStorage() {
-  const savedCart = localStorage.getItem('jannah_cart');
-  if (savedCart) {
-    cart = JSON.parse(savedCart);
-    updateCartCount();
+// عرض أو إخفاء الأسعار بناءً على حالة pricesVisible
+function togglePricesVisibility() {
+  if (pricesVisible) {
+    document.body.classList.remove('hide-price');
+    document.getElementById('showPricesBar').style.display = 'none';
+  } else {
+    document.body.classList.add('hide-price');
+    document.getElementById('showPricesBar').style.display = 'block';
   }
 }
 
-// حفظ السلة في localStorage
-function saveCartToStorage() {
-  localStorage.setItem('jannah_cart', JSON.stringify(cart));
-  showToast("تم حفظ السلة بنجاح");
+// عرض نافذة كلمة السر
+function showPasswordModal() {
+  document.getElementById('passwordModal').style.display = 'block';
+  document.getElementById('passwordInput').focus();
+}
+
+// إغلاق نافذة كلمة السر
+function closePasswordModal() {
+  document.getElementById('passwordModal').style.display = 'none';
+  document.getElementById('passwordInput').value = '';
+}
+
+// التحقق من كلمة السر
+function checkPassword() {
+  const input = document.getElementById('passwordInput').value;
+  if (input === PASSWORD) {
+    pricesVisible = true;
+    localStorage.setItem('pricesVisible', 'true');
+    togglePricesVisibility();
+    closePasswordModal();
+    showToast('تم عرض الأسعار بنجاح');
+  } else {
+    showToast('كلمة السر خاطئة، حاول مرة أخرى');
+    document.getElementById('passwordInput').value = '';
+    document.getElementById('passwordInput').focus();
+  }
 }
 
 // عرض المنتجات
@@ -579,25 +746,26 @@ function renderProducts(data){
       const item = data[i];
       // استخدام السعر المنسق
       const formattedPrice = formatPrice(item.price);
-      // تحديد الكمية من السلة إذا كانت موجودة
-      const cartQty = cart[i] || 0;
       html += `<div class="product">
                   <img src="${item.image || 'https://via.placeholder.com/150'}">
                   <div class="product-info">
                     <div class="name">${item.name}</div>
                     <div class="price">${formattedPrice} جنيه</div>
-                    <input type="number" min="1" value="${cartQty > 0 ? cartQty : 1}" data-index="${i}">
-                    <button onclick="addToCart(${i})">${cartQty > 0 ? 'تحديث' : 'أضف إلى'} السلة</button>
+                    <input type="number" min="1" value="1" data-index="${i}">
+                    <button onclick="addToCart(${i})">أضف إلى السلة</button>
                   </div>
                </div>`;
   }
   container.innerHTML = html;
+  
+  // تطبيق حالة إظهار/إخفاء الأسعار
+  togglePricesVisibility();
 }
 
 // تحميل سريع للمنتجات
 (async function(){
-   // تحميل السلة أولاً من التخزين المحلي
-   loadCartFromStorage();
+   // التحقق من حالة إظهار الأسعار من localStorage
+   togglePricesVisibility();
    
    if(localStorage.getItem("products")){
       productsData = JSON.parse(localStorage.getItem("products"));
@@ -628,16 +796,27 @@ function updateCartCount(){
 }
 
 function addToCart(index){
+  if (!pricesVisible) {
+    showPasswordModal();
+    showToast('يجب إدخال كلمة السر أولاً لإضافة المنتجات');
+    return;
+  }
+  
   const input = container.querySelector(`input[data-index='${index}']`);
   const quantity = parseInt(input.value);
   if(quantity<=0) return;
-  cart[index] = quantity;
+  cart[index] = (cart[index] || 0) + quantity;
   updateCartCount();
-  saveCartToStorage(); // حفظ السلة بعد التحديث
   showToast(`${productsData[index].name} تم إضافته/تحديثه في السلة`);
 }
 
 function showTotal(){
+  if (!pricesVisible) {
+    showPasswordModal();
+    showToast('يجب إدخال كلمة السر أولاً لعرض الفاتورة');
+    return;
+  }
+  
   let total=0;
   const cartList=document.getElementById("cartList");
   cartList.innerHTML="";
@@ -684,29 +863,14 @@ function updateQty(idx,value){
   if(value<=0) delete cart[idx];
   else cart[idx]=value;
   updateCartCount();
-  saveCartToStorage(); // حفظ السلة بعد التحديث
   showTotal();
 }
-
 function removeItem(idx){
   delete cart[idx];
   updateCartCount();
-  saveCartToStorage(); // حفظ السلة بعد الحذف
   showTotal();
 }
-
-function closeTotalModal(){ 
-  document.getElementById("totalModal").style.display='none'; 
-}
-
-function clearCart() {
-  cart = [];
-  updateCartCount();
-  saveCartToStorage(); // حفظ السلة الفارغة
-  showToast("تم مسح السلة");
-  renderProducts(productsData); // إعادة عرض المنتجات لتحديث الكميات
-  closeTotalModal();
-}
+function closeTotalModal(){ document.getElementById("totalModal").style.display='none'; }
 
 document.getElementById("sendBtn").onclick = function(){
   const orderDiv = document.getElementById("orderNumbers");
@@ -726,17 +890,9 @@ document.getElementById("sendBtn").onclick = function(){
       });
       text+=`المجموع الكلي: ${formatPrice(total)} جنيه`;
       window.open(`${a.href}?text=${encodeURIComponent(text)}`,"_blank");
-      
-      // مسح السلة بعد إرسال الطلب
-      setTimeout(clearCart, 1000);
     }
   });
 }
-
-// زر حفظ السلة
-document.getElementById("saveCartBtn").onclick = function() {
-  saveCartToStorage();
-};
 
 document.getElementById("cartBtn").onclick=showTotal;
 document.getElementById("totalBtn").onclick=showTotal;
@@ -774,6 +930,13 @@ document.getElementById("offerBtn").onclick = function(e){
 window.addEventListener('resize', function() {
   if (document.getElementById("totalModal").style.display === 'block') {
     showTotal();
+  }
+});
+
+// السماح بإدخال كلمة السر بالضغط على Enter
+document.getElementById('passwordInput').addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') {
+    checkPassword();
   }
 });
 </script>
