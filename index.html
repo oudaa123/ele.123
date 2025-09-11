@@ -415,7 +415,7 @@ header h2 {
   justify-content: center;
   align-items: center;
   z-index: 3000;
-  transition: opacity 1s ease;
+  transition: opacity 0.5s ease;
 }
 
 .logo-content {
@@ -430,7 +430,7 @@ header h2 {
 .logo-image {
   width: 100%;
   height: auto;
-  animation: logoAnimation 2.5s forwards;
+  animation: logoAnimation 2s forwards;
 }
 
 @keyframes logoAnimation {
@@ -731,13 +731,10 @@ function checkTelegram(){
 function explodeLogo() {
   companyLogo.style.animation = 'explode 0.7s forwards';
   setTimeout(() => {
-    logoOverlay.style.opacity = '0';
-    setTimeout(() => {
-      logoOverlay.style.display = 'none';
-      // إظهار المحتوى الرئيسي مباشرة بعد انتهاء الانفجار
-      mainContent.style.display = 'block';
-    }, 700);
-  }, 2500); // وقت أقل للانتظار (2.5 ثانية بدلاً من 3 ثواني)
+    // إخفاء شاشة الشعار مباشرة بعد الانفجار وإظهار المحتوى الرئيسي
+    logoOverlay.style.display = 'none';
+    mainContent.style.display = 'block';
+  }, 700); // وقت أقل للانتظار (0.7 ثانية فقط)
 }
 
 // تسجيل بيانات المستخدم
@@ -806,7 +803,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
   initPartners();
   
   // بدء تأثير الشعار ثم الانفجار
-  setTimeout(explodeLogo, 100); // بدء سريع بعد تحميل الصفحة
+  setTimeout(explodeLogo, 2000); // وقت أقل للانتظار (2 ثانية بدلاً من 2.5 ثانية)
   
   // منع سلوك التكبير/التصغير الافتراضي على الجوال
   document.addEventListener('touchstart', function(event) {
