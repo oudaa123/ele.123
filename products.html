@@ -653,21 +653,6 @@ header {
   margin-top: 10px;
 }
 
-/* فئات المنتجات - تم التعديل لإزالة المربعات الكبيرة */
-.category-header {
-  color: var(--primary-color);
-  padding: 15px 10px 5px;
-  margin: 10px 0 5px;
-  font-weight: bold;
-  font-size: 18px;
-  text-align: center;
-  position: sticky;
-  top: 120px;
-  z-index: 10;
-  background: var(--light-bg);
-  border-bottom: 2px solid var(--primary-color);
-}
-
 /* زر مسح السلة */
 #clearCartBtn {
   background: #ff4444;
@@ -870,82 +855,21 @@ function clearCart() {
   }
 }
 
-// تصنيف المنتجات حسب الفئات
-function categorizeProducts(products) {
-  const categories = {};
-  
-  // تحديد الفئات بناءً على الكلمات الرئيسية في اسم المنتج
-  products.forEach((product, index) => {
-    const name = product.name.toLowerCase();
-    let category = "منتجات أخرى";
-    
-    if (name.includes("صب") || name.includes("sp")) {
-      category = "الصب";
-    } else if (name.includes("شاحن") || name.includes("شحن") || name.includes("charger")) {
-      category = "الشواحن";
-    } else if (name.includes("كابل") || name.includes("cable") || name.includes("سلك")) {
-      category = "الكابلات";
-    } else if (name.includes("سماعة") || name.includes("سماعات") || name.includes("earphone")) {
-      category = "السماعات";
-    } else if (name.includes("حافظة") || name.includes("غطاء") || name.includes("case")) {
-      category = "الحافظات والأغطية";
-    } else if (name.includes("حامل") || name.includes("holder") || name.includes("stand")) {
-      category = "الحوامل";
-    } else if (name.includes("باور") || name.includes("power") || name.includes("بنك")) {
-      category = "الباور بانك";
-    } else if (name.includes("عدسة") || name.includes("lens") || name.includes("كاميرا")) {
-      category = "عدسات الكاميرا";
-    } else if (name.includes("فلاش") || name.includes("flash") || name.includes("ذاكرة")) {
-      category = "الفلاش ميموري";
-    }
-    
-    if (!categories[category]) {
-      categories[category] = [];
-    }
-    
-    categories[category].push({...product, index});
-  });
-  
-  return categories;
-}
-
-// عرض المنتجات مصنفة حسب الفئات
+// عرض جميع المنتجات في قائمة واحدة بدون تصنيف
 function renderProducts(data){
-  const categorizedProducts = categorizeProducts(data);
   let html = "";
   
-  // ترتيب الفئات حسب الأهمية
-  const categoryOrder = [
-    "الصبات", 
-    "الشواحن", 
-    "الكابلات", 
-    "السماعات", 
-    "الجرابات",
-    "الحوامل",
-    "الباور بانك",
-    "عدسات الكاميرا",
-    "الفلاش وميموري",
-    "منتجات أخرى"
-  ];
-  
-  // عرض كل فئة ومنتجاتها
-  categoryOrder.forEach(category => {
-    if (categorizedProducts[category] && categorizedProducts[category].length > 0) {
-      html += `<div class="category-header">${category}</div>`;
-      
-      categorizedProducts[category].forEach(item => {
-        const formattedPrice = formatPrice(item.price);
-        html += `<div class="product">
-                    <img src="${item.image || 'https://via.placeholder.com/150'}">
-                    <div class="product-info">
-                      <div class="name">${item.name}</div>
-                      <div class="price">${formattedPrice} جنيه</div>
-                      <input type="number" min="1" value="${cart[item.index] || 1}" data-index="${item.index}">
-                      <button onclick="addToCart(${item.index})">أضف إلى السلة</button>
-                    </div>
-                 </div>`;
-      });
-    }
+  data.forEach((item, index) => {
+    const formattedPrice = formatPrice(item.price);
+    html += `<div class="product">
+                <img src="${item.image || 'https://via.placeholder.com/150'}">
+                <div class="product-info">
+                  <div class="name">${item.name}</div>
+                  <div class="price">${formattedPrice} جنيه</div>
+                  <input type="number" min="1" value="${cart[index] || 1}" data-index="${index}">
+                  <button onclick="addToCart(${index})">أضف إلى السلة</button>
+                </div>
+             </div>`;
   });
   
   container.innerHTML = html;
@@ -1041,7 +965,7 @@ function showTotal(){
         // عرض عادي للكمبيوتر
         const div=document.createElement("div");
         div.className="cart-item";
-        div.innerHTML=`<span>${productsData[idx].name}</span>
+        div.innerHTML=`<span>${productsData[idx].name</span>
                        <span>${qty}</span>
                        <span class="cart-item-hide-on-mobile">${formatPrice(price)}</span>
                        <span>${formatPrice(lineTotal)}</span>
