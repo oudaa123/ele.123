@@ -19,6 +19,7 @@ body {
   margin: 0; 
   background: var(--light-bg);
   font-size: 14px;
+  padding-bottom: 60px; /* مساحة للزر العائم */
 }
 
 /* الهيدر */
@@ -352,6 +353,32 @@ header {
   background: #6a1fbf;
 }
 
+/* زر حفظ السلة العائم */
+#saveCartBtn {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--primary-color);
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 30px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+#saveCartBtn:hover {
+  background: #6a1fbf;
+  transform: translateX(-50%) scale(1.05);
+}
+
 /* تحسين الموبايل - تم التعديل لتحسين عرض الفاتورة */
 @media (max-width: 480px){
   body { font-size: 13px; }
@@ -410,6 +437,9 @@ header {
     gap: 5px;
     padding: 8px;
     border-bottom: 1px solid #ddd;
+    background: #f9f9f9;
+    border-radius: 8px;
+    margin-bottom: 8px;
   }
   
   .cart-item span:nth-child(1) {
@@ -417,37 +447,51 @@ header {
     text-align: center;
     font-weight: bold;
     padding-bottom: 5px;
+    color: var(--primary-color);
   }
   
   .cart-item span:nth-child(2)::before {
     content: "الكمية: ";
     font-weight: bold;
+    color: var(--text-color);
   }
   
   .cart-item span:nth-child(3)::before {
     content: "السعر: ";
     font-weight: bold;
+    color: var(--text-color);
   }
   
   .cart-item span:nth-child(4)::before {
     content: "الإجمالي: ";
     font-weight: bold;
+    color: var(--text-color);
   }
   
   .cart-item .remove-btn {
     grid-column: 1 / span 2;
     margin-top: 5px;
+    padding: 6px;
   }
   
   .modal-buttons button {
     font-size: 13px;
-    padding: 7px 10px;
+    padding: 10px;
     min-width: 100px;
   }
   
   #searchBox, #offerBtn {
     font-size: 13px;
     padding: 7px 10px;
+  }
+  
+  /* تحسينات للزر العائم على الموبايل */
+  #saveCartBtn {
+    width: 90%;
+    text-align: center;
+    justify-content: center;
+    font-size: 14px;
+    padding: 10px 16px;
   }
 }
 
@@ -617,19 +661,22 @@ header {
   👁️ اعرض الأسعار
 </div>
 
+<!-- زر حفظ السلة العائم -->
+<button id="saveCartBtn" onclick="saveCart()">💾 حفظ السلة</button>
+
 <header>
-  📦 جميع منتجات جنة
+  📦ELEC.123.تاج وجميع منتجات جنة
   <div class="header-buttons">
     <button id="cartBtn">🛒 السلة <span id="cart-count">0</span></button>
-    <button id="totalBtn">💰 الإجمالي</button>
-    <button id="supportBtn">☎️ الدعم</button>
+    <button id="totalBtn">💰 اجمالي الفاتورة الخاصه بك</button>
+    <button id="supportBtn">☎️ الدعم الفني للبرنامج</button>
     <button onclick="window.location.href='index.html'">🔙 الرئيسية</button>
-    <button id="notifBtn">🔔 الصلاة <span id="notif-count">0</span></button>
+    <button id="notifBtn">🔔صل علي النبي محمد  <span id="notif-count">0</span></button>
   </div>
 
   <div class="search-container">
-    <input type="text" id="searchBox" placeholder="🔍 ابحث عن منتج...">
-    <button id="offerBtn">💥 عروض</button>
+    <input type="text" id="searchBox" placeholder="🔍ابدأ و ابحث عن منتج...">
+    <button id="offerBtn">💥 طول منتا بتصل علي الحبيب كل لحظه فيه جديد انتظر باقي المنتجات والعروض </button>
   </div>
 </header>
 
@@ -640,15 +687,15 @@ header {
 <div id="passwordModal">
   <div class="password-content">
     <button class="password-close" onclick="closePasswordModal()">×</button>
-    <h2>أدخل كلمة السر لعرض الأسعار</h2>
+    <h2>أدخل كلمة السر لعرض الأسعار وعروض مملكة الاصليات</h2>
     <input type="password" id="passwordInput" placeholder="كلمة السر">
     <div class="password-buttons">
       <button id="submitPassword" onclick="checkPassword()">تأكيد</button>
       <button id="cancelPassword" onclick="closePasswordModal()">إلغاء</button>
     </div>
     <div class="password-support">
-      <p>إذا أردت كلمة السر، تواصل مع المندوب الخاص بك أو</p>
-      <a href="https://wa.me/201022495795" target="_blank">☎️ تواصل مع الدعم الفني</a>
+      <p>إذا أردت كلمة السر تواصل مع المندوب الخاص بك أو</p>
+      <a href="https://wa.me/201022495795" target="_blank">☎️  تواصل مع الدعم الفني نزداد شرف</a>
     </div>
   </div>
 </div>
@@ -670,6 +717,7 @@ header {
 
     <div class="modal-buttons">
       <button id="sendBtn">📤 إرسال بالواتساب</button>
+      <button onclick="saveCart()">💾 حفظ السلة</button>
       <button onclick="closeTotalModal()">❌ إغلاق</button>
     </div>
     
@@ -692,7 +740,7 @@ let cart = [];
 let pricesVisible = false; // تم التعديل: إخفاء الأسعار افتراضياً
 
 // كلمة السر الافتراضية (يمكن تغييرها)
-const PASSWORD = "100100";
+const PASSWORD = "12345";
 
 // دالة لتنسيق الأسعار بشكل عشري
 function formatPrice(price) {
@@ -738,6 +786,31 @@ function checkPassword() {
   }
 }
 
+// حفظ السلة في التخزين المحلي
+function saveCart() {
+  if (cart.length === 0 || cart.filter(item => item > 0).length === 0) {
+    showToast('السلة فارغة، أضف منتجات أولاً');
+    return;
+  }
+  
+  localStorage.setItem('savedCart', JSON.stringify(cart));
+  showToast('تم حفظ السلة بنجاح ✅');
+}
+
+// استعادة السلة من التخزين المحلي
+function loadSavedCart() {
+  const savedCart = localStorage.getItem('savedCart');
+  if (savedCart) {
+    try {
+      cart = JSON.parse(savedCart);
+      updateCartCount();
+      showToast('تم استعادة السلة المحفوظة');
+    } catch (e) {
+      console.error('Error loading saved cart:', e);
+    }
+  }
+}
+
 // عرض المنتجات
 function renderProducts(data){
   let html = "";
@@ -779,6 +852,9 @@ function renderProducts(data){
      renderProducts(productsData);
      setTimeout(checkNewProducts, 1500);
    } catch(err){ console.log("❌ خطأ في جلب المنتجات:",err); }
+   
+   // استعادة السلة المحفوظة
+   loadSavedCart();
 })();
 
 function showToast(msg){
@@ -939,7 +1015,12 @@ document.getElementById('passwordInput').addEventListener('keypress', function(e
     checkPassword();
   }
 });
+
+// إظهار زر حفظ السلة فقط عندما تكون هناك عناصر في السلة
+setInterval(() => {
+  const cartCount = cart.reduce((sum, qty) => qty ? sum + qty : sum, 0);
+  document.getElementById('saveCartBtn').style.display = cartCount > 0 ? 'flex' : 'none';
+}, 1000);
 </script>
 </body>
 </html>
-
