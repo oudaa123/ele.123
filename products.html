@@ -1220,7 +1220,7 @@ document.getElementById("sendBtn").onclick = function(){
           const price = parseFloat(productsData[idx].price) || 0;
           const lineTotal = qty * price;
           total += lineTotal;
-          text += `${productsData[idx].name} | ${qty} | ${formatPrice(price)} | ${formatPrice(lineTotal)}\n`;
+          text += `${productsData[idx].name} | ${qty} |عدد ${formatPrice(price)} سعر| ${formatPrice(lineTotal)}\n`;
         }
       });
       text += `المجموع الكلي: ${formatPrice(total)} جنيه`;
@@ -1303,3 +1303,4 @@ setInterval(() => {
 </script>
 </body>
 </html>
+
