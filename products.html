@@ -81,6 +81,30 @@ header {
   display: none;
 }
 
+/* زر المنتجات الجديدة */
+#newProductsBtn {
+  position: relative;
+  background: #25d366;
+  border: 1px solid #128C7E;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #fff;
+}
+#new-count {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: var(--accent-color);
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+  padding: 2px 5px;
+  border-radius: 50%;
+  display: none;
+}
+
 /* عداد السلة - تم تعديل موقعه */
 #cart-count {
   position: absolute;
@@ -706,6 +730,7 @@ header {
     <button id="supportBtn">☎️ الدعم الفني للبرنامج</button>
     <button onclick="window.location.href='index.html'">🔙 الرئيسية</button>
     <button id="notifBtn">🔔صل علي النبي محمد  <span id="notif-count">0</span></button>
+    <button id="newProductsBtn">🆕 جديد <span id="new-count">0</span></button>
     <button id="clearCartBtn" onclick="clearCart()">🗑️ مسح السلة</button>
   </div>
 
@@ -773,6 +798,7 @@ const container = document.getElementById("products-container");
 let productsData = [];
 let cart = [];
 let pricesVisible = false;
+let newProductsCount = 0;
 
 // كلمة السر الافتراضية
 const PASSWORD = "2525";
@@ -930,6 +956,7 @@ function renderProducts(data){
           return item;
         });
         renderProducts(productsData);
+        checkNewProducts();
       } catch (e) {
         console.error("Error loading products from cache:", e);
       }
@@ -949,7 +976,7 @@ function renderProducts(data){
      
      localStorage.setItem("products", JSON.stringify(productsData));
      renderProducts(productsData);
-     setTimeout(checkNewProducts, 1500);
+     checkNewProducts();
    } catch(err){ 
      console.log("❌ خطأ في جلب المنتجات:", err);
      showToast('حدث خطأ في تحميل المنتجات');
@@ -1088,9 +1115,14 @@ function checkNewProducts(){
   productsData.forEach(p => { 
     if(p.date && p.date.startsWith(today)) newCount++; 
   });
+  
+  newProductsCount = newCount;
+  
   if(newCount > 0){
     document.getElementById("notif-count").innerText = newCount;
     document.getElementById("notif-count").style.display = "inline-block";
+    document.getElementById("new-count").innerText = newCount;
+    document.getElementById("new-count").style.display = "inline-block";
     document.getElementById("newBanner").style.display = "block";
     
     if(Notification.permission === "granted") {
@@ -1112,9 +1144,17 @@ document.getElementById("searchBox").addEventListener("input", function(){
 
 // زر العروض - يظهر فقط المنتجات اللي فيها عمود offer
 document.getElementById("offerBtn").onclick = function(e){
-    e.preventDefault();
+    e.preventDefault(); // منع التصرف الافتراضي (فتح صفحة جديدة)
     const offers = productsData.filter(p => p.offer && p.offer.trim() !== "");
     renderProducts(offers);
+}
+
+// زر المنتجات الجديدة
+document.getElementById("newProductsBtn").onclick = function(e){
+    e.preventDefault();
+    const today = (new Date()).toISOString().split("T")[0];
+    const newProducts = productsData.filter(p => p.date && p.date.startsWith(today));
+    renderProducts(newProducts);
 }
 
 // إعادة رسم الفاتورة عند تغيير حجم النافذة
