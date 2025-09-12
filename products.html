@@ -172,7 +172,7 @@ header {
   height: 40px;
   overflow: hidden;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-ramp: 2;
   -webkit-box-orient: vertical;
 }
 .product-info .price { 
@@ -471,6 +471,28 @@ header {
 #saveCartBtn:hover {
   background: #6a1fbf;
   transform: translateX(-50%) scale(1.05);
+}
+
+.customer-info {
+  margin: 15px 0;
+  padding: 15px;
+  background: #f5f5f5;
+  border-radius: 8px;
+  text-align: right;
+}
+
+.customer-info h3 {
+  margin-top: 0;
+  color: var(--primary-color);
+}
+
+.customer-info input {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
 }
 
 @media (max-width: 480px){
@@ -836,6 +858,14 @@ header {
       <div class="invoice-total">إجمالي الفاتورة: <span id="totalAmount">0.00</span> جنيه</div>
     </div>
     
+    <!-- إضافة نموذج بيانات العميل -->
+    <div class="customer-info">
+      <h3>معلومات العميل</h3>
+      <input type="text" id="customerName" placeholder="اسم العميل">
+      <input type="date" id="orderDate">
+      <input type="text" id="customerPhone" placeholder="رقم الهاتف (اختياري)">
+    </div>
+    
     <table class="invoice-table">
       <thead>
         <tr>
@@ -1003,7 +1033,7 @@ function renderProducts(data, containerElement, isNewPage = false){
   } else {
     data.forEach((item, index) => {
       const formattedPrice = formatPrice(item.price);
-      const isNew = item.status && item.status.includes("جديد");
+      const isNew = item.الحاله && item.الحاله.includes("جديد");
       
       html += `<div class="product">
                   ${isNew ? '<span class="new-product-badge">جديد</span>' : ''}
@@ -1031,7 +1061,7 @@ function showNewProductsPage() {
   document.getElementById('new-products-page').style.display = 'block';
   
   const newProducts = productsData.filter(product => 
-    product.status && product.status.includes("جديد")
+    product.الحاله && product.الحاله.includes("جديد")
   );
   
   renderProducts(newProducts, newProductsContainer, true);
@@ -1051,6 +1081,29 @@ function playNotificationSound() {
     sound.play().catch(e => console.log('تعذر تشغيل الصوت:', e));
   } catch (e) {
     console.log('خطأ في تشغيل الصوت:', e);
+  }
+}
+
+// دالة للتحقق من المنتجات الجديدة
+function checkNewProducts(){
+  // البحث في عمود "الحاله" بدلاً من "status"
+  const newProducts = productsData.filter(p => p.الحاله && p.الحاله.includes("جديد"));
+  newProductsCount = newProducts.length;
+  
+  if(newProductsCount > 0){
+    document.getElementById("notif-count").innerText = newProductsCount;
+    document.getElementById("notif-count").style.display = "inline-block";
+    document.getElementById("new-count").innerText = newProductsCount;
+    document.getElementById("new-count").style.display = "inline-block";
+    document.getElementById("newBanner").style.display = "block";
+    
+    if(Notification.permission === "granted") {
+      new Notification(`تم إضافة ${newProductsCount} منتجات جديدة اليوم 🎉`);
+    } else if(Notification.permission !== "denied") {
+      Notification.requestPermission().then(p => { 
+        if(p === "granted") new Notification(`تم إضافة ${newProductsCount} منتجات جديدة اليوم 🎉`); 
+      });
+    }
   }
 }
 
@@ -1134,8 +1187,8 @@ function addToCart(index, isNewPage = false){
   cart[index] = (cart[index] || 0) + quantity;
   updateCartCount();
   
-  // تشغيل صوت الإشعار عند إضافة منتج جديد
-  if (productsData[index].status && productsData[index].status.includes("جديد")) {
+  // تشغيل صوت الإشعار عند إضافة منتج جديد (البحث في عمود "الحاله")
+  if (productsData[index].الحاله && productsData[index].الحاله.includes("جديد")) {
     playNotificationSound();
   }
   
@@ -1170,6 +1223,11 @@ function showTotal(){
   
   document.getElementById("totalAmount").innerText = formatPrice(total);
   document.getElementById("finalTotalAmount").innerText = formatPrice(total);
+  
+  // تعيين تاريخ اليوم كقيمة افتراضية
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById("orderDate").value = today;
+  
   document.getElementById("totalModal").style.display = "block";
 }
 
@@ -1192,22 +1250,36 @@ function closeTotalModal(){
 }
 
 document.getElementById("sendBtn").onclick = function(){
+  const customerName = document.getElementById("customerName").value || "عميل";
+  const orderDate = document.getElementById("orderDate").value || new Date().toLocaleDateString('ar-EG');
+  const customerPhone = document.getElementById("customerPhone").value || "غير محدد";
+  
   const orderDiv = document.getElementById("orderNumbers");
   orderDiv.style.display = "block";
   orderDiv.querySelectorAll("a").forEach(a => {
     a.onclick = (e) => {
       e.preventDefault();
-      let text = "🧾 طلبية جديدة\n\n";
+      let text = `🧾 طلبية جديدة\n`;
+      text += `📅 التاريخ: ${orderDate}\n`;
+      text += `👤 العميل: ${customerName}\n`;
+      text += `📞 الهاتف: ${customerPhone}\n\n`;
+      text += "--------------------------------\n\n";
+      
       let total = 0;
       cart.forEach((qty, idx) => {
         if(qty && productsData[idx]){
           const price = parseFloat(productsData[idx].price) || 0;
           const lineTotal = qty * price;
           total += lineTotal;
-          text += `${productsData[idx].name} | ${qty} | ${formatPrice(price)} | ${formatPrice(lineTotal)}\n`;
+          text += `📦 ${productsData[idx].name}\n`;
+          text += `   الكمية: ${qty} | السعر: ${formatPrice(price)} | الإجمالي: ${formatPrice(lineTotal)}\n\n`;
         }
       });
-      text += `المجموع الكلي: ${formatPrice(total)} جنيه`;
+      
+      text += "--------------------------------\n";
+      text += `💰 المجموع الكلي: ${formatPrice(total)} جنيه\n`;
+      text += `📍 من: جنة لجميع أكسسوارات المحمول`;
+      
       window.open(`${a.href}?text=${encodeURIComponent(text)}`, "_blank");
     }
   });
@@ -1216,27 +1288,6 @@ document.getElementById("sendBtn").onclick = function(){
 document.getElementById("cartBtn").onclick = showTotal;
 document.getElementById("totalBtn").onclick = showTotal;
 document.getElementById("supportBtn").onclick = () => window.open("https://wa.me/201022495795", "_blank");
-
-function checkNewProducts(){
-  const newProducts = productsData.filter(p => p.status && p.status.includes("جديد"));
-  newProductsCount = newProducts.length;
-  
-  if(newProductsCount > 0){
-    document.getElementById("notif-count").innerText = newProductsCount;
-    document.getElementById("notif-count").style.display = "inline-block";
-    document.getElementById("new-count").innerText = newProductsCount;
-    document.getElementById("new-count").style.display = "inline-block";
-    document.getElementById("newBanner").style.display = "block";
-    
-    if(Notification.permission === "granted") {
-      new Notification(`تم إضافة ${newProductsCount} منتجات جديدة اليوم 🎉`);
-    } else if(Notification.permission !== "denied") {
-      Notification.requestPermission().then(p => { 
-        if(p === "granted") new Notification(`تم إضافة ${newProductsCount} منتجات جديدة اليوم 🎉`); 
-      });
-    }
-  }
-}
 
 document.getElementById("searchBox").addEventListener("input", function(){
   const keyword = this.value.trim().toLowerCase();
