@@ -19,10 +19,9 @@ body {
   margin: 0; 
   background: var(--light-bg);
   font-size: 14px;
-  padding-bottom: 60px; /* مساحة للزر العائم */
+  padding-bottom: 60px;
 }
 
-/* الهيدر */
 header {
   background: #131921;
   color: white;
@@ -56,7 +55,6 @@ header {
 }
 .header-buttons button:hover { background: #f7ca00; }
 
-/* زر الجرس */
 #notifBtn {
   position: relative;
   background: var(--accent-color);
@@ -81,7 +79,6 @@ header {
   display: none;
 }
 
-/* زر المنتجات الجديدة */
 #newProductsBtn {
   position: relative;
   background: #25d366;
@@ -105,7 +102,6 @@ header {
   display: none;
 }
 
-/* عداد السلة - تم تعديل موقعه */
 #cart-count {
   position: absolute;
   top: -8px;
@@ -121,7 +117,6 @@ header {
   z-index: 1001;
 }
 
-/* حركة الجرس */
 @keyframes ring {
   0% { transform: rotate(0deg); }
   1% { transform: rotate(15deg); }
@@ -134,7 +129,6 @@ header {
   100% { transform: rotate(0deg); }
 }
 
-/* بانر المنتج الجديد */
 #newBanner {
   display: none;
   background: red;
@@ -145,7 +139,6 @@ header {
   font-weight: bold;
 }
 
-/* منتجات على شكل كروت */
 #products-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -211,7 +204,6 @@ header {
 }
 .product button:hover { background: #6a1fbf; transform: scale(1.05); }
 
-/* نافذة إجمالي الفاتورة - تم التعديل لتبدو مثل الصورة */
 #totalModal {
   display: none;
   position: fixed;
@@ -250,7 +242,6 @@ header {
   font-weight: bold;
 }
 
-/* تنسيق الفاتورة الجديد - مشابه للصورة */
 .invoice-header {
   text-align: center;
   margin-bottom: 20px;
@@ -328,15 +319,6 @@ header {
   border: 2px solid #8a2be2;
 }
 
-.invoice-footer {
-  text-align: center;
-  margin-top: 30px;
-  padding-top: 15px;
-  border-top: 2px solid #8a2be2;
-  color: #666;
-  font-size: 14px;
-}
-
 .action-buttons {
   display: flex;
   justify-content: center;
@@ -377,7 +359,6 @@ header {
   transform: translateY(-2px);
 }
 
-/* أزرار الفاتورة */
 .modal-buttons {
   display: flex;
   flex-wrap: wrap;
@@ -401,7 +382,6 @@ header {
 }
 .modal-buttons button:hover { background: #6a1fbf; }
 
-/* Toast */
 #toast {
   position: fixed;
   bottom: 20px; 
@@ -418,7 +398,6 @@ header {
   font-size: 14px;
 }
 
-/* البحث والعروض */
 .search-container {
   display: flex;
   justify-content: center;
@@ -448,7 +427,6 @@ header {
   white-space: nowrap;
 }
 
-/* أرقام الطلبات */
 .order-numbers {
   margin-top: 15px;
   display: none;
@@ -470,7 +448,6 @@ header {
   background: #6a1fbf;
 }
 
-/* زر حفظ السلة العائم */
 #saveCartBtn {
   position: fixed;
   bottom: 20px;
@@ -496,7 +473,6 @@ header {
   transform: translateX(-50%) scale(1.05);
 }
 
-/* تحسين الموبايل - تم التعديل لتحسين عرض الفاتورة */
 @media (max-width: 480px){
   body { font-size: 13px; }
   
@@ -571,13 +547,11 @@ header {
     padding: 4px 6px;
   }
   
-  /* تحسينات إضافية للشاشات الصغيرة */
   .modal-content {
     padding: 10px;
   }
 }
 
-/* نافذة كلمة السر */
 #passwordModal {
   display: none;
   position: fixed;
@@ -666,7 +640,6 @@ header {
   font-weight: bold;
 }
 
-/* شريط عرض الأسعار */
 #showPricesBar {
   position: fixed;
   top: 50%;
@@ -690,7 +663,6 @@ header {
   100% { transform: translate(-50%, -50%) scale(1); }
 }
 
-/* إخفاء الأسعار */
 .hide-price .product-info .price,
 .hide-price .product button {
   display: none;
@@ -704,7 +676,6 @@ header {
   margin-top: 10px;
 }
 
-/* زر مسح السلة */
 #clearCartBtn {
   background: #ff4444;
   color: white;
@@ -720,7 +691,6 @@ header {
   background: #cc0000;
 }
 
-/* رسالة خطأ للصور */
 .image-error {
   position: relative;
 }
@@ -741,12 +711,10 @@ header {
 </head>
 <body class="hide-price">
 
-<!-- شريط عرض الأسعار -->
 <div id="showPricesBar" onclick="showPasswordModal()">
   👁️ اعرض الأسعار
 </div>
 
-<!-- زر حفظ السلة العائم -->
 <button id="saveCartBtn" onclick="saveCart()">💾 حفظ السلة</button>
 
 <header>
@@ -770,7 +738,6 @@ header {
 <div id="newBanner">🎉 منتجات جديدة اليوم!</div>
 <div id="products-container"></div>
 
-<!-- نافذة كلمة السر -->
 <div id="passwordModal">
   <div class="password-content">
     <button class="password-close" onclick="closePasswordModal()">×</button>
@@ -791,7 +758,6 @@ header {
   <div class="modal-content">
     <button class="modal-close" onclick="closeTotalModal()">×</button>
     
-    <!-- فاتورة جديدة مشابهة للصورة -->
     <div class="invoice-header">
       <h1 class="invoice-title">جنة</h1>
       <h2 class="invoice-subtitle">لجميع أكسسوارات المحمول</h2>
@@ -808,25 +774,15 @@ header {
         </tr>
       </thead>
       <tbody id="cartList">
-        <!-- سيتم ملء هذا القسم بالمنتجات عبر JavaScript -->
       </tbody>
     </table>
     
     <div class="final-total"><span id="finalTotalAmount">0.00</span> جنيه<br>إجمالي الفاتورة</div>
     
-    <div class="action-buttons">
-      <button class="action-btn print-btn" onclick="window.print()">
-        <span>🖨️</span> طباعة الفاتورة
-      </button>
-      <button class="action-btn back-btn" onclick="closeTotalModal()">
-        <span>↩️</span> العودة
-      </button>
-    </div>
-    
-    <div class="invoice-footer">
-      <p>شكراً لتعاملكم مع متجر جنة لأكسسوارات المحمول</p>
-      <p>للاستفسار: 01022495795 - 01067070423</p>
-      <p>تطبيق جنة - جميع منتجات المحمول</p>
+    <div class="modal-buttons">
+      <button id="sendBtn">📤 ارسل فاتورتك واستلمها في اقل من 12 ساعه</button>
+      <button onclick="saveCart()">💾 احفظ الفاتوره</button>
+      <button onclick="closeTotalModal()">❌ إغلاق</button>
     </div>
     
     <div id="orderNumbers" class="order-numbers">
@@ -848,36 +804,29 @@ let cart = [];
 let pricesVisible = false;
 let newProductsCount = 0;
 
-// كلمة السر الافتراضية
 const PASSWORD = "2525";
 
-// دالة محسنة لتنسيق الأسعار بشكل عشري
 function formatPrice(price) {
   if (price === null || price === undefined || price === '' || price === 'NaN') {
     return "0.00";
   }
   
-  // تحويل السعر إلى رقم مع التأكد من أنه يحتوي على منزلتين عشريتين
   const numericPrice = parseFloat(price);
   
-  // إذا كان السعر غير رقمي، نعيد 0.00
   if (isNaN(numericPrice)) {
     console.error("سعر غير صحيح:", price);
     return "0.00";
   }
   
-  // التأكد من أن السعر يحتوي على منزلتين عشريتين
   return numericPrice.toFixed(2);
 }
 
-// دالة معالجة أخطاء الصور
 function handleImageError(img) {
   img.src = 'https://via.placeholder.com/150?text=خطأ+في+الصورة';
   img.classList.add('image-error');
   console.log('خطأ في تحميل الصورة:', img.src);
 }
 
-// عرض أو إخفاء الأسعار بناءً على حالة pricesVisible
 function togglePricesVisibility() {
   if (pricesVisible) {
     document.body.classList.remove('hide-price');
@@ -888,19 +837,16 @@ function togglePricesVisibility() {
   }
 }
 
-// عرض نافذة كلمة السر
 function showPasswordModal() {
   document.getElementById('passwordModal').style.display = 'block';
   document.getElementById('passwordInput').focus();
 }
 
-// إغلاق نافذة كلمة السر
 function closePasswordModal() {
   document.getElementById('passwordModal').style.display = 'none';
   document.getElementById('passwordInput').value = '';
 }
 
-// التحقق من كلمة السر
 function checkPassword() {
   const input = document.getElementById('passwordInput').value;
   if (input === PASSWORD) {
@@ -915,7 +861,6 @@ function checkPassword() {
   }
 }
 
-// حفظ السلة في التخزين المحلي
 function saveCart() {
   if (cart.length === 0 || cart.filter(item => item > 0).length === 0) {
     showToast('السلة فارغة، أضف منتجات أولاً');
@@ -933,7 +878,6 @@ function saveCart() {
   showToast('تم حفظ السلة بنجاح ✅');
 }
 
-// استعادة السلة من التخزين المحلي
 function loadSavedCart() {
   const savedCart = localStorage.getItem('savedCart');
   if (savedCart) {
@@ -953,7 +897,6 @@ function loadSavedCart() {
   }
 }
 
-// مسح السلة بالكامل
 function clearCart() {
   if (confirm('هل تريد مسح السلة بالكامل؟')) {
     cart = [];
@@ -964,12 +907,10 @@ function clearCart() {
   }
 }
 
-// عرض جميع المنتجات في قائمة واحدة بدون تصنيف
 function renderProducts(data){
   let html = "";
   
   data.forEach((item, index) => {
-    // التأكد من أن السعر صحيح قبل تنسيقه
     const formattedPrice = formatPrice(item.price);
     html += `<div class="product">
                 <img src="${item.image || 'https://via.placeholder.com/150'}" onerror="handleImageError(this)" alt="${item.name}">
@@ -984,11 +925,9 @@ function renderProducts(data){
   
   container.innerHTML = html;
   
-  // تطبيق حالة إظهار/إخفاء الأسعار
   togglePricesVisibility();
 }
 
-// تحميل سريع للمنتجات
 (async function(){
    pricesVisible = false;
    togglePricesVisibility();
@@ -996,7 +935,6 @@ function renderProducts(data){
    if(localStorage.getItem("products")){
       try {
         productsData = JSON.parse(localStorage.getItem("products"));
-        // تنظيف البيانات من الأسعار غير الصحيحة
         productsData = productsData.map(item => {
           if (isNaN(parseFloat(item.price))) {
             item.price = "0.00";
@@ -1014,7 +952,6 @@ function renderProducts(data){
      const res = await fetch(SCRIPT_PRODUCTS_URL, {cache: "no-store"});
      const data = await res.json();
      
-     // تنظيف البيانات من الأسعار غير الصحيحة
      productsData = data.reverse().map(item => {
        if (isNaN(parseFloat(item.price))) {
          item.price = "0.00";
@@ -1030,7 +967,6 @@ function renderProducts(data){
      showToast('حدث خطأ في تحميل المنتجات');
    }
    
-   // استعادة السلة المحفوظة
    loadSavedCart();
 })();
 
@@ -1076,7 +1012,6 @@ function showTotal(){
   
   cart.forEach((qty, idx) => {
     if(qty && productsData[idx]){
-      // التأكد من أن السعر صحيح
       const price = parseFloat(productsData[idx].price) || 0;
       const lineTotal = qty * price;
       total += lineTotal;
@@ -1113,6 +1048,28 @@ function closeTotalModal(){
   document.getElementById("totalModal").style.display = 'none'; 
 }
 
+document.getElementById("sendBtn").onclick = function(){
+  const orderDiv = document.getElementById("orderNumbers");
+  orderDiv.style.display = "block";
+  orderDiv.querySelectorAll("a").forEach(a => {
+    a.onclick = (e) => {
+      e.preventDefault();
+      let text = "🧾 طلبية جديدة\n\n";
+      let total = 0;
+      cart.forEach((qty, idx) => {
+        if(qty && productsData[idx]){
+          const price = parseFloat(productsData[idx].price) || 0;
+          const lineTotal = qty * price;
+          total += lineTotal;
+          text += `${productsData[idx].name} | ${qty} | ${formatPrice(price)} | ${formatPrice(lineTotal)}\n`;
+        }
+      });
+      text += `المجموع الكلي: ${formatPrice(total)} جنيه`;
+      window.open(`${a.href}?text=${encodeURIComponent(text)}`, "_blank");
+    }
+  });
+}
+
 document.getElementById("cartBtn").onclick = showTotal;
 document.getElementById("totalBtn").onclick = showTotal;
 document.getElementById("supportBtn").onclick = () => window.open("https://wa.me/201022495795", "_blank");
@@ -1143,21 +1100,18 @@ function checkNewProducts(){
   }
 }
 
-// البحث العادي
 document.getElementById("searchBox").addEventListener("input", function(){
   const keyword = this.value.trim().toLowerCase();
   const filtered = productsData.filter(p => p.name.toLowerCase().includes(keyword));
   renderProducts(filtered);
 });
 
-// زر العروض - يظهر فقط المنتجات اللي فيها عمود offer
 document.getElementById("offerBtn").onclick = function(e){
-    e.preventDefault(); // منع التصرف الافتراضي (فتح صفحة جديدة)
+    e.preventDefault();
     const offers = productsData.filter(p => p.offer && p.offer.trim() !== "");
     renderProducts(offers);
 }
 
-// زر المنتجات الجديدة
 document.getElementById("newProductsBtn").onclick = function(e){
     e.preventDefault();
     const today = (new Date()).toISOString().split("T")[0];
@@ -1165,21 +1119,18 @@ document.getElementById("newProductsBtn").onclick = function(e){
     renderProducts(newProducts);
 }
 
-// إعادة رسم الفاتورة عند تغيير حجم النافذة
 window.addEventListener('resize', function() {
   if (document.getElementById("totalModal").style.display === 'block') {
     showTotal();
   }
 });
 
-// السماح بإدخال كلمة السر بالضغط على Enter
 document.getElementById('passwordInput').addEventListener('keypress', function(e) {
   if (e.key === 'Enter') {
     checkPassword();
   }
 });
 
-// إظهار زر حفظ السلة فقط عندما تكون هناك عناصر في السلة
 setInterval(() => {
   const cartCount = cart.reduce((sum, qty) => qty ? sum + qty : sum, 0);
   document.getElementById('saveCartBtn').style.display = cartCount > 0 ? 'flex' : 'none';
