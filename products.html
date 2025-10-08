@@ -1040,6 +1040,12 @@ function formatPrice(price) {
   return numericPrice.toFixed(2);
 }
 
+// دالة لإزالة الرموز من اسم المنتج
+function cleanProductName(name) {
+  if (!name) return '';
+  return name.replace(/\.\./g, "").replace(/&/g, "");
+}
+
 function handleImageError(img) {
   // إزالة رسالة الخطأ السابقة إذا كانت موجودة
   if (img.parentNode.querySelector('.image-placeholder')) {
@@ -1151,7 +1157,7 @@ function renderProducts(data, containerElement){
       const isOfferProduct = item.name && item.name.includes("&");
       
       // إزالة ".." و "&" من الاسم للعرض
-      const displayName = item.name ? item.name.replace(/\.\./g, "").replace(/&/g, "") : item.name;
+      const displayName = cleanProductName(item.name);
       
       // حساب السعر بعد زيادة 45% للمنتجات التي تحتوي على "&"
       const originalPrice = parseFloat(item.price) || 0;
@@ -1238,7 +1244,10 @@ function formatWhatsAppInvoice() {
       const lineTotal = qty * price;
       total += lineTotal;
       
-      text += `📦 ${productsData[idx].name}\n`;
+      // استخدام الاسم النظيف بدون رموز
+      const cleanName = cleanProductName(productsData[idx].name);
+      
+      text += `📦 ${cleanName}\n`;
       text += `   الكمية: ${qty}\n`;
       text += `   السعر: ${formatPrice(price)} جنيه\n`;
       text += `   الإجمالي: ${formatPrice(lineTotal)} جنيه\n`;
@@ -1459,7 +1468,7 @@ function addToCart(index){
     playNotificationSound();
   }
   
-  showToast(`${productsData[index].name} تم إضافته/تحديثه في السلة`);
+  showToast(`${cleanProductName(productsData[index].name)} تم إضافته/تحديثه في السلة`);
 }
 
 function showTotal(){
@@ -1479,8 +1488,11 @@ function showTotal(){
       const lineTotal = qty * price;
       total += lineTotal;
       
+      // استخدام الاسم النظيف بدون رموز
+      const cleanName = cleanProductName(productsData[idx].name);
+      
       const row = document.createElement("tr");
-      row.innerHTML = `<td class="product-name">${productsData[idx].name}</td>
+      row.innerHTML = `<td class="product-name">${cleanName}</td>
                        <td>${qty}</td>
                        <td>${formatPrice(price)} جنيه</td>
                        <td>${formatPrice(lineTotal)} جنيه</td>
@@ -1505,7 +1517,8 @@ function showTotal(){
 
 // دالة تعديل كمية منتج في السلة
 function editCartItem(index) {
-  const newQty = prompt(`أدخل الكمية الجديدة لـ ${productsData[index].name}:`, cart[index]);
+  const cleanName = cleanProductName(productsData[index].name);
+  const newQty = prompt(`أدخل الكمية الجديدة لـ ${cleanName}:`, cart[index]);
   
   if (newQty !== null) {
     const quantity = parseInt(newQty);
@@ -1513,7 +1526,7 @@ function editCartItem(index) {
       cart[index] = quantity;
       updateCartCount();
       showTotal();
-      showToast(`تم تعديل كمية ${productsData[index].name} إلى ${quantity}`);
+      showToast(`تم تعديل كمية ${cleanName} إلى ${quantity}`);
     } else if (quantity === 0) {
       deleteCartItem(index);
     } else {
@@ -1524,11 +1537,12 @@ function editCartItem(index) {
 
 // دالة حذف منتج من السلة
 function deleteCartItem(index) {
-  if (confirm(`هل تريد حذف ${productsData[index].name} من السلة؟`)) {
+  const cleanName = cleanProductName(productsData[index].name);
+  if (confirm(`هل تريد حذف ${cleanName} من السلة؟`)) {
     delete cart[index];
     updateCartCount();
     showTotal();
-    showToast(`تم حذف ${productsData[index].name} من السلة`);
+    showToast(`تم حذف ${cleanName} من السلة`);
   }
 }
 
