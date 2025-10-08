@@ -568,6 +568,42 @@ header {
   padding: 5px;
 }
 
+/* أزرار التعديل والحذف في السلة */
+.cart-actions {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  margin-top: 5px;
+}
+
+.edit-btn, .delete-btn {
+  padding: 4px 8px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.edit-btn {
+  background: #ffd814;
+  color: #333;
+}
+
+.edit-btn:hover {
+  background: #f7ca00;
+}
+
+.delete-btn {
+  background: #ff4444;
+  color: white;
+}
+
+.delete-btn:hover {
+  background: #cc0000;
+}
+
 @media (max-width: 480px){
   body { font-size: 13px; }
   
@@ -627,6 +663,16 @@ header {
   
   .action-buttons {
     flex-direction: column;
+  }
+  
+  .cart-actions {
+    flex-direction: column;
+    gap: 3px;
+  }
+  
+  .edit-btn, .delete-btn {
+    padding: 3px 6px;
+    font-size: 11px;
   }
 }
 
@@ -924,6 +970,7 @@ header {
           <th>الكمية</th>
           <th>السعر</th>
           <th>المجموع</th>
+          <th>الإجراءات</th>
         </tr>
       </thead>
       <tbody id="cartList">
@@ -1436,7 +1483,13 @@ function showTotal(){
       row.innerHTML = `<td class="product-name">${productsData[idx].name}</td>
                        <td>${qty}</td>
                        <td>${formatPrice(price)} جنيه</td>
-                       <td>${formatPrice(lineTotal)} جنيه</td>`;
+                       <td>${formatPrice(lineTotal)} جنيه</td>
+                       <td>
+                         <div class="cart-actions">
+                           <button class="edit-btn" onclick="editCartItem(${idx})">✏️ تعديل</button>
+                           <button class="delete-btn" onclick="deleteCartItem(${idx})">🗑️ حذف</button>
+                         </div>
+                       </td>`;
       cartList.appendChild(row);
     }
   });
@@ -1448,6 +1501,35 @@ function showTotal(){
   updateInvoiceDate();
   
   document.getElementById("totalModal").style.display = "block";
+}
+
+// دالة تعديل كمية منتج في السلة
+function editCartItem(index) {
+  const newQty = prompt(`أدخل الكمية الجديدة لـ ${productsData[index].name}:`, cart[index]);
+  
+  if (newQty !== null) {
+    const quantity = parseInt(newQty);
+    if (quantity > 0) {
+      cart[index] = quantity;
+      updateCartCount();
+      showTotal();
+      showToast(`تم تعديل كمية ${productsData[index].name} إلى ${quantity}`);
+    } else if (quantity === 0) {
+      deleteCartItem(index);
+    } else {
+      showToast('الكمية يجب أن تكون رقماً موجباً');
+    }
+  }
+}
+
+// دالة حذف منتج من السلة
+function deleteCartItem(index) {
+  if (confirm(`هل تريد حذف ${productsData[index].name} من السلة؟`)) {
+    delete cart[index];
+    updateCartCount();
+    showTotal();
+    showToast(`تم حذف ${productsData[index].name} من السلة`);
+  }
 }
 
 function updateQty(idx, value){
