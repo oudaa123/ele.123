@@ -1045,6 +1045,179 @@ header {
     padding: 7px 8px;
   }
 }
+
+/* ==================== */
+/* التعديلات الجديدة */
+/* ==================== */
+
+/* المنتجات الجديدة (علامة ..) */
+.product.new-product {
+  position: relative;
+  border: 2px solid #ff4444;
+  box-shadow: 0 4px 15px rgba(255, 68, 68, 0.3);
+  overflow: visible;
+}
+
+.product.new-product::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+  background-size: 400%;
+  border-radius: 10px;
+  z-index: -1;
+  animation: glowing-border 20s linear infinite;
+  opacity: 0.7;
+}
+
+@keyframes glowing-border {
+  0% { background-position: 0 0; }
+  50% { background-position: 400% 0; }
+  100% { background-position: 0 0; }
+}
+
+/* المنتجات الخاصة (علامة &) */
+.product.special-offer {
+  position: relative;
+  border: 2px solid #ffd814;
+  box-shadow: 0 4px 15px rgba(255, 216, 20, 0.4);
+  overflow: visible;
+}
+
+.product.special-offer::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, #ffd814, #ffed4e, #fff9aa, #ffed4e, #ffd814);
+  background-size: 400%;
+  border-radius: 10px;
+  z-index: -1;
+  animation: glowing-yellow 3s linear infinite;
+  opacity: 0.8;
+}
+
+@keyframes glowing-yellow {
+  0% { background-position: 0 0; }
+  50% { background-position: 200% 0; }
+  100% { background-position: 0 0; }
+}
+
+/* علامة "جديد" للمنتجات الجديدة */
+.new-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: linear-gradient(135deg, #ff4444, #cc0000);
+  color: white;
+  padding: 6px 10px;
+  border-radius: 15px;
+  font-size: 12px;
+  font-weight: bold;
+  z-index: 2;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  animation: bounce-new 1s infinite alternate;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+@keyframes bounce-new {
+  from { transform: translateY(0); }
+  to { transform: translateY(-3px); }
+}
+
+/* علامة "عرض خاص" للمنتجات الخاصة */
+.special-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: linear-gradient(135deg, #ffd814, #ffb700);
+  color: #8b6508;
+  padding: 6px 10px;
+  border-radius: 15px;
+  font-size: 12px;
+  font-weight: bold;
+  z-index: 2;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  animation: bounce-special 1s infinite alternate;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+@keyframes bounce-special {
+  from { transform: translateY(0) rotate(-2deg); }
+  to { transform: translateY(-3px) rotate(2deg); }
+}
+
+/* السعر القديم المشطوب */
+.old-price {
+  display: block;
+  font-size: 14px;
+  color: #888;
+  text-decoration: line-through;
+  margin-bottom: 2px;
+  position: relative;
+}
+
+.old-price::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #ff4444, transparent);
+  transform: translateY(-50%);
+}
+
+.current-price {
+  display: block;
+  font-size: 18px;
+  color: #b12704;
+  font-weight: bold;
+}
+
+/* شعار الخصم 45% */
+.discount-label {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: linear-gradient(45deg, #ff6b00, #ff4444);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: bold;
+  z-index: 2;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  animation: pulse-discount 1.5s infinite;
+}
+
+@keyframes pulse-discount {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+/* تحسينات إضافية */
+.product.new-product .name::after {
+  content: "🆕";
+  margin-right: 5px;
+  font-size: 16px;
+}
+
+.product.special-offer .name::before {
+  content: "✨";
+  margin-left: 5px;
+  font-size: 16px;
+}
 </style>
 </head>
 <body class="hide-price amazon-style">
@@ -1282,6 +1455,15 @@ function clearCart() {
   }
 }
 
+// دالة لحساب السعر القديم بزيادة 45%
+function calculateOldPrice(currentPrice) {
+  const price = parseFloat(currentPrice);
+  if (isNaN(price)) return "0.00";
+  
+  const oldPrice = price * 1.45; // زيادة 45%
+  return oldPrice.toFixed(2);
+}
+
 function renderProducts(data, containerElement){
   let html = "";
   
@@ -1290,15 +1472,21 @@ function renderProducts(data, containerElement){
   } else {
     data.forEach((item, index) => {
       const formattedPrice = formatPrice(item.price);
+      const oldPrice = calculateOldPrice(item.price);
       
       // الكشف عن المنتجات الجديدة بناءً على وجود ".." في الاسم
       const isNewProduct = item.name && item.name.includes("..");
       
-      // إزالة ".." من الاسم للعرض
-      const displayName = item.name ? item.name.replace(/\.\./g, "") : item.name;
+      // الكشف عن المنتجات الخاصة بناءً على وجود "&" في الاسم
+      const isSpecialOffer = item.name && item.name.includes("&");
       
-      html += `<div class="product ${isNewProduct ? 'new-product' : ''}">
-                  ${isNewProduct ? '<span class="new-product-badge">🆕 جديد</span>' : ''}
+      // إزالة ".." و "&" من الاسم للعرض
+      const displayName = item.name ? item.name.replace(/\.\./g, "").replace(/&/g, "") : item.name;
+      
+      html += `<div class="product ${isNewProduct ? 'new-product' : ''} ${isSpecialOffer ? 'special-offer' : ''}">
+                  ${isNewProduct ? '<span class="new-badge">🆕 جديد</span>' : ''}
+                  ${isSpecialOffer ? '<span class="special-badge">✨ عرض خاص</span>' : ''}
+                  ${(isNewProduct || isSpecialOffer) ? '<span class="discount-label">خصم 45%</span>' : ''}
                   <img src="${item.image || 'https://via.placeholder.com/150'}" 
                        onerror="handleImageError(this)" 
                        alt="${displayName}" 
@@ -1306,7 +1494,10 @@ function renderProducts(data, containerElement){
                        onload="this.style.display='block'; const placeholder=this.parentNode.querySelector('.image-placeholder'); if(placeholder) placeholder.remove();">
                   <div class="product-info">
                     <div class="name">${displayName}</div>
-                    <div class="price">${formattedPrice} جنيه</div>
+                    <div class="price">
+                      ${(isNewProduct || isSpecialOffer) ? `<span class="old-price">${oldPrice} جنيه</span>` : ''}
+                      <span class="current-price">${formattedPrice} جنيه</span>
+                    </div>
                     <input type="number" min="1" value="${cart[index] || 1}" data-index="${index}">
                     <button onclick="addToCart(${index})">أضف إلى السلة</button>
                   </div>
