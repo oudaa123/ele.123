@@ -451,6 +451,105 @@ header {
   transform: translateX(-50%) scale(1.05);
 }
 
+/* تحسينات جديدة */
+.hide-price .product-info .price,
+.hide-price .product input,
+.hide-price .product button {
+  display: none;
+}
+
+.hide-price .product-info::after {
+  content: "🔒 السعر مخفي";
+  display: block;
+  color: #ff4444;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+/* تحسين شعار "جديد" */
+.new-product-badge {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  background: linear-gradient(135deg, #ff4444, #cc0000);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 15px;
+  font-size: 11px;
+  font-weight: bold;
+  z-index: 1;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  animation: pulse-badge 2s infinite;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+/* تحسين شعار "عرض خاص" */
+.offer-product-badge {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: linear-gradient(135deg, #25d366, #128c7e);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 15px;
+  font-size: 11px;
+  font-weight: bold;
+  z-index: 1;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  animation: pulse-badge 2s infinite;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+@keyframes pulse-badge {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* تحسينات إضافية للمنتجات الجديدة */
+.product.new-product {
+  border: 2px solid #ff4444;
+  box-shadow: 0 4px 12px rgba(255, 68, 68, 0.2);
+}
+
+.product.offer-product {
+  border: 2px solid #25d366;
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);
+}
+
+.product.new-product:hover,
+.product.offer-product:hover {
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+  transform: translateY(-3px);
+}
+
+/* تنسيق الأسعار للعروض */
+.original-price {
+  text-decoration: line-through;
+  color: #999 !important;
+  font-size: 12px !important;
+  margin-bottom: 2px !important;
+}
+
+.discount-price {
+  color: #ff4444 !important;
+  font-size: 16px !important;
+  font-weight: bold;
+}
+
+.discount-percent {
+  background: #ff4444;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-size: 10px;
+  margin-right: 5px;
+}
+
 @media (max-width: 480px){
   body { font-size: 13px; }
   
@@ -641,19 +740,6 @@ header {
   100% { transform: translate(-50%, -50%) scale(1); }
 }
 
-.hide-price .product-info .price,
-.hide-price .product button {
-  display: none;
-}
-
-.hide-price .product-info::after {
-  content: "🔒 السعر مخفي";
-  display: block;
-  color: #ff4444;
-  font-weight: bold;
-  margin-top: 10px;
-}
-
 #clearCartBtn {
   background: #ff4444;
   color: white;
@@ -686,7 +772,6 @@ header {
   border-radius: 5px;
 }
 
-/* تحسينات جديدة */
 .loading {
   display: flex;
   justify-content: center;
@@ -714,68 +799,6 @@ header {
   background: #6a1fbf;
 }
 
-/* تحسين شعار "جديد" */
-.new-product-badge {
-  position: absolute;
-  top: 5px;
-  left: 5px;
-  background: linear-gradient(135deg, #ff4444, #cc0000);
-  color: white;
-  padding: 4px 8px;
-  border-radius: 15px;
-  font-size: 11px;
-  font-weight: bold;
-  z-index: 1;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-  animation: pulse-badge 2s infinite;
-  display: flex;
-  align-items: center;
-  gap: 3px;
-}
-
-@keyframes pulse-badge {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
-}
-
-/* تحسينات إضافية للمنتجات الجديدة */
-.product.new-product {
-  border: 2px solid #ff4444;
-  box-shadow: 0 4px 12px rgba(255, 68, 68, 0.2);
-}
-
-.product.new-product:hover {
-  box-shadow: 0 6px 15px rgba(255, 68, 68, 0.3);
-  transform: translateY(-3px);
-}
-
-.new-product-page {
-  display: none;
-}
-
-.page-title {
-  text-align: center;
-  margin: 15px 0;
-  color: var(--primary-color);
-  font-size: 20px;
-  font-weight: bold;
-}
-
-.audio-notification {
-  display: none;
-}
-
-/* تحسينات للفاتورة النصية */
-.invoice-date {
-  text-align: center;
-  margin: 10px 0;
-  color: #666;
-  font-size: 16px;
-  font-weight: bold;
-}
-
-/* تحسينات للصورة */
 .image-placeholder {
   width: 100%;
   height: 130px;
@@ -787,7 +810,6 @@ header {
   font-size: 12px;
 }
 
-/* تحديث تلقائي */
 .auto-update-indicator {
   position: fixed;
   top: 10px;
@@ -806,6 +828,10 @@ header {
   0% { opacity: 1; }
   50% { opacity: 0.6; }
   100% { opacity: 1; }
+}
+
+.audio-notification {
+  display: none;
 }
 </style>
 </head>
@@ -1056,11 +1082,19 @@ function renderProducts(data, containerElement){
       // الكشف عن المنتجات الجديدة بناءً على وجود ".." في الاسم
       const isNewProduct = item.name && item.name.includes("..");
       
-      // إزالة ".." من الاسم للعرض
-      const displayName = item.name ? item.name.replace(/\.\./g, "") : item.name;
+      // الكشف عن المنتجات ذات العروض بناءً على وجود "&" في الاسم
+      const isOfferProduct = item.name && item.name.includes("&");
       
-      html += `<div class="product ${isNewProduct ? 'new-product' : ''}">
+      // إزالة ".." و "&" من الاسم للعرض
+      const displayName = item.name ? item.name.replace(/\.\./g, "").replace(/&/g, "") : item.name;
+      
+      // حساب السعر بعد الخصم 45% للمنتجات التي تحتوي على "&"
+      const originalPrice = parseFloat(item.price) || 0;
+      const discountPrice = isOfferProduct ? originalPrice * 1.45 : originalPrice;
+      
+      html += `<div class="product ${isNewProduct ? 'new-product' : ''} ${isOfferProduct ? 'offer-product' : ''}">
                   ${isNewProduct ? '<span class="new-product-badge">🆕 جديد</span>' : ''}
+                  ${isOfferProduct ? '<span class="offer-product-badge">🎁 عرض خاص</span>' : ''}
                   <img src="${item.image || 'https://via.placeholder.com/150'}" 
                        onerror="handleImageError(this)" 
                        alt="${displayName}" 
@@ -1068,7 +1102,13 @@ function renderProducts(data, containerElement){
                        onload="this.style.display='block'; const placeholder=this.parentNode.querySelector('.image-placeholder'); if(placeholder) placeholder.remove();">
                   <div class="product-info">
                     <div class="name">${displayName}</div>
-                    <div class="price">${formattedPrice} جنيه</div>
+                    ${isOfferProduct ? 
+                      `<div class="price original-price">${formatPrice(originalPrice)} جنيه</div>
+                       <div class="price discount-price">
+                         <span class="discount-percent">خصم 45%</span>${formatPrice(discountPrice)} جنيه
+                       </div>` : 
+                      `<div class="price">${formattedPrice} جنيه</div>`
+                    }
                     <input type="number" min="1" value="${cart[index] || 1}" data-index="${index}">
                     <button onclick="addToCart(${index})">أضف إلى السلة</button>
                   </div>
