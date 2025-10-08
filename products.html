@@ -1156,7 +1156,7 @@ function renderProducts(data, containerElement){
       // الكشف عن المنتجات ذات العروض بناءً على وجود "&" في الاسم
       const isOfferProduct = item.name && item.name.includes("&");
       
-      // إزالة ".." و "&" من الاسم للعرض
+      // إزالة ".." و "&" من الاسم للعرض في جميع الأماكن
       const displayName = cleanProductName(item.name);
       
       // حساب السعر بعد زيادة 45% للمنتجات التي تحتوي على "&"
@@ -1468,7 +1468,9 @@ function addToCart(index){
     playNotificationSound();
   }
   
-  showToast(`${cleanProductName(productsData[index].name)} تم إضافته/تحديثه في السلة`);
+  // استخدام الاسم النظيف في الإشعار
+  const cleanName = cleanProductName(productsData[index].name);
+  showToast(`${cleanName} تم إضافته/تحديثه في السلة`);
 }
 
 function showTotal(){
