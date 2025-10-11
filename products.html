@@ -26,6 +26,7 @@ body {
   padding-bottom: 60px;
   max-width: 100%;
   overflow-x: hidden;
+  height: 100%;
 }
 
 header {
@@ -1073,6 +1074,18 @@ header {
 .audio-notification {
   display: none;
 }
+
+/* إصلاح مشكلة التكبير والاختفاء */
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+  position: relative;
+}
+
+#main-products-page {
+  width: 100%;
+  min-height: 100vh;
+}
 </style>
 </head>
 <body class="hide-price">
@@ -1096,13 +1109,13 @@ header {
 
   <div class="search-container">
     <input type="text" id="searchBox" placeholder="🔍ابدأ و ابحث عن منتج...">
-    <button id="offerBtn">💥هنبيع ببلاش</button>
+    <button id="offerBtn">💥هنبيع ببلاش واكن الصنف مجاش</button>
   </div>
 </header>
 
 <!-- إعلان هنبيع ببلاش -->
 <div id="adBanner" class="ad-banner" onclick="showAdMessage()">
-  💥 هنبيع ببلاش 💥 - عروض خاصة لفترة محدودة!
+  💥 هنبيع ببلاش واكن الصنف مجاش 💥 - عروض خاصة لفترة محدودة!
 </div>
 
 <!-- نص الشحن المجاني المتحرك -->
@@ -1110,7 +1123,7 @@ header {
   🚚 الشحن مجاني على جميع الطلبات 🚚 - 🚚 الشحن مجاني على جميع الطلبات 🚚 - 🚚 الشحن مجاني على جميع الطلبات 🚚
 </div>
 
-<div id="newBanner">🎉 منتجات جديدة اليوم!</div>
+<div id="newBanner">🎉 هناك منتجات جديدة اليوم!</div>
 
 <!-- مؤشر التحديث التلقائي -->
 <div id="autoUpdateIndicator" class="auto-update-indicator">🔄 جاري التحديث</div>
@@ -1578,6 +1591,23 @@ function showAdMessage() {
   showToast('💥 عروض خاصة لفترة محدودة - تواصل معنا لمعرفة التفاصيل!');
 }
 
+// دالة لعرض المنتجات المجانية (التي سعرها 0)
+function showFreeProducts() {
+  const freeProducts = productsData.filter(p => {
+    const price = parseFloat(p.price) || 0;
+    return price === 0;
+  });
+  
+  if (freeProducts.length === 0) {
+    showToast('لا توجد منتجات مجانية حالياً');
+    return;
+  }
+  
+  isSearching = true;
+  renderProducts(freeProducts, container);
+  showToast(`تم العثور على ${freeProducts.length} منتج مجاني`);
+}
+
 // تهيئة التطبيق
 (async function(){
    pricesVisible = false;
@@ -1816,12 +1846,13 @@ document.getElementById("searchBox").addEventListener("input", function(){
   performSearch();
 });
 
-// تعديل زر هنبيع ببلاش ليصبح إعلان فقط
+// إرجاع زر هنبيع ببلاش لوظيفته الأصلية
 document.getElementById("offerBtn").onclick = function(e){
     e.preventDefault();
-    showAdMessage();
+    showFreeProducts();
 }
 
+// إصلاح مشكلة التكبير والاختفاء
 window.addEventListener('resize', function() {
   if (document.getElementById("totalModal").style.display === 'block') {
     showTotal();
@@ -1851,6 +1882,20 @@ window.addEventListener('load', function() {
 window.addEventListener('resize', function() {
   const vh = window.innerHeight * 0.01;
   document.documentElement.style.setProperty('--vh', `${vh}px`);
+});
+
+// إصلاح مشكلة التكبير والاختفاء
+document.addEventListener('DOMContentLoaded', function() {
+  // منع تكبير الصفحة تلقائياً
+  const viewport = document.querySelector('meta[name="viewport"]');
+  if (viewport) {
+    viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
+  }
+  
+  // إصلاح مشكلة الاختفاء
+  document.body.style.overflowX = 'hidden';
+  document.body.style.width = '100%';
+  document.body.style.position = 'relative';
 });
 </script>
 </body>
