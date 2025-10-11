@@ -14,12 +14,18 @@
   --card-bg: #fff;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 body { 
   font-family: Tahoma, sans-serif; 
   margin: 0; 
   background: var(--light-bg);
   font-size: 14px;
   padding-bottom: 60px;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 header {
@@ -32,6 +38,7 @@ header {
   position: sticky;
   top: 0;
   z-index: 1000;
+  width: 100%;
 }
 
 .header-buttons {
@@ -114,6 +121,14 @@ header {
   padding: 8px;
   font-size: 16px;
   font-weight: bold;
+  width: 100%;
+  animation: bannerPulse 2s infinite;
+}
+
+@keyframes bannerPulse {
+  0% { background-color: red; }
+  50% { background-color: #ff6b6b; }
+  100% { background-color: red; }
 }
 
 #products-container {
@@ -121,6 +136,7 @@ header {
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 12px;
   padding: 12px;
+  width: 100%;
 }
 .product {
   background: var(--card-bg);
@@ -132,6 +148,7 @@ header {
   justify-content: space-between;
   transition: 0.3s;
   position: relative;
+  width: 100%;
 }
 .product:hover { box-shadow: 0 3px 10px rgba(0,0,0,0.2); }
 .product img { 
@@ -193,6 +210,8 @@ header {
   z-index: 1002;
   overflow-y: auto;
   padding: 15px;
+  width: 100%;
+  height: 100%;
 }
 
 .modal-content {
@@ -382,6 +401,7 @@ header {
   gap: 8px;
   margin: 10px 0;
   padding: 0 5px;
+  width: 100%;
 }
 
 #searchBox {
@@ -655,6 +675,109 @@ header {
   background: #cc0000;
 }
 
+/* تحسينات للشحن المجاني */
+.free-shipping-banner {
+  background: linear-gradient(135deg, #25d366, #128c7e);
+  color: white;
+  text-align: center;
+  padding: 8px;
+  font-weight: bold;
+  margin: 10px 0;
+  border-radius: 8px;
+  animation: pulse-banner 3s infinite;
+}
+
+@keyframes pulse-banner {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+
+.free-shipping-text {
+  color: #25d366;
+  font-weight: bold;
+  font-size: 14px;
+  margin: 5px 0;
+  text-align: center;
+}
+
+/* شعار الشحن المجاني في الفاتورة */
+.shipping-notice {
+  background: #e8f5e9;
+  border: 2px solid #25d366;
+  border-radius: 8px;
+  padding: 10px;
+  margin: 15px 0;
+  text-align: center;
+  font-weight: bold;
+  color: #2e7d32;
+}
+
+/* شعار إعلان هنبيع ببلاش */
+.ad-banner {
+  background: linear-gradient(135deg, #ff6600, #ff3300);
+  color: white;
+  text-align: center;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 8px;
+  font-weight: bold;
+  animation: adPulse 2s infinite;
+  cursor: pointer;
+}
+
+@keyframes adPulse {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 102, 0, 0.7); }
+  50% { transform: scale(1.02); box-shadow: 0 0 0 10px rgba(255, 102, 0, 0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 102, 0, 0); }
+}
+
+/* تحسينات للعرض المتحرك */
+.moving-text {
+  white-space: nowrap;
+  overflow: hidden;
+  position: relative;
+  background: linear-gradient(90deg, #ff4444, #ff6b6b, #ff4444);
+  color: white;
+  padding: 8px 0;
+  font-weight: bold;
+  animation: moveText 15s linear infinite;
+}
+
+@keyframes moveText {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+/* تحسينات للاستجابة على جميع الشاشات */
+@media (min-width: 1200px) {
+  #products-container {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 768px) {
+  #products-container {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  }
+  
+  .header-buttons {
+    gap: 3px;
+  }
+  
+  .header-buttons button {
+    padding: 5px 8px;
+    font-size: 12px;
+  }
+  
+  .modal-content {
+    width: 95%;
+    padding: 15px;
+  }
+}
+
 @media (max-width: 480px){
   body { font-size: 13px; }
   
@@ -755,6 +878,8 @@ header {
   z-index: 1004;
   overflow-y: auto;
   padding: 15px;
+  width: 100%;
+  height: 100%;
 }
 
 .password-content {
@@ -971,9 +1096,19 @@ header {
 
   <div class="search-container">
     <input type="text" id="searchBox" placeholder="🔍ابدأ و ابحث عن منتج...">
-    <button id="offerBtn">💥هنبيع ببلاش واكن الصنف مجاش </button>
+    <button id="offerBtn">💥هنبيع ببلاش</button>
   </div>
 </header>
+
+<!-- إعلان هنبيع ببلاش -->
+<div id="adBanner" class="ad-banner" onclick="showAdMessage()">
+  💥 هنبيع ببلاش 💥 - عروض خاصة لفترة محدودة!
+</div>
+
+<!-- نص الشحن المجاني المتحرك -->
+<div class="moving-text" id="movingText">
+  🚚 الشحن مجاني على جميع الطلبات 🚚 - 🚚 الشحن مجاني على جميع الطلبات 🚚 - 🚚 الشحن مجاني على جميع الطلبات 🚚
+</div>
 
 <div id="newBanner">🎉 منتجات جديدة اليوم!</div>
 
@@ -991,7 +1126,7 @@ header {
   <div class="password-content">
     <button class="password-close" onclick="closePasswordModal()">×</button>
     <h2>أدخل كلمة السر لعرض الأسعار وعروض مملكة الاصليات</h2>
-    <input type="password" id="passwordInput" placeholder="كلمة السر">
+    <input type="password" id="passwordInput" placeholder="كلمة السر" inputmode="numeric">
     <div class="password-buttons">
       <button id="submitPassword" onclick="checkPassword()">تأكيد</button>
       <button id="cancelPassword" onclick="closePasswordModal()">إلغاء</button>
@@ -1011,6 +1146,9 @@ header {
       <h1 class="invoice-title">جنة</h1>
       <h2 class="invoice-subtitle">لجميع أكسسوارات المحمول</h2>
       <div class="invoice-date" id="invoiceDate"></div>
+      <div class="shipping-notice">
+        🚚 الشحن مجاني على جميع الطلبات 🚚
+      </div>
       <div class="invoice-total">إجمالي الفاتورة: <span id="totalAmount">0.00</span> جنيه</div>
     </div>
     
@@ -1064,7 +1202,8 @@ let currentSearchTerm = "";
 let lastUpdateTime = 0;
 let autoUpdateInterval;
 
-const PASSWORD = "2525";
+// كلمات السر المقبولة (عربي وإنجليزي)
+const PASSWORDS = ["2525", "٢٥٢٥"];
 
 // دالة لتحسين تحميل الصور
 function preloadImages(urls) {
@@ -1134,7 +1273,9 @@ function closePasswordModal() {
 
 function checkPassword() {
   const input = document.getElementById('passwordInput').value;
-  if (input === PASSWORD) {
+  
+  // التحقق من كلمة السر باللغتين العربية والإنجليزية
+  if (PASSWORDS.includes(input)) {
     pricesVisible = true;
     togglePricesVisibility();
     closePasswordModal();
@@ -1238,6 +1379,7 @@ function renderProducts(data, containerElement){
                     }
                     ${!isOutOfStock ? `<input type="number" min="1" value="${cart[index] || 1}" data-index="${index}">
                     <button onclick="addToCart(${index})">أضف إلى السلة</button>` : ''}
+                    <div class="free-shipping-text">🚚 الشحن مجاني</div>
                   </div>
                </div>`;
     });
@@ -1268,7 +1410,7 @@ function playNotificationSound() {
   }
 }
 
-// الحل 2: تحسين تنسيق فاتورة الواتساب
+// تحسين تنسيق فاتورة الواتساب مع إضافة الشحن المجاني
 function formatWhatsAppInvoice() {
   const now = new Date();
   const dateOptions = { 
@@ -1288,6 +1430,7 @@ function formatWhatsAppInvoice() {
   let text = `🧾 فاتورة شراء من جنة\n`;
   text += `📅 التاريخ: ${dateStr}\n`;
   text += `⏰ الوقت: ${timeStr}\n`;
+  text += `🚚 الشحن مجاني على جميع الطلبات\n`;
   text += `══════════════════\n\n`;
   text += `📋 تفاصيل الطلب:\n`;
   text += `══════════════════\n`;
@@ -1316,7 +1459,7 @@ function formatWhatsAppInvoice() {
   return text;
 }
 
-// الحل 3: إصلاح زر البحث
+// إصلاح زر البحث
 function performSearch() {
   const keyword = document.getElementById("searchBox").value.trim().toLowerCase();
   currentSearchTerm = keyword;
@@ -1332,7 +1475,7 @@ function performSearch() {
   renderProducts(filtered, container);
 }
 
-// الحل 4: إضافة التاريخ واليوم إلى الفاتورة
+// إضافة التاريخ واليوم إلى الفاتورة
 function updateInvoiceDate() {
   const now = new Date();
   const options = { 
@@ -1430,6 +1573,12 @@ function startAutoUpdate() {
   });
 }
 
+// دالة لعرض رسالة إعلان هنبيع ببلاش
+function showAdMessage() {
+  showToast('💥 عروض خاصة لفترة محدودة - تواصل معنا لمعرفة التفاصيل!');
+}
+
+// تهيئة التطبيق
 (async function(){
    pricesVisible = false;
    togglePricesVisibility();
@@ -1667,11 +1816,10 @@ document.getElementById("searchBox").addEventListener("input", function(){
   performSearch();
 });
 
+// تعديل زر هنبيع ببلاش ليصبح إعلان فقط
 document.getElementById("offerBtn").onclick = function(e){
     e.preventDefault();
-    const offers = productsData.filter(p => p.offer && p.offer.trim() !== "");
-    isSearching = true;
-    renderProducts(offers, container);
+    showAdMessage();
 }
 
 window.addEventListener('resize', function() {
@@ -1680,16 +1828,30 @@ window.addEventListener('resize', function() {
   }
 });
 
+// قبول كلمة السر باللغتين العربية والإنجليزية
 document.getElementById('passwordInput').addEventListener('keypress', function(e) {
   if (e.key === 'Enter') {
     checkPassword();
   }
 });
 
+// إعدادات للاستجابة على جميع الأجهزة
 setInterval(() => {
   const cartCount = cart.reduce((sum, qty) => qty ? sum + qty : sum, 0);
   document.getElementById('saveCartBtn').style.display = cartCount > 0 ? 'flex' : 'none';
 }, 1000);
+
+// تحسينات للعرض على الأجهزة المختلفة
+window.addEventListener('load', function() {
+  // ضبط الارتفاعات والعروض للتكيف مع الشاشات المختلفة
+  const vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+});
+
+window.addEventListener('resize', function() {
+  const vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+});
 </script>
 </body>
 </html>
