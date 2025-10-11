@@ -897,43 +897,6 @@ header {
 .audio-notification {
   display: none;
 }
-
-/* تحسينات التحديث الذكي */
-.update-summary {
-  position: fixed;
-  top: 50px;
-  right: 10px;
-  background: #8a2be2;
-  color: white;
-  padding: 10px 15px;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-  z-index: 1006;
-  display: none;
-  max-width: 300px;
-}
-
-.update-summary.show {
-  display: block;
-  animation: fadeInOut 3s ease-in-out;
-}
-
-@keyframes fadeInOut {
-  0% { opacity: 0; transform: translateY(-10px); }
-  20% { opacity: 1; transform: translateY(0); }
-  80% { opacity: 1; transform: translateY(0); }
-  100% { opacity: 0; transform: translateY(-10px); }
-}
-
-.product-updating {
-  animation: updatingProduct 1s ease-in-out;
-}
-
-@keyframes updatingProduct {
-  0% { background-color: transparent; }
-  50% { background-color: rgba(138, 43, 226, 0.1); }
-  100% { background-color: transparent; }
-}
 </style>
 </head>
 <body class="hide-price">
@@ -965,9 +928,6 @@ header {
 
 <!-- مؤشر التحديث التلقائي -->
 <div id="autoUpdateIndicator" class="auto-update-indicator">🔄 جاري التحديث</div>
-
-<!-- ملخص التحديثات -->
-<div id="updateSummary" class="update-summary"></div>
 
 <!-- الصفحة الرئيسية للمنتجات -->
 <div id="main-products-page">
@@ -1055,16 +1015,12 @@ let autoUpdateInterval;
 
 const PASSWORD = "2525";
 
-// ذاكرة تخزين مؤقت للصور
-const imageCache = new Map();
-
 // دالة لتحسين تحميل الصور
 function preloadImages(urls) {
   urls.forEach(url => {
-    if (url && url.trim() !== '' && !imageCache.has(url)) {
+    if (url && url.trim() !== '') {
       const img = new Image();
       img.src = url;
-      imageCache.set(url, img);
     }
   });
 }
@@ -1185,7 +1141,6 @@ function clearCart() {
   }
 }
 
-// دالة محسنة لعرض المنتجات مع التحديث الذكي
 function renderProducts(data, containerElement){
   let html = "";
   
@@ -1208,7 +1163,7 @@ function renderProducts(data, containerElement){
       const originalPrice = parseFloat(item.price) || 0;
       const increasedPrice = isOfferProduct ? originalPrice * 1.45 : originalPrice;
       
-      html += `<div class="product ${isNewProduct ? 'new-product' : ''} ${isOfferProduct ? 'offer-product' : ''}" data-product-id="${index}">
+      html += `<div class="product ${isNewProduct ? 'new-product' : ''} ${isOfferProduct ? 'offer-product' : ''}">
                   ${isNewProduct ? '<span class="new-product-badge">🆕 جديد</span>' : ''}
                   ${isOfferProduct ? '<span class="offer-product-badge">🎁 عرض خاص</span>' : ''}
                   <div class="product-image-container">
@@ -1245,121 +1200,6 @@ function renderProducts(data, containerElement){
   });
   
   togglePricesVisibility();
-}
-
-// دالة محسّنة للتحديث الذكي للمنتجات
-function updateProductsSmartly(newData) {
-  const summary = {
-    added: 0,
-    updated: 0,
-    removed: 0
-  };
-  
-  // تحديث المنتجات الحالية أو إضافة منتجات جديدة
-  newData.forEach((newItem, index) => {
-    const existingProduct = productsData[index];
-    
-    if (!existingProduct) {
-      // منتج جديد
-      summary.added++;
-    } else {
-      // مقارنة المنتج الحالي مع الجديد
-      const isChanged = JSON.stringify(existingProduct) !== JSON.stringify(newItem);
-      
-      if (isChanged) {
-        summary.updated++;
-        
-        // تحديث المنتج الموجود فقط إذا تغير
-        const productElement = document.querySelector(`[data-product-id="${index}"]`);
-        if (productElement) {
-          // إضافة تأثير التحديث
-          productElement.classList.add('product-updating');
-          setTimeout(() => {
-            productElement.classList.remove('product-updating');
-          }, 1000);
-          
-          // تحديث البيانات فقط إذا تغيرت
-          if (existingProduct.name !== newItem.name) {
-            const nameElement = productElement.querySelector('.name');
-            if (nameElement) {
-              nameElement.textContent = cleanProductName(newItem.name);
-            }
-          }
-          
-          if (existingProduct.price !== newItem.price) {
-            const priceElement = productElement.querySelector('.price');
-            if (priceElement) {
-              const formattedPrice = formatPrice(newItem.price);
-              priceElement.textContent = `${formattedPrice} جنيه`;
-            }
-          }
-          
-          // تحديث الصورة فقط إذا تغيرت
-          if (existingProduct.image !== newItem.image && newItem.image) {
-            const imgElement = productElement.querySelector('img');
-            if (imgElement) {
-              // استخدام الصورة من الكاش إذا كانت موجودة
-              if (imageCache.has(newItem.image)) {
-                imgElement.src = newItem.image;
-              } else {
-                // تحميل الصورة الجديدة
-                const newImg = new Image();
-                newImg.onload = () => {
-                  imgElement.src = newItem.image;
-                  imageCache.set(newItem.image, newImg);
-                };
-                newImg.src = newItem.image;
-              }
-            }
-          }
-        }
-      }
-    }
-  });
-  
-  // إزالة المنتجات المحذوفة
-  if (newData.length < productsData.length) {
-    summary.removed = productsData.length - newData.length;
-    for (let i = newData.length; i < productsData.length; i++) {
-      const productElement = document.querySelector(`[data-product-id="${i}"]`);
-      if (productElement) {
-        productElement.remove();
-      }
-    }
-  }
-  
-  // تحديث بيانات المنتجات
-  productsData = newData;
-  
-  // عرض ملخص التحديثات
-  if (summary.added > 0 || summary.updated > 0 || summary.removed > 0) {
-    showUpdateSummary(summary);
-  }
-  
-  return summary;
-}
-
-// عرض ملخص التحديثات
-function showUpdateSummary(summary) {
-  const summaryElement = document.getElementById('updateSummary');
-  let summaryText = '';
-  
-  if (summary.added > 0) {
-    summaryText += `➕ ${summary.added} منتج جديد<br>`;
-  }
-  if (summary.updated > 0) {
-    summaryText += `✏️ ${summary.updated} منتج تم تحديثه<br>`;
-  }
-  if (summary.removed > 0) {
-    summaryText += `🗑️ ${summary.removed} منتج تم حذفه`;
-  }
-  
-  summaryElement.innerHTML = summaryText;
-  summaryElement.classList.add('show');
-  
-  setTimeout(() => {
-    summaryElement.classList.remove('show');
-  }, 3000);
 }
 
 // تشغيل صوت الإشعار
@@ -1453,7 +1293,7 @@ function updateInvoiceDate() {
   document.getElementById("invoiceDate").innerText = `📅 ${dateStr}`;
 }
 
-// دالة التحديث التلقائي المحسنة
+// دالة التحديث التلقائي
 async function checkForUpdates() {
   try {
     // إظهار مؤشر التحديث
@@ -1462,33 +1302,57 @@ async function checkForUpdates() {
     const res = await fetch(SCRIPT_PRODUCTS_URL + "?t=" + new Date().getTime(), {cache: "no-store"});
     const newData = await res.json();
     
-    // معالجة البيانات الجديدة
-    const processedData = newData.reverse().map(item => {
-      if (isNaN(parseFloat(item.price))) {
-        item.price = "0.00";
+    if (newData.length !== productsData.length) {
+      // هناك تغيير في عدد المنتجات
+      productsData = newData.reverse().map(item => {
+        if (isNaN(parseFloat(item.price))) {
+          item.price = "0.00";
+        }
+        return item;
+      });
+      
+      localStorage.setItem("products", JSON.stringify(productsData));
+      lastUpdateTime = new Date().getTime();
+      
+      // إعادة تحميل المنتجات إذا لم يكن في وضع البحث
+      if (!isSearching) {
+        renderProducts(productsData, container);
       }
-      return item;
-    });
-    
-    // استخدام التحديث الذكي بدلاً من إعادة التحميل الكامل
-    const updateSummary = updateProductsSmartly(processedData);
-    
-    // تحديث التخزين المحلي
-    localStorage.setItem("products", JSON.stringify(processedData));
-    lastUpdateTime = new Date().getTime();
-    
-    // تحميل الصور الجديدة مسبقاً
-    const newImageUrls = processedData
-      .map(p => p.image)
-      .filter(url => url && url.trim() !== '');
-    preloadImages(newImageUrls);
-    
-    // التحقق من المنتجات الجديدة
-    checkNewProducts();
-    
-    // إظهار إشعار التحديث إذا كان هناك تغييرات
-    if (updateSummary.added > 0 || updateSummary.updated > 0 || updateSummary.removed > 0) {
+      
+      checkNewProducts();
       showToast('تم تحديث المنتجات تلقائياً 🎉');
+    } else {
+      // التحقق من التغييرات في المنتجات الفردية
+      let hasChanges = false;
+      for (let i = 0; i < newData.length; i++) {
+        const newItem = JSON.stringify(newData[i]);
+        const oldItem = JSON.stringify(productsData[i]);
+        
+        if (newItem !== oldItem) {
+          hasChanges = true;
+          break;
+        }
+      }
+      
+      if (hasChanges) {
+        productsData = newData.reverse().map(item => {
+          if (isNaN(parseFloat(item.price))) {
+            item.price = "0.00";
+          }
+          return item;
+        });
+        
+        localStorage.setItem("products", JSON.stringify(productsData));
+        lastUpdateTime = new Date().getTime();
+        
+        // إعادة تحميل المنتجات إذا لم يكن في وضع البحث
+        if (!isSearching) {
+          renderProducts(productsData, container);
+        }
+        
+        checkNewProducts();
+        showToast('تم تحديث المنتجات تلقائياً 🎉');
+      }
     }
   } catch(err) {
     console.log("❌ خطأ في التحقق من التحديثات:", err);
@@ -1561,10 +1425,6 @@ function startAutoUpdate() {
    loadSavedCart();
    
    // إضافة مستمعي الأحداث الجديدة
-   document.getElementById("searchBox").addEventListener("input", function() {
-     performSearch();
-   });
-   
    document.getElementById("searchBox").addEventListener("search", function() {
      if (this.value === "") {
        isSearching = false;
