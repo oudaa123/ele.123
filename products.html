@@ -504,6 +504,26 @@ header {
   gap: 3px;
 }
 
+/* شعار جديد للمنتجات المنتهية */
+.out-of-stock-badge {
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #888, #555);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 15px;
+  font-size: 11px;
+  font-weight: bold;
+  z-index: 1;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  animation: pulse-badge 2s infinite;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
 @keyframes pulse-badge {
   0% { transform: scale(1); }
   50% { transform: scale(1.05); }
@@ -521,8 +541,39 @@ header {
   box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);
 }
 
+/* تنسيق جديد للمنتجات المنتهية */
+.product.out-of-stock-product {
+  border: 2px solid #888;
+  box-shadow: 0 4px 12px rgba(136, 136, 136, 0.2);
+  opacity: 0.7;
+  filter: grayscale(30%);
+}
+
+.product.out-of-stock-product .product-image-container img {
+  filter: grayscale(50%);
+}
+
+.product.out-of-stock-product .product-info .name,
+.product.out-of-stock-product .product-info .price {
+  color: #888;
+}
+
+.product.out-of-stock-product .product-info::after {
+  content: "⛔ المنتج منتهي";
+  display: block;
+  color: #ff4444;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.product.out-of-stock-product input,
+.product.out-of-stock-product button {
+  display: none !important;
+}
+
 .product.new-product:hover,
-.product.offer-product:hover {
+.product.offer-product:hover,
+.product.out-of-stock-product:hover {
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
   transform: translateY(-3px);
 }
@@ -1043,7 +1094,7 @@ function formatPrice(price) {
 // دالة لإزالة الرموز من اسم المنتج
 function cleanProductName(name) {
   if (!name) return '';
-  return name.replace(/\.\./g, "").replace(/&/g, "");
+  return name.replace(/\.\./g, "").replace(/&/g, "").replace(/@/g, "");
 }
 
 function handleImageError(img) {
@@ -1156,16 +1207,20 @@ function renderProducts(data, containerElement){
       // الكشف عن المنتجات ذات العروض بناءً على وجود "&" في الاسم
       const isOfferProduct = item.name && item.name.includes("&");
       
-      // إزالة ".." و "&" من الاسم للعرض في جميع الأماكن
+      // الكشف عن المنتجات المنتهية بناءً على وجود "@" في الاسم
+      const isOutOfStock = item.name && item.name.includes("@");
+      
+      // إزالة ".." و "&" و "@" من الاسم للعرض في جميع الأماكن
       const displayName = cleanProductName(item.name);
       
       // حساب السعر بعد زيادة 45% للمنتجات التي تحتوي على "&"
       const originalPrice = parseFloat(item.price) || 0;
       const increasedPrice = isOfferProduct ? originalPrice * 1.45 : originalPrice;
       
-      html += `<div class="product ${isNewProduct ? 'new-product' : ''} ${isOfferProduct ? 'offer-product' : ''}">
+      html += `<div class="product ${isNewProduct ? 'new-product' : ''} ${isOfferProduct ? 'offer-product' : ''} ${isOutOfStock ? 'out-of-stock-product' : ''}">
                   ${isNewProduct ? '<span class="new-product-badge">🆕 جديد</span>' : ''}
                   ${isOfferProduct ? '<span class="offer-product-badge">🎁 عرض خاص</span>' : ''}
+                  ${isOutOfStock ? '<span class="out-of-stock-badge">⛔ منتهي</span>' : ''}
                   <div class="product-image-container">
                     <img src="${item.image || 'https://via.placeholder.com/150'}" 
                          onerror="handleImageError(this)" 
@@ -1181,8 +1236,8 @@ function renderProducts(data, containerElement){
                        </div>` : 
                       `<div class="price">${formattedPrice} جنيه</div>`
                     }
-                    <input type="number" min="1" value="${cart[index] || 1}" data-index="${index}">
-                    <button onclick="addToCart(${index})">أضف إلى السلة</button>
+                    ${!isOutOfStock ? `<input type="number" min="1" value="${cart[index] || 1}" data-index="${index}">
+                    <button onclick="addToCart(${index})">أضف إلى السلة</button>` : ''}
                   </div>
                </div>`;
     });
@@ -1190,7 +1245,7 @@ function renderProducts(data, containerElement){
   
   containerElement.innerHTML = html;
   
-  // إضافة مستمعي الأحداث لحقول الكمية
+  // إضافة مستمعي الأحداث لحقول الكمية (للمنتجات المتاحة فقط)
   containerElement.querySelectorAll('input[type="number"]').forEach(input => {
     input.addEventListener('change', function() {
       const index = parseInt(this.getAttribute('data-index'));
@@ -1454,6 +1509,12 @@ function addToCart(index){
   if (!pricesVisible) {
     showPasswordModal();
     showToast('يجب إدخال كلمة السر أولاً لإضافة المنتجات');
+    return;
+  }
+  
+  // التحقق مما إذا كان المنتج منتهيًا
+  if (productsData[index].name && productsData[index].name.includes("@")) {
+    showToast('هذا المنتج منتهي ولا يمكن إضافته إلى السلة');
     return;
   }
   
