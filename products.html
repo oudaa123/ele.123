@@ -91,6 +91,7 @@ header {
   border-radius: 2px;
   transition: background 0.2s;
   position: relative;
+  white-space: nowrap;
 }
 
 .header-action-btn:hover {
@@ -136,6 +137,7 @@ header {
   padding: 5px 10px;
   border-radius: 2px;
   transition: background 0.2s;
+  white-space: nowrap;
 }
 
 .nav-link:hover {
@@ -952,6 +954,111 @@ footer {
   color: var(--accent-color);
   font-weight: bold;
 }
+
+/* Save Cart Button */
+#saveCartBtn {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--primary-color);
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 30px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+#saveCartBtn:hover {
+  background: #2a3d52;
+  transform: translateX(-50%) scale(1.05);
+}
+
+/* New Banner */
+#newBanner {
+  display: none;
+  background: var(--danger-color);
+  color: white;
+  text-align: center;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  border-radius: 4px;
+}
+
+/* Shipping Bar */
+.shipping-bar {
+  background: linear-gradient(135deg, #ff6b00, #ff4444);
+  color: white;
+  padding: 10px;
+  text-align: center;
+  font-weight: bold;
+  margin: 10px 0;
+  border-radius: 8px;
+  animation: pulse-shipping 2s infinite;
+  display: none;
+}
+
+.shipping-progress {
+  background: rgba(255,255,255,0.3);
+  height: 8px;
+  border-radius: 4px;
+  margin: 8px 0;
+  overflow: hidden;
+}
+
+.shipping-progress-fill {
+  background: white;
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+@keyframes pulse-shipping {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+
+/* Auto Update Indicator */
+.auto-update-indicator {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  background: #25d366;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  z-index: 1005;
+  display: none;
+  animation: blink 2s infinite;
+}
+
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+
+/* Loading */
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  font-size: 18px;
+  color: var(--primary-color);
+  grid-column: 1 / -1;
+}
 </style>
 </head>
 <body class="hide-price">
@@ -959,6 +1066,17 @@ footer {
 <div id="showPricesBar" onclick="showPasswordModal()">
   👁️ اعرض الأسعار
 </div>
+
+<!-- شريط الشحن المجاني -->
+<div id="shippingBar" class="shipping-bar">
+  <div>🚚 الشحن مجاني للطلبات فوق 500 جنيه!</div>
+  <div class="shipping-progress">
+    <div class="shipping-progress-fill" id="shippingProgress"></div>
+  </div>
+  <div id="shippingMessage">أنفق <span id="remainingAmount">500</span> جنيه أخرى للحصول على شحن مجاني!</div>
+</div>
+
+<button id="saveCartBtn" onclick="saveCart()">💾 حفظ السلة</button>
 
 <header>
   <div class="header-top">
@@ -999,21 +1117,27 @@ footer {
       <button class="header-action-btn" id="clearCartBtn">
         <span>🗑️ مسح السلة</span>
       </button>
+      
+      <button class="header-action-btn" onclick="window.location.href='index.html'">
+        <span>🔙 الرئيسية</span>
+      </button>
     </div>
   </div>
   
   <div class="header-nav">
-    <a href="#" class="nav-link" onclick="window.location.href='index.html'">
-      <span>🔙 الرئيسية</span>
-    </a>
     <a href="#" class="nav-link" id="offerBtn">
       <span>💥 خصم خاص للمناديب</span>
     </a>
-    <a href="#" class="nav-link" onclick="saveCart()">
-      <span>💾 حفظ السلة</span>
+    <a href="#" class="nav-link" onclick="showPasswordModal()">
+      <span>🔓 عرض الأسعار</span>
     </a>
   </div>
 </header>
+
+<div id="newBanner">🎉 منتجات جديدة اليوم!</div>
+
+<!-- مؤشر التحديث التلقائي -->
+<div id="autoUpdateIndicator" class="auto-update-indicator">🔄 جاري التحديث</div>
 
 <!-- Main Content -->
 <div class="main-container">
@@ -1024,8 +1148,8 @@ footer {
   
   <div class="products-section">
     <div class="section-header">
-      <h2 class="section-title">منتجاتنا المميزة</h2>
-      <a href="#" class="view-all">عرض الكل</a>
+      <h2 class="section-title">جميع المنتجات</h2>
+      <a href="#" class="view-all" onclick="renderProducts()">عرض الكل</a>
     </div>
     
     <div id="products-container">
@@ -1104,7 +1228,7 @@ footer {
         </div>
         
         <button class="checkout-btn" id="checkoutBtn">
-          المتابعة إلى الدفع
+          ارسال الطلب عبر واتساب
         </button>
         
         <button class="continue-shopping" id="continueShopping">
@@ -1136,13 +1260,18 @@ footer {
 <div class="toast" id="toast"></div>
 
 <script>
-// بيانات المنتجات (سيتم استبدالها بالبيانات الفعلية)
+// بيانات المنتجات
 const SCRIPT_PRODUCTS_URL = "https://script.google.com/macros/s/AKfycbxW3_pcjSfffMTLZefZpzFIrbhijiaWY_u_4ZAmXEV2O04SMN5zplucKnAugWWbP8zzmA/exec";
 let productsData = [];
 let cart = [];
 let pricesVisible = false;
 let newProductsCount = 0;
+let isSearching = false;
 const PASSWORD = "2525";
+
+// إعدادات الشحن المجاني
+const FREE_SHIPPING_THRESHOLD = 500;
+const SHIPPING_COST = 50;
 
 // دالة لتحديد ما إذا كان المنتج غير متوفر
 function isOutOfStock(productName) {
@@ -1178,6 +1307,7 @@ async function loadProducts() {
       try {
         productsData = JSON.parse(localStorage.getItem("products"));
         renderProducts();
+        updateNotificationCount();
       } catch (e) {
         console.error("Error loading products from cache:", e);
       }
@@ -1197,6 +1327,7 @@ async function loadProducts() {
     localStorage.setItem("products", JSON.stringify(productsData));
     renderProducts();
     updateNotificationCount();
+    updateShippingBar();
   } catch(err) { 
     console.log("❌ خطأ في جلب المنتجات:", err);
     showToast('حدث خطأ في تحميل المنتجات');
@@ -1204,17 +1335,17 @@ async function loadProducts() {
 }
 
 // عرض المنتجات
-function renderProducts() {
+function renderProducts(productsToRender = productsData) {
   const container = document.getElementById('products-container');
   
-  if (productsData.length === 0) {
+  if (productsToRender.length === 0) {
     container.innerHTML = '<div style="text-align: center; padding: 40px; color: #666;">لا توجد منتجات لعرضها</div>';
     return;
   }
   
   let html = '';
   
-  productsData.forEach((product, index) => {
+  productsToRender.forEach((product, index) => {
     // الكشف عن خصائص المنتج بناءً على الرموز في الاسم
     const isNewProduct = product.name && product.name.includes("..");
     const isOfferProduct = product.name && product.name.includes("&");
@@ -1338,13 +1469,11 @@ function formatPrice(price) {
 
 // إعداد مستمعي الأحداث
 function setupEventListeners() {
+  // البحث أثناء الكتابة
+  document.getElementById('searchBox').addEventListener('input', performSearch);
+  
   // زر البحث
   document.querySelector('.search-button').addEventListener('click', performSearch);
-  document.getElementById('searchBox').addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') {
-      performSearch();
-    }
-  });
   
   // أزرار الرأس
   document.getElementById('cartBtn').addEventListener('click', showCart);
@@ -1374,106 +1503,23 @@ function setupEventListeners() {
   });
 }
 
-// البحث عن المنتجات
+// البحث عن المنتجات أثناء الكتابة
 function performSearch() {
   const searchTerm = document.getElementById('searchBox').value.trim().toLowerCase();
-  const container = document.getElementById('products-container');
   
   if (searchTerm === '') {
+    isSearching = false;
     renderProducts();
     return;
   }
   
+  isSearching = true;
   const filteredProducts = productsData.filter(product => {
     const cleanName = cleanProductName(product.name);
     return cleanName.toLowerCase().includes(searchTerm);
   });
   
-  if (filteredProducts.length === 0) {
-    container.innerHTML = '<div style="text-align: center; padding: 40px; color: #666;">لا توجد منتجات تطابق بحثك</div>';
-    return;
-  }
-  
-  let html = '';
-  
-  filteredProducts.forEach((product, index) => {
-    // نفس منطق renderProducts ولكن للمنتجات المصفاة فقط
-    const isNewProduct = product.name && product.name.includes("..");
-    const isOfferProduct = product.name && product.name.includes("&");
-    const isOutOfStockProduct = isOutOfStock(product.name);
-    const isFreeShippingProduct = hasFreeShipping(product.name);
-    
-    const displayName = cleanProductName(product.name);
-    
-    const originalPrice = parseFloat(product.price) || 0;
-    const increasedPrice = isOfferProduct ? originalPrice * 1.45 : originalPrice;
-    const formattedPrice = formatPrice(originalPrice);
-    const formattedIncreasedPrice = formatPrice(increasedPrice);
-    
-    const savingPercent = isOfferProduct ? Math.round(((increasedPrice - originalPrice) / increasedPrice) * 100) : 0;
-    
-    html += `
-      <div class="product ${isNewProduct ? 'special-offer' : ''} ${isOutOfStockProduct ? 'out-of-stock' : ''}" data-id="${index}">
-        ${isNewProduct ? '<div class="product-badge new-badge">🆕 جديد</div>' : ''}
-        ${isOfferProduct ? `<div class="product-badge offer-badge">خصم ${savingPercent}%</div>` : ''}
-        ${isFreeShippingProduct ? '<div class="product-badge free-shipping-badge">🚚 شحن مجاني</div>' : ''}
-        ${isOutOfStockProduct ? '<div class="out-of-stock-overlay"></div><div class="out-of-stock-badge">⛔ غير متوفر</div>' : ''}
-        
-        <div class="product-image-container">
-          <img src="${product.image || 'https://via.placeholder.com/200'}" 
-               alt="${displayName}" 
-               onerror="this.src='https://via.placeholder.com/200?text=صورة+غير+متوفرة'">
-        </div>
-        
-        <div class="product-info">
-          <h3 class="product-title">${displayName}</h3>
-          
-          <div class="product-rating">
-            <div class="stars">${generateStars(4)}</div>
-            <span class="rating-count">(${Math.floor(Math.random() * 100) + 50})</span>
-          </div>
-          
-          <div class="product-price">
-            ${isOfferProduct ? `
-              <span class="original-price">${formattedIncreasedPrice} جنيه</span>
-              <div class="current-price">${formattedPrice} جنيه</div>
-              <div class="saving">وفر ${formatPrice(increasedPrice - originalPrice)} جنيه</div>
-            ` : `
-              <div class="current-price">${formattedPrice} جنيه</div>
-            `}
-          </div>
-          
-          ${isFreeShippingProduct ? `
-            <div class="prime-badge">
-              <span>شحن مجاني سريع</span>
-            </div>
-          ` : ''}
-          
-          <div class="product-actions">
-            <div class="quantity-selector">
-              <label for="qty-${index}">الكمية:</label>
-              <select id="qty-${index}">
-                ${Array.from({length: 10}, (_, i) => `<option value="${i+1}">${i+1}</option>`).join('')}
-              </select>
-            </div>
-            
-            ${!isOutOfStockProduct ? `
-              <button class="add-to-cart-btn" onclick="addToCart(${index})">
-                أضف إلى السلة
-              </button>
-              
-              <button class="buy-now-btn" onclick="buyNow(${index})">
-                اشترِ الآن
-              </button>
-            ` : ''}
-          </div>
-        </div>
-      </div>
-    `;
-  });
-  
-  container.innerHTML = html;
-  togglePricesVisibility();
+  renderProducts(filteredProducts);
 }
 
 // إضافة منتج إلى السلة
@@ -1504,6 +1550,7 @@ function addToCart(productIndex) {
   
   updateCartCount();
   saveCartToStorage();
+  updateShippingBar();
   
   // استخدام الاسم النظيف في الإشعار
   const cleanName = cleanProductName(product.name);
@@ -1584,6 +1631,7 @@ function updateCartQuantity(productIndex, newQuantity) {
     item.quantity = newQuantity;
     updateCartCount();
     saveCartToStorage();
+    updateShippingBar();
     showCart(); // تحديث عرض السلة
   }
 }
@@ -1597,6 +1645,7 @@ function removeFromCart(productIndex) {
     cart = cart.filter(item => item.index !== productIndex);
     updateCartCount();
     saveCartToStorage();
+    updateShippingBar();
     showCart(); // تحديث عرض السلة
     showToast(`تم حذف ${cleanName} من السلة`);
   }
@@ -1608,6 +1657,10 @@ function updateCartCount() {
   const badge = document.getElementById('cart-count');
   badge.textContent = count;
   badge.style.display = count > 0 ? 'inline-block' : 'none';
+  
+  // إظهار/إخفاء زر حفظ السلة
+  const saveCartBtn = document.getElementById('saveCartBtn');
+  saveCartBtn.style.display = count > 0 ? 'flex' : 'none';
 }
 
 // تحديث عداد الإشعارات
@@ -1623,19 +1676,62 @@ function updateNotificationCount() {
   const notifBtn = document.getElementById('notifBtn');
   if (newProductsCount > 0) {
     notifBtn.classList.add('notification-animation');
+    document.getElementById('newBanner').style.display = 'block';
   } else {
     notifBtn.classList.remove('notification-animation');
+    document.getElementById('newBanner').style.display = 'none';
   }
 }
 
-// الدفع
+// تحديث شريط الشحن المجاني
+function updateShippingBar() {
+  const total = calculateTotal();
+  const shippingBar = document.getElementById('shippingBar');
+  const shippingProgress = document.getElementById('shippingProgress');
+  const shippingMessage = document.getElementById('shippingMessage');
+  const remainingAmount = document.getElementById('remainingAmount');
+  
+  if (total === 0) {
+    shippingBar.style.display = 'none';
+    return;
+  }
+  
+  shippingBar.style.display = 'block';
+  
+  if (total >= FREE_SHIPPING_THRESHOLD) {
+    shippingProgress.style.width = '100%';
+    shippingMessage.innerHTML = '🎉 مبروك! لقد حصلت على الشحن المجاني';
+    shippingBar.style.background = 'linear-gradient(135deg, #25d366, #128c7e)';
+  } else {
+    const progress = (total / FREE_SHIPPING_THRESHOLD) * 100;
+    const remaining = FREE_SHIPPING_THRESHOLD - total;
+    
+    shippingProgress.style.width = `${progress}%`;
+    remainingAmount.textContent = formatPrice(remaining);
+    shippingMessage.innerHTML = `أنفق <span id="remainingAmount">${formatPrice(remaining)}</span> جنيه أخرى للحصول على شحن مجاني!`;
+    shippingBar.style.background = 'linear-gradient(135deg, #ff6b00, #ff4444)';
+  }
+}
+
+// حساب الإجمالي
+function calculateTotal() {
+  let total = 0;
+  cart.forEach(item => {
+    total += item.price * item.quantity;
+  });
+  return total;
+}
+
+// الدفع عبر واتساب
 function checkout() {
   if (cart.length === 0) {
     showToast('سلة التسوق فارغة');
     return;
   }
   
-  const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+  const total = calculateTotal();
+  const shipping = total >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_COST;
+  const finalTotal = total + shipping;
   
   // إنشاء نص الفاتورة
   let invoiceText = `🧾 فاتورة شراء من جنة\n\n`;
@@ -1653,7 +1749,14 @@ function checkout() {
     invoiceText += `──────────────────\n`;
   });
   
-  invoiceText += `\n💰 الإجمالي الكلي: ${formatPrice(subtotal)} جنيه\n\n`;
+  invoiceText += `\n💰 إجمالي المنتجات: ${formatPrice(total)} جنيه\n`;
+  invoiceText += `🚚 رسوم الشحن: ${formatPrice(shipping)} جنيه\n`;
+  
+  if (shipping === 0) {
+    invoiceText += `🎉 الشحن مجاني!\n`;
+  }
+  
+  invoiceText += `💰 الإجمالي الكلي: ${formatPrice(finalTotal)} جنيه\n\n`;
   invoiceText += `شكراً لثقتكم بنا 🌹`;
   
   // عرض أرقام الواتساب للاختيار
@@ -1663,9 +1766,9 @@ function checkout() {
     { number: '201012253500', display: '01012253500' }
   ];
   
-  let numbersHTML = '<div style="text-align: center; margin: 20px 0;"><p>اختر رقم لإرسال الطلب 👇</p>';
+  let numbersHTML = '<div style="text-align: center; margin: 20px 0;"><p style="font-weight: bold; margin-bottom: 15px;">اختر رقم لإرسال الطلب 👇</p>';
   numbers.forEach(num => {
-    numbersHTML += `<a href="https://wa.me/${num.number}?text=${encodeURIComponent(invoiceText)}" target="_blank" style="display: block; margin: 10px 0; padding: 10px; background: #25D366; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;">📞 ${num.display}</a>`;
+    numbersHTML += `<a href="https://wa.me/${num.number}?text=${encodeURIComponent(invoiceText)}" target="_blank" style="display: block; margin: 10px 0; padding: 12px; background: #25D366; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 16px;">📞 ${num.display}</a>`;
   });
   numbersHTML += '</div>';
   
@@ -1683,86 +1786,7 @@ function showNewProducts() {
     return;
   }
   
-  // عرض المنتجات الجديدة فقط
-  const container = document.getElementById('products-container');
-  let html = '';
-  
-  newProducts.forEach((product, index) => {
-    const isOfferProduct = product.name && product.name.includes("&");
-    const isOutOfStockProduct = isOutOfStock(product.name);
-    const isFreeShippingProduct = hasFreeShipping(product.name);
-    
-    const displayName = cleanProductName(product.name);
-    
-    const originalPrice = parseFloat(product.price) || 0;
-    const increasedPrice = isOfferProduct ? originalPrice * 1.45 : originalPrice;
-    const formattedPrice = formatPrice(originalPrice);
-    const formattedIncreasedPrice = formatPrice(increasedPrice);
-    
-    const savingPercent = isOfferProduct ? Math.round(((increasedPrice - originalPrice) / increasedPrice) * 100) : 0;
-    
-    html += `
-      <div class="product special-offer ${isOutOfStockProduct ? 'out-of-stock' : ''}" data-id="${index}">
-        <div class="product-badge new-badge">🆕 جديد</div>
-        ${isOfferProduct ? `<div class="product-badge offer-badge">خصم ${savingPercent}%</div>` : ''}
-        ${isFreeShippingProduct ? '<div class="product-badge free-shipping-badge">🚚 شحن مجاني</div>' : ''}
-        ${isOutOfStockProduct ? '<div class="out-of-stock-overlay"></div><div class="out-of-stock-badge">⛔ غير متوفر</div>' : ''}
-        
-        <div class="product-image-container">
-          <img src="${product.image || 'https://via.placeholder.com/200'}" 
-               alt="${displayName}" 
-               onerror="this.src='https://via.placeholder.com/200?text=صورة+غير+متوفرة'">
-        </div>
-        
-        <div class="product-info">
-          <h3 class="product-title">${displayName}</h3>
-          
-          <div class="product-rating">
-            <div class="stars">${generateStars(4)}</div>
-            <span class="rating-count">(${Math.floor(Math.random() * 100) + 50})</span>
-          </div>
-          
-          <div class="product-price">
-            ${isOfferProduct ? `
-              <span class="original-price">${formattedIncreasedPrice} جنيه</span>
-              <div class="current-price">${formattedPrice} جنيه</div>
-              <div class="saving">وفر ${formatPrice(increasedPrice - originalPrice)} جنيه</div>
-            ` : `
-              <div class="current-price">${formattedPrice} جنيه</div>
-            `}
-          </div>
-          
-          ${isFreeShippingProduct ? `
-            <div class="prime-badge">
-              <span>شحن مجاني سريع</span>
-            </div>
-          ` : ''}
-          
-          <div class="product-actions">
-            <div class="quantity-selector">
-              <label for="qty-${index}">الكمية:</label>
-              <select id="qty-${index}">
-                ${Array.from({length: 10}, (_, i) => `<option value="${i+1}">${i+1}</option>`).join('')}
-              </select>
-            </div>
-            
-            ${!isOutOfStockProduct ? `
-              <button class="add-to-cart-btn" onclick="addToCart(${index})">
-                أضف إلى السلة
-              </button>
-              
-              <button class="buy-now-btn" onclick="buyNow(${index})">
-                اشترِ الآن
-              </button>
-            ` : ''}
-          </div>
-        </div>
-      </div>
-    `;
-  });
-  
-  container.innerHTML = html;
-  togglePricesVisibility();
+  renderProducts(newProducts);
   showToast(`عرض ${newProducts.length} منتج جديد`);
 }
 
@@ -1775,82 +1799,7 @@ function showSpecialOffers() {
     return;
   }
   
-  // عرض المنتجات ذات العروض فقط
-  const container = document.getElementById('products-container');
-  let html = '';
-  
-  offerProducts.forEach((product, index) => {
-    const isNewProduct = product.name && product.name.includes("..");
-    const isOutOfStockProduct = isOutOfStock(product.name);
-    const isFreeShippingProduct = hasFreeShipping(product.name);
-    
-    const displayName = cleanProductName(product.name);
-    
-    const originalPrice = parseFloat(product.price) || 0;
-    const increasedPrice = originalPrice * 1.45;
-    const formattedPrice = formatPrice(originalPrice);
-    const formattedIncreasedPrice = formatPrice(increasedPrice);
-    
-    const savingPercent = Math.round(((increasedPrice - originalPrice) / increasedPrice) * 100);
-    
-    html += `
-      <div class="product ${isNewProduct ? 'special-offer' : ''} ${isOutOfStockProduct ? 'out-of-stock' : ''}" data-id="${index}">
-        ${isNewProduct ? '<div class="product-badge new-badge">🆕 جديد</div>' : ''}
-        <div class="product-badge offer-badge">خصم ${savingPercent}%</div>
-        ${isFreeShippingProduct ? '<div class="product-badge free-shipping-badge">🚚 شحن مجاني</div>' : ''}
-        ${isOutOfStockProduct ? '<div class="out-of-stock-overlay"></div><div class="out-of-stock-badge">⛔ غير متوفر</div>' : ''}
-        
-        <div class="product-image-container">
-          <img src="${product.image || 'https://via.placeholder.com/200'}" 
-               alt="${displayName}" 
-               onerror="this.src='https://via.placeholder.com/200?text=صورة+غير+متوفرة'">
-        </div>
-        
-        <div class="product-info">
-          <h3 class="product-title">${displayName}</h3>
-          
-          <div class="product-rating">
-            <div class="stars">${generateStars(4)}</div>
-            <span class="rating-count">(${Math.floor(Math.random() * 100) + 50})</span>
-          </div>
-          
-          <div class="product-price">
-            <span class="original-price">${formattedIncreasedPrice} جنيه</span>
-            <div class="current-price">${formattedPrice} جنيه</div>
-            <div class="saving">وفر ${formatPrice(increasedPrice - originalPrice)} جنيه</div>
-          </div>
-          
-          ${isFreeShippingProduct ? `
-            <div class="prime-badge">
-              <span>شحن مجاني سريع</span>
-            </div>
-          ` : ''}
-          
-          <div class="product-actions">
-            <div class="quantity-selector">
-              <label for="qty-${index}">الكمية:</label>
-              <select id="qty-${index}">
-                ${Array.from({length: 10}, (_, i) => `<option value="${i+1}">${i+1}</option>`).join('')}
-              </select>
-            </div>
-            
-            ${!isOutOfStockProduct ? `
-              <button class="add-to-cart-btn" onclick="addToCart(${index})">
-                أضف إلى السلة
-              </button>
-              
-              <button class="buy-now-btn" onclick="buyNow(${index})">
-                اشترِ الآن
-              </button>
-            ` : ''}
-          </div>
-        </div>
-      </div>
-    `;
-  });
-  
-  container.innerHTML = html;
-  togglePricesVisibility();
+  renderProducts(offerProducts);
   showToast(`عرض ${offerProducts.length} منتج خاص`);
 }
 
@@ -1892,6 +1841,7 @@ function clearCart() {
     cart = [];
     updateCartCount();
     saveCartToStorage();
+    updateShippingBar();
     showToast('تم مسح السلة بنجاح');
   }
 }
@@ -1907,6 +1857,7 @@ function loadCartFromStorage() {
   if (savedCart) {
     cart = JSON.parse(savedCart);
     updateCartCount();
+    updateShippingBar();
   }
 }
 
