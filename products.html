@@ -1181,6 +1181,50 @@ footer {
 .quick-action-btn:hover {
   background: #f3a847;
 }
+
+/* Support Button */
+.support-section {
+  text-align: center;
+  margin: 20px 0;
+  padding: 15px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+}
+
+.support-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: var(--primary-color);
+}
+
+.support-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.support-btn {
+  background: var(--accent-color);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: background 0.2s;
+  text-decoration: none;
+}
+
+.support-btn:hover {
+  background: #e68900;
+}
 </style>
 </head>
 <body class="hide-price">
@@ -1243,6 +1287,9 @@ footer {
   </div>
   
   <div class="header-nav">
+    <a href="#" class="nav-link" id="allProductsBtn">
+      <span>📦 جميع المنتجات</span>
+    </a>
     <a href="#" class="nav-link" id="offerBtn">
       <span>💥 عروض خاصة</span>
     </a>
@@ -1254,9 +1301,6 @@ footer {
     </a>
     <a href="#" class="nav-link" onclick="window.location.href='index.html'">
       <span>🔙 الرئيسية</span>
-    </a>
-    <a href="#" class="nav-link" onclick="showSavedInvoices()">
-      <span>📋 الفواتير المحفوظة</span>
     </a>
   </div>
 </header>
@@ -1275,6 +1319,9 @@ footer {
   
   <!-- أزرار سريعة -->
   <div class="quick-actions">
+    <button class="quick-action-btn" onclick="showAllProducts()">
+      <span>📦 جميع المنتجات</span>
+    </button>
     <button class="quick-action-btn" onclick="showNewProducts()">
       <span>🆕 المنتجات الجديدة</span>
     </button>
@@ -1284,20 +1331,34 @@ footer {
     <button class="quick-action-btn" onclick="showFreeShippingProducts()">
       <span>🚚 الشحن المجاني</span>
     </button>
-    <button class="quick-action-btn" onclick="clearCart()">
-      <span>🗑️ مسح السلة</span>
-    </button>
   </div>
   
   <div class="products-section">
     <div class="section-header">
-      <h2 class="section-title">جميع المنتجات</h2>
-      <a href="#" class="view-all" onclick="renderProducts()">عرض الكل</a>
+      <h2 class="section-title" id="currentSectionTitle">جميع المنتجات</h2>
+      <a href="#" class="view-all" onclick="showAllProducts()">عرض الكل</a>
     </div>
     
     <div id="products-container">
       <!-- سيتم تعبئة المنتجات هنا بالجافاسكريبت -->
       <div class="loading">جاري تحميل المنتجات...</div>
+    </div>
+  </div>
+  
+  <!-- قسم الدعم -->
+  <div class="support-section">
+    <h3 class="support-title">📞 الدعم الفني</h3>
+    <p>للاستفسارات أو المساعدة الفنية، تواصل معنا عبر:</p>
+    <div class="support-buttons">
+      <a href="https://wa.me/201022495795" class="support-btn" target="_blank">
+        <span>واتساب الدعم</span>
+      </a>
+      <a href="tel:01022495795" class="support-btn">
+        <span>اتصال هاتفي</span>
+      </a>
+      <button class="support-btn" onclick="showSupportModal()">
+        <span>رسالة سريعة</span>
+      </button>
     </div>
   </div>
 </div>
@@ -1431,6 +1492,39 @@ footer {
   </div>
 </div>
 
+<!-- Support Modal -->
+<div class="modal-overlay" id="supportModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 class="modal-title">📞 الدعم الفني</h2>
+      <button class="modal-close" onclick="hideSupportModal()">×</button>
+    </div>
+    
+    <div class="modal-body">
+      <div style="text-align: center; padding: 20px;">
+        <h3 style="margin-bottom: 15px;">تواصل مع الدعم الفني</h3>
+        <p style="margin-bottom: 20px;">للاستفسارات أو المساعدة الفنية، يمكنك التواصل معنا عبر:</p>
+        
+        <div class="support-buttons" style="justify-content: center;">
+          <a href="https://wa.me/201022495795" class="support-btn" target="_blank" style="margin: 5px;">
+            <span>واتساب الدعم</span>
+          </a>
+          <a href="tel:01022495795" class="support-btn" style="margin: 5px;">
+            <span>اتصال هاتفي</span>
+          </a>
+        </div>
+        
+        <div style="margin-top: 20px; padding: 15px; background: #f9f9f9; border-radius: 6px;">
+          <h4 style="margin-bottom: 10px;">أرقام الدعم:</h4>
+          <p>📞 01022495795</p>
+          <p>📞 01067070423</p>
+          <p>📞 01012253500</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Toast Notification -->
 <div class="toast" id="toast"></div>
 
@@ -1442,6 +1536,7 @@ let cart = [];
 let pricesVisible = false;
 let newProductsCount = 0;
 let isSearching = false;
+let currentFilter = 'all'; // 'all', 'new', 'offers', 'free-shipping'
 const PASSWORD = "2525";
 
 // إعدادات الشحن المجاني
@@ -1653,10 +1748,11 @@ function setupEventListeners() {
   // أزرار الرأس
   document.getElementById('cartBtn').addEventListener('click', showCart);
   document.getElementById('totalBtn').addEventListener('click', showTotal);
-  document.getElementById('supportBtn').addEventListener('click', () => window.open("https://wa.me/201022495795", "_blank"));
+  document.getElementById('supportBtn').addEventListener('click', showSupportModal);
   document.getElementById('notifBtn').addEventListener('click', showNewProducts);
   document.getElementById('clearCartBtn').addEventListener('click', clearCart);
   document.getElementById('offerBtn').addEventListener('click', showSpecialOffers);
+  document.getElementById('allProductsBtn').addEventListener('click', showAllProducts);
   
   // أزرار المودال
   document.getElementById('closeCartModal').addEventListener('click', hideCart);
@@ -1667,6 +1763,12 @@ function setupEventListeners() {
   document.getElementById('cartModal').addEventListener('click', function(e) {
     if (e.target === this) {
       hideCart();
+    }
+  });
+  
+  document.getElementById('supportModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+      hideSupportModal();
     }
   });
   
@@ -1683,18 +1785,40 @@ function performSearch() {
   const searchTerm = document.getElementById('searchBox').value.trim().toLowerCase();
   
   if (searchTerm === '') {
-    isSearching = false;
-    renderProducts();
+    // إذا كان البحث فارغاً، ارجع إلى العرض الحالي
+    applyCurrentFilter();
     return;
   }
   
   isSearching = true;
-  const filteredProducts = productsData.filter(product => {
+  
+  // البحث في جميع المنتجات بغض النظر عن التصفية الحالية
+  let filteredProducts = productsData.filter(product => {
     const cleanName = cleanProductName(product.name);
     return cleanName.toLowerCase().includes(searchTerm);
   });
   
   renderProducts(filteredProducts);
+  document.getElementById('currentSectionTitle').textContent = `نتائج البحث: "${searchTerm}"`;
+}
+
+// تطبيق التصفية الحالية
+function applyCurrentFilter() {
+  isSearching = false;
+  
+  switch(currentFilter) {
+    case 'new':
+      showNewProducts();
+      break;
+    case 'offers':
+      showSpecialOffers();
+      break;
+    case 'free-shipping':
+      showFreeShippingProducts();
+      break;
+    default:
+      showAllProducts();
+  }
 }
 
 // إضافة منتج إلى السلة
@@ -1996,8 +2120,18 @@ function checkout() {
   document.querySelector('.cart-items').scrollTop = 0;
 }
 
+// عرض جميع المنتجات
+function showAllProducts() {
+  currentFilter = 'all';
+  renderProducts(productsData);
+  document.getElementById('currentSectionTitle').textContent = 'جميع المنتجات';
+  document.getElementById('searchBox').value = '';
+  showToast('عرض جميع المنتجات');
+}
+
 // إظهار المنتجات الجديدة
 function showNewProducts() {
+  currentFilter = 'new';
   const newProducts = productsData.filter(p => p.name && p.name.includes(".."));
   
   if (newProducts.length === 0) {
@@ -2006,11 +2140,14 @@ function showNewProducts() {
   }
   
   renderProducts(newProducts);
+  document.getElementById('currentSectionTitle').textContent = 'المنتجات الجديدة';
+  document.getElementById('searchBox').value = '';
   showToast(`عرض ${newProducts.length} منتج جديد`);
 }
 
 // إظهار العروض الخاصة
 function showSpecialOffers() {
+  currentFilter = 'offers';
   const offerProducts = productsData.filter(p => p.name && p.name.includes("&"));
   
   if (offerProducts.length === 0) {
@@ -2019,11 +2156,14 @@ function showSpecialOffers() {
   }
   
   renderProducts(offerProducts);
+  document.getElementById('currentSectionTitle').textContent = 'العروض الخاصة';
+  document.getElementById('searchBox').value = '';
   showToast(`عرض ${offerProducts.length} منتج خاص`);
 }
 
 // إظهار المنتجات ذات الشحن المجاني
 function showFreeShippingProducts() {
+  currentFilter = 'free-shipping';
   const freeShippingProducts = productsData.filter(p => p.name && p.name.includes("#"));
   
   if (freeShippingProducts.length === 0) {
@@ -2032,6 +2172,8 @@ function showFreeShippingProducts() {
   }
   
   renderProducts(freeShippingProducts);
+  document.getElementById('currentSectionTitle').textContent = 'المنتجات بشحن مجاني';
+  document.getElementById('searchBox').value = '';
   showToast(`عرض ${freeShippingProducts.length} منتج بشحن مجاني`);
 }
 
@@ -2131,6 +2273,16 @@ function checkPassword() {
   }
 }
 
+// إظهار نافذة الدعم
+function showSupportModal() {
+  document.getElementById('supportModal').style.display = 'block';
+}
+
+// إخفاء نافذة الدعم
+function hideSupportModal() {
+  document.getElementById('supportModal').style.display = 'none';
+}
+
 // إظهار الإشعارات
 function showToast(message) {
   const toast = document.getElementById('toast');
@@ -2176,10 +2328,6 @@ function shareInvoice() {
   } else {
     showToast('مشاركة الفاتورة غير متاحة في هذا المتصفح');
   }
-}
-
-function showSavedInvoices() {
-  showToast('عرض الفواتير المحفوظة - قيد التطوير');
 }
 </script>
 </body>
