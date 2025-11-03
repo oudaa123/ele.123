@@ -29,7 +29,7 @@ body {
   background: var(--light-bg);
   font-size: 14px;
   color: var(--text-color);
-  padding-bottom: 60px;
+  line-height: 1.5;
 }
 
 /* Header Styles - Amazon Style */
@@ -58,7 +58,7 @@ header {
 }
 
 .logo {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: bold;
   color: white;
   text-decoration: none;
@@ -74,7 +74,7 @@ header {
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 10px;
   flex-wrap: wrap;
 }
 
@@ -83,11 +83,11 @@ header {
   border: none;
   color: white;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 13px;
   display: flex;
   align-items: center;
-  gap: 5px;
-  padding: 8px 10px;
+  gap: 4px;
+  padding: 6px 8px;
   border-radius: 2px;
   transition: background 0.2s;
   position: relative;
@@ -98,43 +98,34 @@ header {
   background: rgba(255,255,255,0.1);
 }
 
-#cart-count {
+#cart-count, #notif-count {
   background: var(--accent-color);
   color: var(--text-color);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: bold;
-  padding: 2px 6px;
+  padding: 1px 5px;
   border-radius: 50%;
-  margin-left: 5px;
-}
-
-#notif-count {
-  background: var(--danger-color);
-  color: white;
-  font-size: 12px;
-  font-weight: bold;
-  padding: 2px 6px;
-  border-radius: 50%;
-  margin-left: 5px;
+  margin-right: 4px;
 }
 
 .header-nav {
   background: var(--secondary-color);
-  padding: 8px 15px;
+  padding: 6px 15px;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 15px;
+  gap: 12px;
+  overflow-x: auto;
 }
 
 .nav-link {
   color: white;
   text-decoration: none;
-  font-size: 14px;
+  font-size: 13px;
   display: flex;
   align-items: center;
-  gap: 5px;
-  padding: 5px 10px;
+  gap: 4px;
+  padding: 4px 8px;
   border-radius: 2px;
   transition: background 0.2s;
   white-space: nowrap;
@@ -147,23 +138,23 @@ header {
 .search-container {
   display: flex;
   flex: 1;
-  max-width: 800px;
-  margin: 0 15px;
+  max-width: 600px;
+  margin: 0 10px;
 }
 
 #searchBox {
   flex: 1;
-  padding: 10px 15px;
+  padding: 8px 12px;
   border: none;
   border-radius: 4px 0 0 4px;
-  font-size: 15px;
+  font-size: 14px;
   outline: none;
 }
 
 .search-button {
   background: var(--light-accent);
   border: none;
-  padding: 0 15px;
+  padding: 0 12px;
   border-radius: 0 4px 4px 0;
   cursor: pointer;
   display: flex;
@@ -177,47 +168,47 @@ header {
 
 /* Main Content Styles */
 .main-container {
-  max-width: 1500px;
+  max-width: 1300px;
   margin: 0 auto;
-  padding: 15px;
+  padding: 12px;
 }
 
 .hero-banner {
   background: linear-gradient(to right, #232f3e, #37475a);
   color: white;
-  padding: 20px;
+  padding: 15px;
   border-radius: 4px;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   text-align: center;
 }
 
 .hero-banner h1 {
-  margin: 0 0 10px;
-  font-size: 28px;
+  margin: 0 0 8px;
+  font-size: 22px;
 }
 
 .hero-banner p {
   margin: 0;
-  font-size: 16px;
+  font-size: 14px;
   opacity: 0.9;
 }
 
 /* Products Grid - Amazon Style */
 .products-section {
-  margin-top: 20px;
+  margin-top: 15px;
 }
 
 .section-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 15px;
-  padding-bottom: 10px;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
   border-bottom: 1px solid var(--border-color);
 }
 
 .section-title {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
   color: var(--text-color);
   margin: 0;
@@ -226,7 +217,7 @@ header {
 .view-all {
   color: var(--accent-color);
   text-decoration: none;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
 }
 
@@ -236,8 +227,8 @@ header {
 
 #products-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 15px;
 }
 
 .product {
@@ -250,6 +241,7 @@ header {
   transition: all 0.3s ease;
   border: 1px solid var(--border-color);
   position: relative;
+  height: 100%;
 }
 
 .product:hover {
@@ -260,12 +252,12 @@ header {
 .product-image-container {
   position: relative;
   width: 100%;
-  height: 200px;
+  height: 180px;
   background: #f9f9f9;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 15px;
+  padding: 12px;
 }
 
 .product-image-container img {
@@ -275,18 +267,18 @@ header {
 }
 
 .product-info {
-  padding: 15px;
+  padding: 12px;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
 }
 
 .product-title {
-  font-size: 16px;
+  font-size: 14px;
   line-height: 1.4;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   color: var(--text-color);
-  height: 44px;
+  height: 40px;
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -296,54 +288,50 @@ header {
 .product-rating {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .stars {
   color: var(--accent-color);
-  font-size: 16px;
-  margin-right: 5px;
+  font-size: 14px;
+  margin-left: 4px;
 }
 
 .rating-count {
   color: var(--light-text);
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .product-price {
-  margin-bottom: 15px;
+  margin-bottom: 12px;
 }
 
 .current-price {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: bold;
   color: var(--text-color);
 }
 
 .original-price {
-  font-size: 14px;
+  font-size: 13px;
   color: var(--light-text);
   text-decoration: line-through;
-  margin-right: 5px;
+  margin-left: 5px;
 }
 
 .saving {
   color: var(--success-color);
-  font-size: 12px;
+  font-size: 11px;
   margin-top: 2px;
 }
 
 .prime-badge {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 4px;
   color: var(--light-text);
-  font-size: 12px;
-  margin-bottom: 10px;
-}
-
-.prime-badge img {
-  width: 50px;
+  font-size: 11px;
+  margin-bottom: 8px;
 }
 
 .product-actions {
@@ -353,20 +341,21 @@ header {
 .quantity-selector {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .quantity-selector label {
-  margin-left: 10px;
-  font-size: 14px;
+  margin-left: 8px;
+  font-size: 13px;
   color: var(--light-text);
 }
 
 .quantity-selector select {
-  padding: 5px;
+  padding: 4px;
   border: 1px solid var(--border-color);
   border-radius: 3px;
   background: white;
+  font-size: 13px;
 }
 
 .add-to-cart-btn {
@@ -374,15 +363,15 @@ header {
   background: var(--light-accent);
   border: 1px solid #a88734;
   border-radius: 3px;
-  padding: 8px 0;
+  padding: 6px 0;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 13px;
   color: var(--text-color);
   transition: background 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 5px;
+  gap: 4px;
 }
 
 .add-to-cart-btn:hover {
@@ -394,16 +383,16 @@ header {
   background: var(--accent-color);
   border: 1px solid #9c7e31;
   border-radius: 3px;
-  padding: 8px 0;
+  padding: 6px 0;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 13px;
   color: var(--text-color);
-  margin-top: 8px;
+  margin-top: 6px;
   transition: background 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 5px;
+  gap: 4px;
 }
 
 .buy-now-btn:hover {
@@ -413,13 +402,13 @@ header {
 /* Product Badges */
 .product-badge {
   position: absolute;
-  top: 10px;
-  left: 10px;
+  top: 8px;
+  left: 8px;
   background: #cc0c39;
   color: white;
-  padding: 4px 8px;
+  padding: 3px 6px;
   border-radius: 3px;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: bold;
   z-index: 1;
 }
@@ -444,10 +433,10 @@ header {
   transform: translate(-50%, -50%);
   background: rgba(0, 0, 0, 0.8);
   color: white;
-  padding: 8px 15px;
-  border-radius: 8px;
+  padding: 6px 12px;
+  border-radius: 6px;
   font-weight: bold;
-  font-size: 16px;
+  font-size: 14px;
   z-index: 2;
   text-align: center;
   width: 80%;
@@ -472,21 +461,21 @@ header {
 footer {
   background: var(--secondary-color);
   color: white;
-  padding: 30px 15px;
-  margin-top: 40px;
+  padding: 20px 12px;
+  margin-top: 30px;
 }
 
 .footer-content {
-  max-width: 1500px;
+  max-width: 1300px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 30px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
 }
 
 .footer-section h3 {
-  font-size: 16px;
-  margin-bottom: 15px;
+  font-size: 14px;
+  margin-bottom: 12px;
   color: white;
 }
 
@@ -497,13 +486,13 @@ footer {
 }
 
 .footer-section li {
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .footer-section a {
   color: #ddd;
   text-decoration: none;
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .footer-section a:hover {
@@ -512,10 +501,10 @@ footer {
 
 .footer-bottom {
   text-align: center;
-  margin-top: 30px;
-  padding-top: 20px;
+  margin-top: 20px;
+  padding-top: 15px;
   border-top: 1px solid #3a4553;
-  font-size: 12px;
+  font-size: 11px;
   color: #999;
 }
 
@@ -530,15 +519,15 @@ footer {
   background: rgba(0,0,0,0.7);
   z-index: 2000;
   overflow-y: auto;
-  padding: 20px;
+  padding: 15px;
 }
 
 .modal-content {
   background: white;
-  margin: 20px auto;
+  margin: 15px auto;
   padding: 0;
-  border-radius: 8px;
-  max-width: 800px;
+  border-radius: 6px;
+  max-width: 700px;
   width: 100%;
   box-shadow: 0 4px 15px rgba(0,0,0,0.2);
   position: relative;
@@ -547,56 +536,60 @@ footer {
 .modal-header {
   background: var(--primary-color);
   color: white;
-  padding: 15px 20px;
-  border-radius: 8px 8px 0 0;
+  padding: 12px 15px;
+  border-radius: 6px 6px 0 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .modal-title {
-  font-size: 20px;
+  font-size: 18px;
   margin: 0;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .modal-close {
   background: none;
   border: none;
   color: white;
-  font-size: 24px;
+  font-size: 20px;
   cursor: pointer;
   padding: 0;
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .modal-body {
-  padding: 20px;
+  padding: 15px;
 }
 
 .cart-items {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
+  max-height: 400px;
+  overflow-y: auto;
 }
 
 .cart-item {
   display: flex;
-  padding: 15px 0;
+  padding: 12px 0;
   border-bottom: 1px solid var(--border-color);
+  align-items: center;
 }
 
 .cart-item-image {
-  width: 80px;
-  height: 80px;
-  margin-left: 15px;
+  width: 70px;
+  height: 70px;
+  margin-left: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .cart-item-image img {
@@ -607,24 +600,29 @@ footer {
 
 .cart-item-details {
   flex: 1;
+  min-width: 0;
 }
 
 .cart-item-title {
-  font-size: 16px;
-  margin-bottom: 5px;
+  font-size: 14px;
+  margin-bottom: 4px;
   color: var(--text-color);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .cart-item-price {
   color: var(--accent-color);
   font-weight: bold;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
+  font-size: 14px;
 }
 
 .cart-item-actions {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .quantity-control {
@@ -638,21 +636,21 @@ footer {
 .quantity-btn {
   background: #f0f2f2;
   border: none;
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .quantity-input {
-  width: 40px;
-  height: 30px;
+  width: 35px;
+  height: 28px;
   border: none;
   text-align: center;
-  font-size: 14px;
+  font-size: 13px;
   background: white;
 }
 
@@ -661,8 +659,8 @@ footer {
   border: none;
   color: #007185;
   cursor: pointer;
-  font-size: 14px;
-  padding: 5px 10px;
+  font-size: 13px;
+  padding: 4px 8px;
 }
 
 .delete-btn:hover {
@@ -671,15 +669,15 @@ footer {
 
 .cart-summary {
   background: #f0f2f2;
-  padding: 15px;
-  border-radius: 8px;
-  margin-top: 20px;
+  padding: 12px;
+  border-radius: 6px;
+  margin-top: 15px;
 }
 
 .subtotal {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: bold;
-  margin-bottom: 15px;
+  margin-bottom: 12px;
   display: flex;
   justify-content: space-between;
 }
@@ -688,13 +686,13 @@ footer {
   width: 100%;
   background: var(--accent-color);
   border: 1px solid #9c7e31;
-  border-radius: 8px;
-  padding: 10px 0;
+  border-radius: 6px;
+  padding: 8px 0;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 15px;
   color: var(--text-color);
   font-weight: bold;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   transition: background 0.2s;
 }
 
@@ -705,10 +703,10 @@ footer {
 .continue-shopping {
   background: white;
   border: 1px solid #d5d9d9;
-  border-radius: 8px;
-  padding: 8px 0;
+  border-radius: 6px;
+  padding: 6px 0;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 13px;
   color: var(--text-color);
   width: 100%;
 }
@@ -720,16 +718,17 @@ footer {
 /* Toast Notification */
 .toast {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  bottom: 15px;
+  right: 15px;
   background: var(--success-color);
   color: white;
-  padding: 12px 20px;
+  padding: 10px 15px;
   border-radius: 4px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.2);
   display: none;
   z-index: 3000;
-  max-width: 300px;
+  max-width: 280px;
+  font-size: 13px;
 }
 
 /* Password Modal */
@@ -743,58 +742,59 @@ footer {
   background: rgba(0,0,0,0.7);
   z-index: 2000;
   overflow-y: auto;
-  padding: 20px;
+  padding: 15px;
 }
 
 .password-content {
   background: white;
-  margin: 100px auto;
-  padding: 20px;
-  border-radius: 10px;
+  margin: 80px auto;
+  padding: 15px;
+  border-radius: 8px;
   max-width: 95%;
-  width: 400px;
+  width: 350px;
   position: relative;
   text-align: center;
 }
 
 .password-close {
   position: absolute;
-  top: 10px;
-  left: 10px;
+  top: 8px;
+  left: 8px;
   background: #ff4444;
   color: white;
   border: none;
   border-radius: 50%;
-  width: 30px;
-  height: 30px;
+  width: 26px;
+  height: 26px;
   cursor: pointer;
   font-weight: bold;
+  font-size: 14px;
 }
 
 #passwordInput {
   width: 100%;
-  padding: 12px;
-  margin: 15px 0;
+  padding: 10px;
+  margin: 12px 0;
   border: 2px solid #ddd;
-  border-radius: 8px;
-  font-size: 16px;
+  border-radius: 6px;
+  font-size: 14px;
   text-align: center;
 }
 
 .password-buttons {
   display: flex;
   justify-content: center;
-  gap: 10px;
-  margin-top: 15px;
+  gap: 8px;
+  margin-top: 12px;
 }
 
 .password-buttons button {
-  padding: 10px 20px;
+  padding: 8px 16px;
   border: none;
-  border-radius: 6px;
+  border-radius: 5px;
   cursor: pointer;
   font-weight: bold;
-  font-size: 16px;
+  font-size: 14px;
 }
 
 #submitPassword {
@@ -808,11 +808,11 @@ footer {
 }
 
 .password-support {
-  margin-top: 20px;
-  padding: 15px;
+  margin-top: 15px;
+  padding: 12px;
   background: #f9f9f9;
-  border-radius: 8px;
-  font-size: 14px;
+  border-radius: 6px;
+  font-size: 13px;
 }
 
 .password-support a {
@@ -829,14 +829,15 @@ footer {
   transform: translate(-50%, -50%);
   background: var(--primary-color);
   color: white;
-  padding: 15px 25px;
-  border-radius: 10px;
+  padding: 12px 20px;
+  border-radius: 8px;
   box-shadow: 0 4px 15px rgba(0,0,0,0.3);
   z-index: 999;
   cursor: pointer;
   font-weight: bold;
   text-align: center;
   animation: pulse 2s infinite;
+  font-size: 14px;
 }
 
 @keyframes pulse {
@@ -853,7 +854,7 @@ footer {
   }
   
   .search-container {
-    margin: 10px 0;
+    margin: 8px 0;
     width: 100%;
   }
   
@@ -863,23 +864,21 @@ footer {
   }
   
   .header-nav {
-    overflow-x: auto;
-    white-space: nowrap;
-    padding-bottom: 5px;
+    padding-bottom: 4px;
   }
   
   #products-container {
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 15px;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
   }
   
   .product-image-container {
-    height: 150px;
+    height: 140px;
   }
   
   .footer-content {
     grid-template-columns: 1fr;
-    gap: 20px;
+    gap: 15px;
   }
   
   .modal-content {
@@ -893,7 +892,7 @@ footer {
   }
   
   #products-container {
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
     gap: 10px;
   }
   
@@ -902,11 +901,16 @@ footer {
   }
   
   .product-title {
-    font-size: 14px;
+    font-size: 13px;
   }
   
   .current-price {
-    font-size: 16px;
+    font-size: 14px;
+  }
+  
+  .header-action-btn {
+    padding: 4px 6px;
+    font-size: 12px;
   }
 }
 
@@ -921,11 +925,12 @@ footer {
   display: block;
   color: var(--danger-color);
   font-weight: bold;
-  margin-top: 10px;
+  margin-top: 8px;
   text-align: center;
-  padding: 10px;
+  padding: 8px;
   background: #f9f9f9;
   border-radius: 4px;
+  font-size: 13px;
 }
 
 /* Animation for notification button */
@@ -958,22 +963,23 @@ footer {
 /* Save Cart Button */
 #saveCartBtn {
   position: fixed;
-  bottom: 20px;
+  bottom: 15px;
   left: 50%;
   transform: translateX(-50%);
   background: var(--primary-color);
   color: white;
-  padding: 12px 24px;
+  padding: 10px 20px;
   border: none;
-  border-radius: 30px;
+  border-radius: 25px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.3);
   cursor: pointer;
   font-weight: bold;
-  font-size: 16px;
+  font-size: 14px;
   z-index: 999;
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 4px;
+  display: none;
 }
 
 #saveCartBtn:hover {
@@ -987,10 +993,10 @@ footer {
   background: var(--danger-color);
   color: white;
   text-align: center;
-  padding: 12px;
-  font-size: 16px;
+  padding: 10px;
+  font-size: 14px;
   font-weight: bold;
-  margin-bottom: 15px;
+  margin-bottom: 12px;
   border-radius: 4px;
 }
 
@@ -998,27 +1004,28 @@ footer {
 .shipping-bar {
   background: linear-gradient(135deg, #ff6b00, #ff4444);
   color: white;
-  padding: 10px;
+  padding: 8px;
   text-align: center;
   font-weight: bold;
-  margin: 10px 0;
-  border-radius: 8px;
+  margin: 8px 0;
+  border-radius: 6px;
   animation: pulse-shipping 2s infinite;
   display: none;
+  font-size: 13px;
 }
 
 .shipping-progress {
   background: rgba(255,255,255,0.3);
-  height: 8px;
-  border-radius: 4px;
-  margin: 8px 0;
+  height: 6px;
+  border-radius: 3px;
+  margin: 6px 0;
   overflow: hidden;
 }
 
 .shipping-progress-fill {
   background: white;
   height: 100%;
-  border-radius: 4px;
+  border-radius: 3px;
   transition: width 0.5s ease;
 }
 
@@ -1031,13 +1038,13 @@ footer {
 /* Auto Update Indicator */
 .auto-update-indicator {
   position: fixed;
-  top: 10px;
-  right: 10px;
+  top: 8px;
+  right: 8px;
   background: #25d366;
   color: white;
-  padding: 5px 10px;
-  border-radius: 20px;
-  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 15px;
+  font-size: 11px;
   z-index: 1005;
   display: none;
   animation: blink 2s infinite;
@@ -1054,10 +1061,67 @@ footer {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 200px;
-  font-size: 18px;
+  height: 150px;
+  font-size: 16px;
   color: var(--primary-color);
   grid-column: 1 / -1;
+}
+
+/* WhatsApp Numbers in Modal */
+.whatsapp-numbers {
+  text-align: center;
+  margin: 15px 0;
+  padding: 12px;
+  background: #f9f9f9;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+}
+
+.whatsapp-numbers p {
+  font-weight: bold;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.whatsapp-number-btn {
+  display: block;
+  margin: 8px 0;
+  padding: 10px;
+  background: #25D366;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.whatsapp-number-btn:hover {
+  background: #1da851;
+}
+
+/* Invoice Summary */
+.invoice-summary {
+  background: #f9f9f9;
+  padding: 12px;
+  border-radius: 6px;
+  margin: 12px 0;
+  border: 1px solid var(--border-color);
+}
+
+.invoice-summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.invoice-total {
+  font-weight: bold;
+  font-size: 16px;
+  border-top: 1px solid var(--border-color);
+  padding-top: 8px;
+  margin-top: 8px;
 }
 </style>
 </head>
@@ -1089,7 +1153,7 @@ footer {
     <div class="search-container">
       <input type="text" id="searchBox" placeholder="ابحث عن منتج...">
       <button class="search-button">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M21 21L16.514 16.506L21 21ZM19 10.5C19 15.194 15.194 19 10.5 19C5.806 19 2 15.194 2 10.5C2 5.806 5.806 2 10.5 2C15.194 2 19 5.806 19 10.5Z" stroke="#0F1111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </button>
@@ -1097,11 +1161,11 @@ footer {
     
     <div class="header-actions">
       <button class="header-action-btn" id="totalBtn">
-        <span>💰 إجمالي الفاتورة</span>
+        <span>💰 الفاتورة</span>
       </button>
       
       <button class="header-action-btn" id="supportBtn">
-        <span>☎️ الدعم الفني</span>
+        <span>☎️ الدعم</span>
       </button>
       
       <button class="header-action-btn" id="cartBtn">
@@ -1110,12 +1174,12 @@ footer {
       </button>
       
       <button class="header-action-btn" id="notifBtn">
-        <span>🔔 منتجات جديدة</span>
+        <span>🔔 جديد</span>
         <span id="notif-count">0</span>
       </button>
       
       <button class="header-action-btn" id="clearCartBtn">
-        <span>🗑️ مسح السلة</span>
+        <span>🗑️ مسح</span>
       </button>
       
       <button class="header-action-btn" onclick="window.location.href='index.html'">
@@ -1126,10 +1190,13 @@ footer {
   
   <div class="header-nav">
     <a href="#" class="nav-link" id="offerBtn">
-      <span>💥 خصم خاص للمناديب</span>
+      <span>💥 عروض خاصة</span>
     </a>
     <a href="#" class="nav-link" onclick="showPasswordModal()">
       <span>🔓 عرض الأسعار</span>
+    </a>
+    <a href="#" class="nav-link" onclick="saveCart()">
+      <span>💾 حفظ السلة</span>
     </a>
   </div>
 </header>
@@ -1221,12 +1288,31 @@ footer {
         <!-- سيتم تعبئة عناصر السلة هنا -->
       </div>
       
-      <div class="cart-summary">
-        <div class="subtotal">
-          <span>المجموع الفرعي:</span>
-          <span id="cartSubtotal">0.00 جنيه</span>
+      <!-- ملخص الفاتورة -->
+      <div class="invoice-summary" id="invoiceSummary">
+        <div class="invoice-summary-row">
+          <span>إجمالي المنتجات:</span>
+          <span id="productsTotal">0.00 جنيه</span>
         </div>
-        
+        <div class="invoice-summary-row">
+          <span>رسوم الشحن:</span>
+          <span id="shippingCost">0.00 جنيه</span>
+        </div>
+        <div class="invoice-summary-row invoice-total">
+          <span>الإجمالي الكلي:</span>
+          <span id="finalTotal">0.00 جنيه</span>
+        </div>
+      </div>
+      
+      <!-- أرقام الواتساب -->
+      <div class="whatsapp-numbers" id="whatsappNumbers" style="display: none;">
+        <p>اختر رقم لإرسال الطلب 👇</p>
+        <a href="#" class="whatsapp-number-btn" data-number="201067070423">📞 01067070423</a>
+        <a href="#" class="whatsapp-number-btn" data-number="201022495795">📞 01022495795</a>
+        <a href="#" class="whatsapp-number-btn" data-number="201012253500">📞 01012253500</a>
+      </div>
+      
+      <div class="cart-summary">
         <button class="checkout-btn" id="checkoutBtn">
           ارسال الطلب عبر واتساب
         </button>
@@ -1243,7 +1329,7 @@ footer {
 <div class="password-modal" id="passwordModal">
   <div class="password-content">
     <button class="password-close" onclick="closePasswordModal()">×</button>
-    <h2>أدخل كلمة السر لعرض الأسعار وعروض مملكة الاصليات</h2>
+    <h2>أدخل كلمة السر لعرض الأسعار</h2>
     <input type="password" id="passwordInput" placeholder="كلمة السر">
     <div class="password-buttons">
       <button id="submitPassword" onclick="checkPassword()">تأكيد</button>
@@ -1567,20 +1653,36 @@ function buyNow(productIndex) {
 function showCart() {
   const modal = document.getElementById('cartModal');
   const cartItems = document.getElementById('cartItems');
-  const subtotalElement = document.getElementById('cartSubtotal');
+  const whatsappNumbers = document.getElementById('whatsappNumbers');
+  
+  // إخفاء أرقام الواتساب عند فتح السلة
+  whatsappNumbers.style.display = 'none';
   
   if (cart.length === 0) {
     cartItems.innerHTML = '<div style="text-align: center; padding: 40px; color: #666;">سلة التسوق فارغة</div>';
-    subtotalElement.textContent = '0.00 جنيه';
+    updateInvoiceSummary();
   } else {
     let html = '';
-    let subtotal = 0;
     
+    // تجميع المنتجات المتشابهة
+    const groupedCart = {};
     cart.forEach(item => {
+      const key = item.index;
+      if (!groupedCart[key]) {
+        groupedCart[key] = {
+          name: item.name,
+          price: item.price,
+          image: item.image,
+          quantity: 0,
+          index: item.index
+        };
+      }
+      groupedCart[key].quantity += item.quantity;
+    });
+    
+    // عرض المنتجات المجمعة
+    Object.values(groupedCart).forEach(item => {
       const itemTotal = item.price * item.quantity;
-      subtotal += itemTotal;
-      
-      // استخدام الاسم النظيف بدون رموز
       const cleanName = cleanProductName(item.name);
       
       html += `
@@ -1608,10 +1710,21 @@ function showCart() {
     });
     
     cartItems.innerHTML = html;
-    subtotalElement.textContent = `${formatPrice(subtotal)} جنيه`;
+    updateInvoiceSummary();
   }
   
   modal.style.display = 'block';
+}
+
+// تحديث ملخص الفاتورة
+function updateInvoiceSummary() {
+  const productsTotal = calculateTotal();
+  const shipping = productsTotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_COST;
+  const finalTotal = productsTotal + shipping;
+  
+  document.getElementById('productsTotal').textContent = `${formatPrice(productsTotal)} جنيه`;
+  document.getElementById('shippingCost').textContent = `${formatPrice(shipping)} جنيه`;
+  document.getElementById('finalTotal').textContent = `${formatPrice(finalTotal)} جنيه`;
 }
 
 // إخفاء السلة
@@ -1626,14 +1739,17 @@ function updateCartQuantity(productIndex, newQuantity) {
     return;
   }
   
-  const item = cart.find(item => item.index === productIndex);
-  if (item) {
-    item.quantity = newQuantity;
-    updateCartCount();
-    saveCartToStorage();
-    updateShippingBar();
-    showCart(); // تحديث عرض السلة
-  }
+  // تحديث جميع العناصر التي لها نفس الفهرس
+  cart.forEach(item => {
+    if (item.index === productIndex) {
+      item.quantity = newQuantity;
+    }
+  });
+  
+  updateCartCount();
+  saveCartToStorage();
+  updateShippingBar();
+  showCart(); // تحديث عرض السلة
 }
 
 // إزالة منتج من السلة
@@ -1738,7 +1854,22 @@ function checkout() {
   invoiceText += `📋 تفاصيل الطلب:\n`;
   invoiceText += `══════════════════\n`;
   
+  // تجميع المنتجات المتشابهة
+  const groupedCart = {};
   cart.forEach(item => {
+    const key = item.index;
+    if (!groupedCart[key]) {
+      groupedCart[key] = {
+        name: item.name,
+        price: item.price,
+        quantity: 0
+      };
+    }
+    groupedCart[key].quantity += item.quantity;
+  });
+  
+  // إضافة المنتجات المجمعة إلى الفاتورة
+  Object.values(groupedCart).forEach(item => {
     const cleanName = cleanProductName(item.name);
     const itemTotal = item.price * item.quantity;
     
@@ -1759,22 +1890,21 @@ function checkout() {
   invoiceText += `💰 الإجمالي الكلي: ${formatPrice(finalTotal)} جنيه\n\n`;
   invoiceText += `شكراً لثقتكم بنا 🌹`;
   
-  // عرض أرقام الواتساب للاختيار
-  const numbers = [
-    { number: '201067070423', display: '01067070423' },
-    { number: '201022495795', display: '01022495795' },
-    { number: '201012253500', display: '01012253500' }
-  ];
+  // إعداد أزرار الواتساب
+  const whatsappNumbers = document.getElementById('whatsappNumbers');
+  const buttons = whatsappNumbers.querySelectorAll('.whatsapp-number-btn');
   
-  let numbersHTML = '<div style="text-align: center; margin: 20px 0;"><p style="font-weight: bold; margin-bottom: 15px;">اختر رقم لإرسال الطلب 👇</p>';
-  numbers.forEach(num => {
-    numbersHTML += `<a href="https://wa.me/${num.number}?text=${encodeURIComponent(invoiceText)}" target="_blank" style="display: block; margin: 10px 0; padding: 12px; background: #25D366; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 16px;">📞 ${num.display}</a>`;
+  buttons.forEach(button => {
+    const number = button.getAttribute('data-number');
+    button.href = `https://wa.me/${number}?text=${encodeURIComponent(invoiceText)}`;
+    button.target = '_blank';
   });
-  numbersHTML += '</div>';
   
-  // إضافة أرقام الواتساب إلى المودال
-  const cartItems = document.getElementById('cartItems');
-  cartItems.innerHTML += numbersHTML;
+  // إظهار أرقام الواتساب
+  whatsappNumbers.style.display = 'block';
+  
+  // تمرير إلى أعلى المودال لرؤية الأرقام
+  document.querySelector('.cart-items').scrollTop = 0;
 }
 
 // إظهار المنتجات الجديدة
