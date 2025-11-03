@@ -74,7 +74,7 @@ header {
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
 }
 
@@ -83,7 +83,7 @@ header {
   border: none;
   color: white;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 12px;
   display: flex;
   align-items: center;
   gap: 4px;
@@ -101,11 +101,11 @@ header {
 #cart-count, #notif-count {
   background: var(--accent-color);
   color: var(--text-color);
-  font-size: 11px;
+  font-size: 10px;
   font-weight: bold;
-  padding: 1px 5px;
+  padding: 1px 4px;
   border-radius: 50%;
-  margin-right: 4px;
+  margin-right: 3px;
 }
 
 .header-nav {
@@ -114,14 +114,14 @@ header {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 10px;
   overflow-x: auto;
 }
 
 .nav-link {
   color: white;
   text-decoration: none;
-  font-size: 13px;
+  font-size: 12px;
   display: flex;
   align-items: center;
   gap: 4px;
@@ -138,7 +138,7 @@ header {
 .search-container {
   display: flex;
   flex: 1;
-  max-width: 600px;
+  max-width: 500px;
   margin: 0 10px;
 }
 
@@ -147,7 +147,7 @@ header {
   padding: 8px 12px;
   border: none;
   border-radius: 4px 0 0 4px;
-  font-size: 14px;
+  font-size: 13px;
   outline: none;
 }
 
@@ -1123,6 +1123,64 @@ footer {
   padding-top: 8px;
   margin-top: 8px;
 }
+
+/* Additional Buttons */
+.additional-buttons {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.additional-btn {
+  flex: 1;
+  min-width: 120px;
+  background: var(--secondary-color);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  transition: background 0.2s;
+}
+
+.additional-btn:hover {
+  background: #37475a;
+}
+
+/* Quick Actions */
+.quick-actions {
+  display: flex;
+  gap: 8px;
+  margin: 10px 0;
+  flex-wrap: wrap;
+}
+
+.quick-action-btn {
+  flex: 1;
+  min-width: 100px;
+  background: var(--light-accent);
+  color: var(--text-color);
+  border: 1px solid #a88734;
+  padding: 6px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  transition: background 0.2s;
+}
+
+.quick-action-btn:hover {
+  background: #f3a847;
+}
 </style>
 </head>
 <body class="hide-price">
@@ -1181,10 +1239,6 @@ footer {
       <button class="header-action-btn" id="clearCartBtn">
         <span>🗑️ مسح</span>
       </button>
-      
-      <button class="header-action-btn" onclick="window.location.href='index.html'">
-        <span>🔙 الرئيسية</span>
-      </button>
     </div>
   </div>
   
@@ -1197,6 +1251,12 @@ footer {
     </a>
     <a href="#" class="nav-link" onclick="saveCart()">
       <span>💾 حفظ السلة</span>
+    </a>
+    <a href="#" class="nav-link" onclick="window.location.href='index.html'">
+      <span>🔙 الرئيسية</span>
+    </a>
+    <a href="#" class="nav-link" onclick="showSavedInvoices()">
+      <span>📋 الفواتير المحفوظة</span>
     </a>
   </div>
 </header>
@@ -1211,6 +1271,22 @@ footer {
   <div class="hero-banner">
     <h1>مرحباً بكم في متجر جنة</h1>
     <p>اكتشف أحدث المنتجات بأفضل الأسعار</p>
+  </div>
+  
+  <!-- أزرار سريعة -->
+  <div class="quick-actions">
+    <button class="quick-action-btn" onclick="showNewProducts()">
+      <span>🆕 المنتجات الجديدة</span>
+    </button>
+    <button class="quick-action-btn" onclick="showSpecialOffers()">
+      <span>🎁 العروض الخاصة</span>
+    </button>
+    <button class="quick-action-btn" onclick="showFreeShippingProducts()">
+      <span>🚚 الشحن المجاني</span>
+    </button>
+    <button class="quick-action-btn" onclick="clearCart()">
+      <span>🗑️ مسح السلة</span>
+    </button>
   </div>
   
   <div class="products-section">
@@ -1302,6 +1378,19 @@ footer {
           <span>الإجمالي الكلي:</span>
           <span id="finalTotal">0.00 جنيه</span>
         </div>
+      </div>
+      
+      <!-- أزرار إضافية -->
+      <div class="additional-buttons">
+        <button class="additional-btn" onclick="saveInvoice()">
+          <span>💾 حفظ الفاتورة</span>
+        </button>
+        <button class="additional-btn" onclick="printInvoice()">
+          <span>🖨️ طباعة الفاتورة</span>
+        </button>
+        <button class="additional-btn" onclick="shareInvoice()">
+          <span>📤 مشاركة الفاتورة</span>
+        </button>
       </div>
       
       <!-- أرقام الواتساب -->
@@ -1933,6 +2022,19 @@ function showSpecialOffers() {
   showToast(`عرض ${offerProducts.length} منتج خاص`);
 }
 
+// إظهار المنتجات ذات الشحن المجاني
+function showFreeShippingProducts() {
+  const freeShippingProducts = productsData.filter(p => p.name && p.name.includes("#"));
+  
+  if (freeShippingProducts.length === 0) {
+    showToast('لا توجد منتجات بشحن مجاني حالياً');
+    return;
+  }
+  
+  renderProducts(freeShippingProducts);
+  showToast(`عرض ${freeShippingProducts.length} منتج بشحن مجاني`);
+}
+
 // إظهار إجمالي الفاتورة
 function showTotal() {
   if (!pricesVisible) {
@@ -2038,6 +2140,46 @@ function showToast(message) {
   setTimeout(() => {
     toast.style.display = 'none';
   }, 3000);
+}
+
+// وظائف إضافية للفاتورة
+function saveInvoice() {
+  if (cart.length === 0) {
+    showToast('لا توجد فاتورة لحفظها');
+    return;
+  }
+  
+  const invoiceData = {
+    date: new Date().toLocaleString('ar-EG'),
+    items: [...cart],
+    total: calculateTotal()
+  };
+  
+  let savedInvoices = JSON.parse(localStorage.getItem('savedInvoices')) || [];
+  savedInvoices.push(invoiceData);
+  localStorage.setItem('savedInvoices', JSON.stringify(savedInvoices));
+  
+  showToast('تم حفظ الفاتورة بنجاح');
+}
+
+function printInvoice() {
+  window.print();
+}
+
+function shareInvoice() {
+  if (navigator.share) {
+    navigator.share({
+      title: 'فاتورة شراء من جنة',
+      text: 'فاتورة شراء من متجر جنة',
+      url: window.location.href
+    });
+  } else {
+    showToast('مشاركة الفاتورة غير متاحة في هذا المتصفح');
+  }
+}
+
+function showSavedInvoices() {
+  showToast('عرض الفواتير المحفوظة - قيد التطوير');
 }
 </script>
 </body>
