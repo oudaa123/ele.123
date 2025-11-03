@@ -16,6 +16,7 @@
   --card-bg: #fff;
   --border-color: #ddd;
   --success-color: #007600;
+  --danger-color: #cc0c39;
 }
 
 * {
@@ -89,6 +90,7 @@ header {
   padding: 8px 10px;
   border-radius: 2px;
   transition: background 0.2s;
+  position: relative;
 }
 
 .header-action-btn:hover {
@@ -98,6 +100,16 @@ header {
 #cart-count {
   background: var(--accent-color);
   color: var(--text-color);
+  font-size: 12px;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 50%;
+  margin-left: 5px;
+}
+
+#notif-count {
+  background: var(--danger-color);
+  color: white;
   font-size: 12px;
   font-weight: bold;
   padding: 2px 6px;
@@ -414,8 +426,44 @@ header {
   background: #007185;
 }
 
-.prime-badge-inline {
-  background: #232f3e;
+.offer-badge {
+  background: #007185;
+}
+
+.free-shipping-badge {
+  background: #ff9900;
+  color: #000;
+}
+
+.out-of-stock-badge {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 8px 15px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 16px;
+  z-index: 2;
+  text-align: center;
+  width: 80%;
+}
+
+.out-of-stock-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 1;
+}
+
+.out-of-stock {
+  opacity: 0.6;
+  pointer-events: none;
 }
 
 /* Footer */
@@ -682,6 +730,119 @@ footer {
   max-width: 300px;
 }
 
+/* Password Modal */
+.password-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 2000;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.password-content {
+  background: white;
+  margin: 100px auto;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 95%;
+  width: 400px;
+  position: relative;
+  text-align: center;
+}
+
+.password-close {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #ff4444;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#passwordInput {
+  width: 100%;
+  padding: 12px;
+  margin: 15px 0;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  text-align: center;
+}
+
+.password-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.password-buttons button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+#submitPassword {
+  background: var(--primary-color);
+  color: white;
+}
+
+#cancelPassword {
+  background: #ccc;
+  color: #333;
+}
+
+.password-support {
+  margin-top: 20px;
+  padding: 15px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.password-support a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* Hide Prices Bar */
+#showPricesBar {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--primary-color);
+  color: white;
+  padding: 15px 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  z-index: 999;
+  cursor: pointer;
+  font-weight: bold;
+  text-align: center;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -50%) scale(1.05); }
+  100% { transform: translate(-50%, -50%) scale(1); }
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .header-top {
@@ -746,11 +907,59 @@ footer {
     font-size: 16px;
   }
 }
+
+/* Hide Prices Mode */
+.hide-price .product-price,
+.hide-price .product-actions {
+  display: none;
+}
+
+.hide-price .product-info::after {
+  content: "🔒 السعر مخفي";
+  display: block;
+  color: var(--danger-color);
+  font-weight: bold;
+  margin-top: 10px;
+  text-align: center;
+  padding: 10px;
+  background: #f9f9f9;
+  border-radius: 4px;
+}
+
+/* Animation for notification button */
+@keyframes ring {
+  0% { transform: rotate(0deg); }
+  1% { transform: rotate(15deg); }
+  3% { transform: rotate(-10deg); }
+  5% { transform: rotate(15deg); }
+  7% { transform: rotate(-10deg); }
+  9% { transform: rotate(15deg); }
+  11% { transform: rotate(-10deg); }
+  13% { transform: rotate(0deg); }
+  100% { transform: rotate(0deg); }
+}
+
+.notification-animation {
+  animation: ring 1.5s infinite;
+}
+
+/* Special offers styling */
+.special-offer {
+  border: 2px solid var(--accent-color);
+}
+
+.special-offer .product-title {
+  color: var(--accent-color);
+  font-weight: bold;
+}
 </style>
 </head>
-<body>
+<body class="hide-price">
 
-<!-- Header -->
+<div id="showPricesBar" onclick="showPasswordModal()">
+  👁️ اعرض الأسعار
+</div>
+
 <header>
   <div class="header-top">
     <div class="logo-container">
@@ -769,38 +978,39 @@ footer {
     </div>
     
     <div class="header-actions">
-      <button class="header-action-btn" id="accountBtn">
-        <span>مرحباً، تسجيل الدخول</span>
-        <span>الحساب والقوائم</span>
+      <button class="header-action-btn" id="totalBtn">
+        <span>💰 إجمالي الفاتورة</span>
       </button>
       
-      <button class="header-action-btn" id="ordersBtn">
-        <span>عودة</span>
-        <span>والطلبات</span>
+      <button class="header-action-btn" id="supportBtn">
+        <span>☎️ الدعم الفني</span>
       </button>
       
       <button class="header-action-btn" id="cartBtn">
+        <span>🛒 السلة</span>
         <span id="cart-count">0</span>
-        <span>عربة التسوق</span>
+      </button>
+      
+      <button class="header-action-btn" id="notifBtn">
+        <span>🔔 منتجات جديدة</span>
+        <span id="notif-count">0</span>
+      </button>
+      
+      <button class="header-action-btn" id="clearCartBtn">
+        <span>🗑️ مسح السلة</span>
       </button>
     </div>
   </div>
   
   <div class="header-nav">
-    <a href="#" class="nav-link">
-      <span>كل المنتجات</span>
+    <a href="#" class="nav-link" onclick="window.location.href='index.html'">
+      <span>🔙 الرئيسية</span>
     </a>
-    <a href="#" class="nav-link">
-      <span>العروض الخاصة</span>
+    <a href="#" class="nav-link" id="offerBtn">
+      <span>💥 خصم خاص للمناديب</span>
     </a>
-    <a href="#" class="nav-link">
-      <span>خدمة العملاء</span>
-    </a>
-    <a href="#" class="nav-link">
-      <span>القوائم</span>
-    </a>
-    <a href="#" class="nav-link">
-      <span>الهدايا</span>
+    <a href="#" class="nav-link" onclick="saveCart()">
+      <span>💾 حفظ السلة</span>
     </a>
   </div>
 </header>
@@ -832,7 +1042,7 @@ footer {
       <h3>الوصول إلينا</h3>
       <ul>
         <li><a href="#">معلومات عنا</a></li>
-        <li><a href="#">اتصل بنا</a></li>
+        <li><a href="https://wa.me/201022495795" target="_blank">اتصل بنا</a></li>
         <li><a href="#">علاقات المستثمرين</a></li>
         <li><a href="#">مراكز جنة</a></li>
       </ul>
@@ -905,124 +1115,156 @@ footer {
   </div>
 </div>
 
+<!-- Password Modal -->
+<div class="password-modal" id="passwordModal">
+  <div class="password-content">
+    <button class="password-close" onclick="closePasswordModal()">×</button>
+    <h2>أدخل كلمة السر لعرض الأسعار وعروض مملكة الاصليات</h2>
+    <input type="password" id="passwordInput" placeholder="كلمة السر">
+    <div class="password-buttons">
+      <button id="submitPassword" onclick="checkPassword()">تأكيد</button>
+      <button id="cancelPassword" onclick="closePasswordModal()">إلغاء</button>
+    </div>
+    <div class="password-support">
+      <p>إذا أردت كلمة السر تواصل مع المندوب الخاص بك أو</p>
+      <a href="https://wa.me/201022495795" target="_blank">☎️  تواصل مع الدعم الفني نزداد شرف</a>
+    </div>
+  </div>
+</div>
+
 <!-- Toast Notification -->
 <div class="toast" id="toast"></div>
 
 <script>
 // بيانات المنتجات (سيتم استبدالها بالبيانات الفعلية)
-const productsData = [
-  {
-    id: 1,
-    name: "سماعات لاسلكية بلوتوث عالية الجودة",
-    price: 299.99,
-    originalPrice: 399.99,
-    image: "https://via.placeholder.com/200",
-    rating: 4.5,
-    reviews: 128,
-    isNew: true,
-    isPrime: true
-  },
-  {
-    id: 2,
-    name: "شاحن متنقل سريع 10000 مللي أمبير",
-    price: 199.99,
-    originalPrice: 249.99,
-    image: "https://via.placeholder.com/200",
-    rating: 4.2,
-    reviews: 76,
-    isPrime: true
-  },
-  {
-    id: 3,
-    name: "حافظة هاتف سيليكون مضادة للصدمات",
-    price: 49.99,
-    originalPrice: 79.99,
-    image: "https://via.placeholder.com/200",
-    rating: 4.0,
-    reviews: 215,
-    isNew: true
-  },
-  {
-    id: 4,
-    name: "كابل شحن سريع نوع C بطول 2 متر",
-    price: 39.99,
-    originalPrice: 59.99,
-    image: "https://via.placeholder.com/200",
-    rating: 4.3,
-    reviews: 189,
-    isPrime: true
-  },
-  {
-    id: 5,
-    name: "حامل هاتف للسيارة قابل للتعديل",
-    price: 69.99,
-    originalPrice: 99.99,
-    image: "https://via.placeholder.com/200",
-    rating: 4.1,
-    reviews: 93
-  },
-  {
-    id: 6,
-    name: "سماعات أذن لاسلكية مع شحن لاسلكي",
-    price: 449.99,
-    originalPrice: 599.99,
-    image: "https://via.placeholder.com/200",
-    rating: 4.7,
-    reviews: 342,
-    isNew: true,
-    isPrime: true
-  }
-];
-
-// متغيرات التطبيق
+const SCRIPT_PRODUCTS_URL = "https://script.google.com/macros/s/AKfycbxW3_pcjSfffMTLZefZpzFIrbhijiaWY_u_4ZAmXEV2O04SMN5zplucKnAugWWbP8zzmA/exec";
+let productsData = [];
 let cart = [];
-let filteredProducts = [...productsData];
+let pricesVisible = false;
+let newProductsCount = 0;
+const PASSWORD = "2525";
+
+// دالة لتحديد ما إذا كان المنتج غير متوفر
+function isOutOfStock(productName) {
+  return productName && productName.includes("@");
+}
+
+// دالة لتحديد ما إذا كان المنتج به شحن مجاني
+function hasFreeShipping(productName) {
+  return productName && productName.includes("#");
+}
+
+// دالة لإزالة الرموز من اسم المنتج
+function cleanProductName(name) {
+  if (!name) return '';
+  return name.replace(/\.\./g, "").replace(/&/g, "").replace(/@/g, "").replace(/#/g, "");
+}
 
 // تهيئة التطبيق
 document.addEventListener('DOMContentLoaded', function() {
-  renderProducts();
+  loadProducts();
   loadCartFromStorage();
   setupEventListeners();
+  updateNotificationCount();
 });
+
+// تحميل المنتجات
+async function loadProducts() {
+  const container = document.getElementById('products-container');
+  
+  try {
+    // محاولة تحميل المنتجات من التخزين المحلي أولاً
+    if(localStorage.getItem("products")){
+      try {
+        productsData = JSON.parse(localStorage.getItem("products"));
+        renderProducts();
+      } catch (e) {
+        console.error("Error loading products from cache:", e);
+      }
+    }
+    
+    // ثم تحميل المنتجات من المصدر الرئيسي
+    const res = await fetch(SCRIPT_PRODUCTS_URL + "?t=" + new Date().getTime(), {cache: "no-store"});
+    const data = await res.json();
+    
+    productsData = data.reverse().map(item => {
+      if (isNaN(parseFloat(item.price))) {
+        item.price = "0.00";
+      }
+      return item;
+    });
+    
+    localStorage.setItem("products", JSON.stringify(productsData));
+    renderProducts();
+    updateNotificationCount();
+  } catch(err) { 
+    console.log("❌ خطأ في جلب المنتجات:", err);
+    showToast('حدث خطأ في تحميل المنتجات');
+  }
+}
 
 // عرض المنتجات
 function renderProducts() {
   const container = document.getElementById('products-container');
   
-  if (filteredProducts.length === 0) {
-    container.innerHTML = '<div style="text-align: center; padding: 40px; color: #666;">لا توجد منتجات تطابق بحثك</div>';
+  if (productsData.length === 0) {
+    container.innerHTML = '<div style="text-align: center; padding: 40px; color: #666;">لا توجد منتجات لعرضها</div>';
     return;
   }
   
   let html = '';
   
-  filteredProducts.forEach(product => {
-    const saving = product.originalPrice ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100) : 0;
+  productsData.forEach((product, index) => {
+    // الكشف عن خصائص المنتج بناءً على الرموز في الاسم
+    const isNewProduct = product.name && product.name.includes("..");
+    const isOfferProduct = product.name && product.name.includes("&");
+    const isOutOfStockProduct = isOutOfStock(product.name);
+    const isFreeShippingProduct = hasFreeShipping(product.name);
+    
+    // إزالة جميع الرموز الخاصة من الاسم للعرض
+    const displayName = cleanProductName(product.name);
+    
+    // حساب السعر بعد زيادة 45% للمنتجات التي تحتوي على "&"
+    const originalPrice = parseFloat(product.price) || 0;
+    const increasedPrice = isOfferProduct ? originalPrice * 1.45 : originalPrice;
+    const formattedPrice = formatPrice(originalPrice);
+    const formattedIncreasedPrice = formatPrice(increasedPrice);
+    
+    // حساب التوفير بالنسبة المئوية
+    const savingPercent = isOfferProduct ? Math.round(((increasedPrice - originalPrice) / increasedPrice) * 100) : 0;
     
     html += `
-      <div class="product" data-id="${product.id}">
-        ${product.isNew ? '<div class="product-badge new-badge">جديد</div>' : ''}
-        ${saving > 0 ? `<div class="product-badge">وفر ${saving}%</div>` : ''}
+      <div class="product ${isNewProduct ? 'special-offer' : ''} ${isOutOfStockProduct ? 'out-of-stock' : ''}" data-id="${index}">
+        ${isNewProduct ? '<div class="product-badge new-badge">🆕 جديد</div>' : ''}
+        ${isOfferProduct ? `<div class="product-badge offer-badge">خصم ${savingPercent}%</div>` : ''}
+        ${isFreeShippingProduct ? '<div class="product-badge free-shipping-badge">🚚 شحن مجاني</div>' : ''}
+        ${isOutOfStockProduct ? '<div class="out-of-stock-overlay"></div><div class="out-of-stock-badge">⛔ غير متوفر</div>' : ''}
         
         <div class="product-image-container">
-          <img src="${product.image}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/200?text=صورة+غير+متوفرة'">
+          <img src="${product.image || 'https://via.placeholder.com/200'}" 
+               alt="${displayName}" 
+               onerror="this.src='https://via.placeholder.com/200?text=صورة+غير+متوفرة'">
         </div>
         
         <div class="product-info">
-          <h3 class="product-title">${product.name}</h3>
+          <h3 class="product-title">${displayName}</h3>
           
           <div class="product-rating">
-            <div class="stars">${generateStars(product.rating)}</div>
-            <span class="rating-count">(${product.reviews})</span>
+            <div class="stars">${generateStars(4)}</div>
+            <span class="rating-count">(${Math.floor(Math.random() * 100) + 50})</span>
           </div>
           
           <div class="product-price">
-            ${product.originalPrice ? `<span class="original-price">${formatPrice(product.originalPrice)} جنيه</span>` : ''}
-            <div class="current-price">${formatPrice(product.price)} جنيه</div>
-            ${saving > 0 ? `<div class="saving">وفر ${formatPrice(product.originalPrice - product.price)} جنيه</div>` : ''}
+            ${isOfferProduct ? `
+              <span class="original-price">${formattedIncreasedPrice} جنيه</span>
+              <div class="current-price">${formattedPrice} جنيه</div>
+              <div class="saving">وفر ${formatPrice(increasedPrice - originalPrice)} جنيه</div>
+            ` : `
+              <div class="current-price">${formattedPrice} جنيه</div>
+            `}
           </div>
           
-          ${product.isPrime ? `
+          ${isFreeShippingProduct ? `
             <div class="prime-badge">
               <span>شحن مجاني سريع</span>
             </div>
@@ -1030,19 +1272,21 @@ function renderProducts() {
           
           <div class="product-actions">
             <div class="quantity-selector">
-              <label for="qty-${product.id}">الكمية:</label>
-              <select id="qty-${product.id}">
+              <label for="qty-${index}">الكمية:</label>
+              <select id="qty-${index}">
                 ${Array.from({length: 10}, (_, i) => `<option value="${i+1}">${i+1}</option>`).join('')}
               </select>
             </div>
             
-            <button class="add-to-cart-btn" onclick="addToCart(${product.id})">
-              أضف إلى السلة
-            </button>
-            
-            <button class="buy-now-btn" onclick="buyNow(${product.id})">
-              اشترِ الآن
-            </button>
+            ${!isOutOfStockProduct ? `
+              <button class="add-to-cart-btn" onclick="addToCart(${index})">
+                أضف إلى السلة
+              </button>
+              
+              <button class="buy-now-btn" onclick="buyNow(${index})">
+                اشترِ الآن
+              </button>
+            ` : ''}
           </div>
         </div>
       </div>
@@ -1050,6 +1294,7 @@ function renderProducts() {
   });
   
   container.innerHTML = html;
+  togglePricesVisibility();
 }
 
 // إنشاء النجوم للتقييم
@@ -1077,7 +1322,18 @@ function generateStars(rating) {
 
 // تنسيق السعر
 function formatPrice(price) {
-  return parseFloat(price).toFixed(2);
+  if (price === null || price === undefined || price === '' || price === 'NaN') {
+    return "0.00";
+  }
+  
+  const numericPrice = parseFloat(price);
+  
+  if (isNaN(numericPrice)) {
+    console.error("سعر غير صحيح:", price);
+    return "0.00";
+  }
+  
+  return numericPrice.toFixed(2);
 }
 
 // إعداد مستمعي الأحداث
@@ -1092,6 +1348,13 @@ function setupEventListeners() {
   
   // أزرار الرأس
   document.getElementById('cartBtn').addEventListener('click', showCart);
+  document.getElementById('totalBtn').addEventListener('click', showTotal);
+  document.getElementById('supportBtn').addEventListener('click', () => window.open("https://wa.me/201022495795", "_blank"));
+  document.getElementById('notifBtn').addEventListener('click', showNewProducts);
+  document.getElementById('clearCartBtn').addEventListener('click', clearCart);
+  document.getElementById('offerBtn').addEventListener('click', showSpecialOffers);
+  
+  // أزرار المودال
   document.getElementById('closeCartModal').addEventListener('click', hideCart);
   document.getElementById('continueShopping').addEventListener('click', hideCart);
   document.getElementById('checkoutBtn').addEventListener('click', checkout);
@@ -1102,38 +1365,138 @@ function setupEventListeners() {
       hideCart();
     }
   });
+  
+  // إدخال كلمة السر
+  document.getElementById('passwordInput').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+      checkPassword();
+    }
+  });
 }
 
 // البحث عن المنتجات
 function performSearch() {
   const searchTerm = document.getElementById('searchBox').value.trim().toLowerCase();
+  const container = document.getElementById('products-container');
   
   if (searchTerm === '') {
-    filteredProducts = [...productsData];
-  } else {
-    filteredProducts = productsData.filter(product => 
-      product.name.toLowerCase().includes(searchTerm)
-    );
+    renderProducts();
+    return;
   }
   
-  renderProducts();
+  const filteredProducts = productsData.filter(product => {
+    const cleanName = cleanProductName(product.name);
+    return cleanName.toLowerCase().includes(searchTerm);
+  });
+  
+  if (filteredProducts.length === 0) {
+    container.innerHTML = '<div style="text-align: center; padding: 40px; color: #666;">لا توجد منتجات تطابق بحثك</div>';
+    return;
+  }
+  
+  let html = '';
+  
+  filteredProducts.forEach((product, index) => {
+    // نفس منطق renderProducts ولكن للمنتجات المصفاة فقط
+    const isNewProduct = product.name && product.name.includes("..");
+    const isOfferProduct = product.name && product.name.includes("&");
+    const isOutOfStockProduct = isOutOfStock(product.name);
+    const isFreeShippingProduct = hasFreeShipping(product.name);
+    
+    const displayName = cleanProductName(product.name);
+    
+    const originalPrice = parseFloat(product.price) || 0;
+    const increasedPrice = isOfferProduct ? originalPrice * 1.45 : originalPrice;
+    const formattedPrice = formatPrice(originalPrice);
+    const formattedIncreasedPrice = formatPrice(increasedPrice);
+    
+    const savingPercent = isOfferProduct ? Math.round(((increasedPrice - originalPrice) / increasedPrice) * 100) : 0;
+    
+    html += `
+      <div class="product ${isNewProduct ? 'special-offer' : ''} ${isOutOfStockProduct ? 'out-of-stock' : ''}" data-id="${index}">
+        ${isNewProduct ? '<div class="product-badge new-badge">🆕 جديد</div>' : ''}
+        ${isOfferProduct ? `<div class="product-badge offer-badge">خصم ${savingPercent}%</div>` : ''}
+        ${isFreeShippingProduct ? '<div class="product-badge free-shipping-badge">🚚 شحن مجاني</div>' : ''}
+        ${isOutOfStockProduct ? '<div class="out-of-stock-overlay"></div><div class="out-of-stock-badge">⛔ غير متوفر</div>' : ''}
+        
+        <div class="product-image-container">
+          <img src="${product.image || 'https://via.placeholder.com/200'}" 
+               alt="${displayName}" 
+               onerror="this.src='https://via.placeholder.com/200?text=صورة+غير+متوفرة'">
+        </div>
+        
+        <div class="product-info">
+          <h3 class="product-title">${displayName}</h3>
+          
+          <div class="product-rating">
+            <div class="stars">${generateStars(4)}</div>
+            <span class="rating-count">(${Math.floor(Math.random() * 100) + 50})</span>
+          </div>
+          
+          <div class="product-price">
+            ${isOfferProduct ? `
+              <span class="original-price">${formattedIncreasedPrice} جنيه</span>
+              <div class="current-price">${formattedPrice} جنيه</div>
+              <div class="saving">وفر ${formatPrice(increasedPrice - originalPrice)} جنيه</div>
+            ` : `
+              <div class="current-price">${formattedPrice} جنيه</div>
+            `}
+          </div>
+          
+          ${isFreeShippingProduct ? `
+            <div class="prime-badge">
+              <span>شحن مجاني سريع</span>
+            </div>
+          ` : ''}
+          
+          <div class="product-actions">
+            <div class="quantity-selector">
+              <label for="qty-${index}">الكمية:</label>
+              <select id="qty-${index}">
+                ${Array.from({length: 10}, (_, i) => `<option value="${i+1}">${i+1}</option>`).join('')}
+              </select>
+            </div>
+            
+            ${!isOutOfStockProduct ? `
+              <button class="add-to-cart-btn" onclick="addToCart(${index})">
+                أضف إلى السلة
+              </button>
+              
+              <button class="buy-now-btn" onclick="buyNow(${index})">
+                اشترِ الآن
+              </button>
+            ` : ''}
+          </div>
+        </div>
+      </div>
+    `;
+  });
+  
+  container.innerHTML = html;
+  togglePricesVisibility();
 }
 
 // إضافة منتج إلى السلة
-function addToCart(productId) {
-  const product = productsData.find(p => p.id === productId);
-  const quantitySelect = document.getElementById(`qty-${productId}`);
+function addToCart(productIndex) {
+  if (!pricesVisible) {
+    showPasswordModal();
+    showToast('يجب إدخال كلمة السر أولاً لإضافة المنتجات');
+    return;
+  }
+  
+  const product = productsData[productIndex];
+  const quantitySelect = document.getElementById(`qty-${productIndex}`);
   const quantity = parseInt(quantitySelect.value);
   
-  const existingItem = cart.find(item => item.id === productId);
+  const existingItem = cart.find(item => item.index === productIndex);
   
   if (existingItem) {
     existingItem.quantity += quantity;
   } else {
     cart.push({
-      id: productId,
+      index: productIndex,
       name: product.name,
-      price: product.price,
+      price: parseFloat(product.price) || 0,
       image: product.image,
       quantity: quantity
     });
@@ -1141,12 +1504,15 @@ function addToCart(productId) {
   
   updateCartCount();
   saveCartToStorage();
-  showToast(`تمت إضافة ${product.name} إلى السلة`);
+  
+  // استخدام الاسم النظيف في الإشعار
+  const cleanName = cleanProductName(product.name);
+  showToast(`تمت إضافة ${cleanName} إلى السلة`);
 }
 
 // شراء الآن
-function buyNow(productId) {
-  addToCart(productId);
+function buyNow(productIndex) {
+  addToCart(productIndex);
   showCart();
 }
 
@@ -1167,24 +1533,27 @@ function showCart() {
       const itemTotal = item.price * item.quantity;
       subtotal += itemTotal;
       
+      // استخدام الاسم النظيف بدون رموز
+      const cleanName = cleanProductName(item.name);
+      
       html += `
         <div class="cart-item">
           <div class="cart-item-image">
-            <img src="${item.image}" alt="${item.name}">
+            <img src="${item.image || 'https://via.placeholder.com/100'}" alt="${cleanName}">
           </div>
           
           <div class="cart-item-details">
-            <h3 class="cart-item-title">${item.name}</h3>
+            <h3 class="cart-item-title">${cleanName}</h3>
             <div class="cart-item-price">${formatPrice(item.price)} جنيه</div>
             
             <div class="cart-item-actions">
               <div class="quantity-control">
-                <button class="quantity-btn" onclick="updateCartQuantity(${item.id}, ${item.quantity - 1})">-</button>
+                <button class="quantity-btn" onclick="updateCartQuantity(${item.index}, ${item.quantity - 1})">-</button>
                 <input type="text" class="quantity-input" value="${item.quantity}" readonly>
-                <button class="quantity-btn" onclick="updateCartQuantity(${item.id}, ${item.quantity + 1})">+</button>
+                <button class="quantity-btn" onclick="updateCartQuantity(${item.index}, ${item.quantity + 1})">+</button>
               </div>
               
-              <button class="delete-btn" onclick="removeFromCart(${item.id})">حذف</button>
+              <button class="delete-btn" onclick="removeFromCart(${item.index})">حذف</button>
             </div>
           </div>
         </div>
@@ -1204,13 +1573,13 @@ function hideCart() {
 }
 
 // تحديث كمية المنتج في السلة
-function updateCartQuantity(productId, newQuantity) {
+function updateCartQuantity(productIndex, newQuantity) {
   if (newQuantity < 1) {
-    removeFromCart(productId);
+    removeFromCart(productIndex);
     return;
   }
   
-  const item = cart.find(item => item.id === productId);
+  const item = cart.find(item => item.index === productIndex);
   if (item) {
     item.quantity = newQuantity;
     updateCartCount();
@@ -1220,17 +1589,43 @@ function updateCartQuantity(productId, newQuantity) {
 }
 
 // إزالة منتج من السلة
-function removeFromCart(productId) {
-  cart = cart.filter(item => item.id !== productId);
-  updateCartCount();
-  saveCartToStorage();
-  showCart(); // تحديث عرض السلة
+function removeFromCart(productIndex) {
+  const item = cart.find(item => item.index === productIndex);
+  const cleanName = cleanProductName(item.name);
+  
+  if (confirm(`هل تريد حذف ${cleanName} من السلة؟`)) {
+    cart = cart.filter(item => item.index !== productIndex);
+    updateCartCount();
+    saveCartToStorage();
+    showCart(); // تحديث عرض السلة
+    showToast(`تم حذف ${cleanName} من السلة`);
+  }
 }
 
 // تحديث عداد السلة
 function updateCartCount() {
   const count = cart.reduce((total, item) => total + item.quantity, 0);
-  document.getElementById('cart-count').textContent = count;
+  const badge = document.getElementById('cart-count');
+  badge.textContent = count;
+  badge.style.display = count > 0 ? 'inline-block' : 'none';
+}
+
+// تحديث عداد الإشعارات
+function updateNotificationCount() {
+  const newProducts = productsData.filter(p => p.name && p.name.includes(".."));
+  newProductsCount = newProducts.length;
+  
+  const badge = document.getElementById('notif-count');
+  badge.textContent = newProductsCount;
+  badge.style.display = newProductsCount > 0 ? 'inline-block' : 'none';
+  
+  // إضافة تأثير الاهتزاز لزر الإشعارات إذا كان هناك منتجات جديدة
+  const notifBtn = document.getElementById('notifBtn');
+  if (newProductsCount > 0) {
+    notifBtn.classList.add('notification-animation');
+  } else {
+    notifBtn.classList.remove('notification-animation');
+  }
 }
 
 // الدفع
@@ -1241,19 +1636,264 @@ function checkout() {
   }
   
   const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
-  alert(`سيتم تحويلك إلى صفحة الدفع بمبلغ ${formatPrice(subtotal)} جنيه`);
-  // هنا سيتم إضافة منطق الدفع الفعلي
+  
+  // إنشاء نص الفاتورة
+  let invoiceText = `🧾 فاتورة شراء من جنة\n\n`;
+  invoiceText += `📋 تفاصيل الطلب:\n`;
+  invoiceText += `══════════════════\n`;
+  
+  cart.forEach(item => {
+    const cleanName = cleanProductName(item.name);
+    const itemTotal = item.price * item.quantity;
+    
+    invoiceText += `📦 ${cleanName}\n`;
+    invoiceText += `   الكمية: ${item.quantity}\n`;
+    invoiceText += `   السعر: ${formatPrice(item.price)} جنيه\n`;
+    invoiceText += `   الإجمالي: ${formatPrice(itemTotal)} جنيه\n`;
+    invoiceText += `──────────────────\n`;
+  });
+  
+  invoiceText += `\n💰 الإجمالي الكلي: ${formatPrice(subtotal)} جنيه\n\n`;
+  invoiceText += `شكراً لثقتكم بنا 🌹`;
+  
+  // عرض أرقام الواتساب للاختيار
+  const numbers = [
+    { number: '201067070423', display: '01067070423' },
+    { number: '201022495795', display: '01022495795' },
+    { number: '201012253500', display: '01012253500' }
+  ];
+  
+  let numbersHTML = '<div style="text-align: center; margin: 20px 0;"><p>اختر رقم لإرسال الطلب 👇</p>';
+  numbers.forEach(num => {
+    numbersHTML += `<a href="https://wa.me/${num.number}?text=${encodeURIComponent(invoiceText)}" target="_blank" style="display: block; margin: 10px 0; padding: 10px; background: #25D366; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;">📞 ${num.display}</a>`;
+  });
+  numbersHTML += '</div>';
+  
+  // إضافة أرقام الواتساب إلى المودال
+  const cartItems = document.getElementById('cartItems');
+  cartItems.innerHTML += numbersHTML;
 }
 
-// إظهار الإشعارات
-function showToast(message) {
-  const toast = document.getElementById('toast');
-  toast.textContent = message;
-  toast.style.display = 'block';
+// إظهار المنتجات الجديدة
+function showNewProducts() {
+  const newProducts = productsData.filter(p => p.name && p.name.includes(".."));
   
-  setTimeout(() => {
-    toast.style.display = 'none';
-  }, 3000);
+  if (newProducts.length === 0) {
+    showToast('لا توجد منتجات جديدة حالياً');
+    return;
+  }
+  
+  // عرض المنتجات الجديدة فقط
+  const container = document.getElementById('products-container');
+  let html = '';
+  
+  newProducts.forEach((product, index) => {
+    const isOfferProduct = product.name && product.name.includes("&");
+    const isOutOfStockProduct = isOutOfStock(product.name);
+    const isFreeShippingProduct = hasFreeShipping(product.name);
+    
+    const displayName = cleanProductName(product.name);
+    
+    const originalPrice = parseFloat(product.price) || 0;
+    const increasedPrice = isOfferProduct ? originalPrice * 1.45 : originalPrice;
+    const formattedPrice = formatPrice(originalPrice);
+    const formattedIncreasedPrice = formatPrice(increasedPrice);
+    
+    const savingPercent = isOfferProduct ? Math.round(((increasedPrice - originalPrice) / increasedPrice) * 100) : 0;
+    
+    html += `
+      <div class="product special-offer ${isOutOfStockProduct ? 'out-of-stock' : ''}" data-id="${index}">
+        <div class="product-badge new-badge">🆕 جديد</div>
+        ${isOfferProduct ? `<div class="product-badge offer-badge">خصم ${savingPercent}%</div>` : ''}
+        ${isFreeShippingProduct ? '<div class="product-badge free-shipping-badge">🚚 شحن مجاني</div>' : ''}
+        ${isOutOfStockProduct ? '<div class="out-of-stock-overlay"></div><div class="out-of-stock-badge">⛔ غير متوفر</div>' : ''}
+        
+        <div class="product-image-container">
+          <img src="${product.image || 'https://via.placeholder.com/200'}" 
+               alt="${displayName}" 
+               onerror="this.src='https://via.placeholder.com/200?text=صورة+غير+متوفرة'">
+        </div>
+        
+        <div class="product-info">
+          <h3 class="product-title">${displayName}</h3>
+          
+          <div class="product-rating">
+            <div class="stars">${generateStars(4)}</div>
+            <span class="rating-count">(${Math.floor(Math.random() * 100) + 50})</span>
+          </div>
+          
+          <div class="product-price">
+            ${isOfferProduct ? `
+              <span class="original-price">${formattedIncreasedPrice} جنيه</span>
+              <div class="current-price">${formattedPrice} جنيه</div>
+              <div class="saving">وفر ${formatPrice(increasedPrice - originalPrice)} جنيه</div>
+            ` : `
+              <div class="current-price">${formattedPrice} جنيه</div>
+            `}
+          </div>
+          
+          ${isFreeShippingProduct ? `
+            <div class="prime-badge">
+              <span>شحن مجاني سريع</span>
+            </div>
+          ` : ''}
+          
+          <div class="product-actions">
+            <div class="quantity-selector">
+              <label for="qty-${index}">الكمية:</label>
+              <select id="qty-${index}">
+                ${Array.from({length: 10}, (_, i) => `<option value="${i+1}">${i+1}</option>`).join('')}
+              </select>
+            </div>
+            
+            ${!isOutOfStockProduct ? `
+              <button class="add-to-cart-btn" onclick="addToCart(${index})">
+                أضف إلى السلة
+              </button>
+              
+              <button class="buy-now-btn" onclick="buyNow(${index})">
+                اشترِ الآن
+              </button>
+            ` : ''}
+          </div>
+        </div>
+      </div>
+    `;
+  });
+  
+  container.innerHTML = html;
+  togglePricesVisibility();
+  showToast(`عرض ${newProducts.length} منتج جديد`);
+}
+
+// إظهار العروض الخاصة
+function showSpecialOffers() {
+  const offerProducts = productsData.filter(p => p.name && p.name.includes("&"));
+  
+  if (offerProducts.length === 0) {
+    showToast('لا توجد عروض خاصة حالياً');
+    return;
+  }
+  
+  // عرض المنتجات ذات العروض فقط
+  const container = document.getElementById('products-container');
+  let html = '';
+  
+  offerProducts.forEach((product, index) => {
+    const isNewProduct = product.name && product.name.includes("..");
+    const isOutOfStockProduct = isOutOfStock(product.name);
+    const isFreeShippingProduct = hasFreeShipping(product.name);
+    
+    const displayName = cleanProductName(product.name);
+    
+    const originalPrice = parseFloat(product.price) || 0;
+    const increasedPrice = originalPrice * 1.45;
+    const formattedPrice = formatPrice(originalPrice);
+    const formattedIncreasedPrice = formatPrice(increasedPrice);
+    
+    const savingPercent = Math.round(((increasedPrice - originalPrice) / increasedPrice) * 100);
+    
+    html += `
+      <div class="product ${isNewProduct ? 'special-offer' : ''} ${isOutOfStockProduct ? 'out-of-stock' : ''}" data-id="${index}">
+        ${isNewProduct ? '<div class="product-badge new-badge">🆕 جديد</div>' : ''}
+        <div class="product-badge offer-badge">خصم ${savingPercent}%</div>
+        ${isFreeShippingProduct ? '<div class="product-badge free-shipping-badge">🚚 شحن مجاني</div>' : ''}
+        ${isOutOfStockProduct ? '<div class="out-of-stock-overlay"></div><div class="out-of-stock-badge">⛔ غير متوفر</div>' : ''}
+        
+        <div class="product-image-container">
+          <img src="${product.image || 'https://via.placeholder.com/200'}" 
+               alt="${displayName}" 
+               onerror="this.src='https://via.placeholder.com/200?text=صورة+غير+متوفرة'">
+        </div>
+        
+        <div class="product-info">
+          <h3 class="product-title">${displayName}</h3>
+          
+          <div class="product-rating">
+            <div class="stars">${generateStars(4)}</div>
+            <span class="rating-count">(${Math.floor(Math.random() * 100) + 50})</span>
+          </div>
+          
+          <div class="product-price">
+            <span class="original-price">${formattedIncreasedPrice} جنيه</span>
+            <div class="current-price">${formattedPrice} جنيه</div>
+            <div class="saving">وفر ${formatPrice(increasedPrice - originalPrice)} جنيه</div>
+          </div>
+          
+          ${isFreeShippingProduct ? `
+            <div class="prime-badge">
+              <span>شحن مجاني سريع</span>
+            </div>
+          ` : ''}
+          
+          <div class="product-actions">
+            <div class="quantity-selector">
+              <label for="qty-${index}">الكمية:</label>
+              <select id="qty-${index}">
+                ${Array.from({length: 10}, (_, i) => `<option value="${i+1}">${i+1}</option>`).join('')}
+              </select>
+            </div>
+            
+            ${!isOutOfStockProduct ? `
+              <button class="add-to-cart-btn" onclick="addToCart(${index})">
+                أضف إلى السلة
+              </button>
+              
+              <button class="buy-now-btn" onclick="buyNow(${index})">
+                اشترِ الآن
+              </button>
+            ` : ''}
+          </div>
+        </div>
+      </div>
+    `;
+  });
+  
+  container.innerHTML = html;
+  togglePricesVisibility();
+  showToast(`عرض ${offerProducts.length} منتج خاص`);
+}
+
+// إظهار إجمالي الفاتورة
+function showTotal() {
+  if (!pricesVisible) {
+    showPasswordModal();
+    showToast('يجب إدخال كلمة السر أولاً لعرض الفاتورة');
+    return;
+  }
+  
+  if (cart.length === 0) {
+    showToast('السلة فارغة');
+    return;
+  }
+  
+  showCart();
+}
+
+// حفظ السلة
+function saveCart() {
+  if (cart.length === 0) {
+    showToast('السلة فارغة، أضف منتجات أولاً');
+    return;
+  }
+  
+  saveCartToStorage();
+  showToast('تم حفظ السلة بنجاح ✅');
+}
+
+// مسح السلة
+function clearCart() {
+  if (cart.length === 0) {
+    showToast('السلة فارغة بالفعل');
+    return;
+  }
+  
+  if (confirm('هل تريد مسح السلة بالكامل؟')) {
+    cart = [];
+    updateCartCount();
+    saveCartToStorage();
+    showToast('تم مسح السلة بنجاح');
+  }
 }
 
 // حفظ السلة في التخزين المحلي
@@ -1268,6 +1908,55 @@ function loadCartFromStorage() {
     cart = JSON.parse(savedCart);
     updateCartCount();
   }
+}
+
+// إظهار/إخفاء الأسعار
+function togglePricesVisibility() {
+  if (pricesVisible) {
+    document.body.classList.remove('hide-price');
+    document.getElementById('showPricesBar').style.display = 'none';
+  } else {
+    document.body.classList.add('hide-price');
+    document.getElementById('showPricesBar').style.display = 'block';
+  }
+}
+
+// إظهار نافذة كلمة السر
+function showPasswordModal() {
+  document.getElementById('passwordModal').style.display = 'block';
+  document.getElementById('passwordInput').focus();
+}
+
+// إغلاق نافذة كلمة السر
+function closePasswordModal() {
+  document.getElementById('passwordModal').style.display = 'none';
+  document.getElementById('passwordInput').value = '';
+}
+
+// التحقق من كلمة السر
+function checkPassword() {
+  const input = document.getElementById('passwordInput').value;
+  if (input === PASSWORD) {
+    pricesVisible = true;
+    togglePricesVisibility();
+    closePasswordModal();
+    showToast('تم عرض الأسعار بنجاح');
+  } else {
+    showToast('كلمة السر خاطئة، حاول مرة أخرى');
+    document.getElementById('passwordInput').value = '';
+    document.getElementById('passwordInput').focus();
+  }
+}
+
+// إظهار الإشعارات
+function showToast(message) {
+  const toast = document.getElementById('toast');
+  toast.textContent = message;
+  toast.style.display = 'block';
+  
+  setTimeout(() => {
+    toast.style.display = 'none';
+  }, 3000);
 }
 </script>
 </body>
