@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>جميع منتجات جنة</title>
 <style>
-/* جميع أنماط CSS السابقة تبقى كما هي */
 :root {
   --primary-color: #8a2be2;
   --secondary-color: #ffd814;
@@ -127,7 +126,7 @@ header {
   font-weight: bold;
 }
 
-/* شريط التصنيفات الجديد */
+/* شريط التصنيفات الجديد - تم التثبيت */
 .categories-bar {
   display: flex;
   overflow-x: auto;
@@ -377,6 +376,41 @@ header {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+/* تفصيل الإجمالي في الفاتورة */
+.total-breakdown {
+  background: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  margin: 15px 0;
+  border: 2px solid #e0e0e0;
+}
+
+.total-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  padding: 5px 0;
+}
+
+.total-item:last-child {
+  margin-bottom: 0;
+  border-top: 1px solid #ddd;
+  padding-top: 10px;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.total-label {
+  font-weight: bold;
+  color: #333;
+}
+
+.total-value {
+  font-weight: bold;
+  color: var(--primary-color);
 }
 
 .final-total {
@@ -1400,7 +1434,7 @@ input, textarea, select {
   </div>
 </header>
 
-<!-- شريط التصنيفات الجديد -->
+<!-- شريط التصنيفات الجديد - تم التثبيت -->
 <div class="categories-bar" id="categoriesBar">
   <button class="category-btn active" data-category="all">الكل</button>
   <button class="category-btn" data-category="صب">الصبات</button>
@@ -1448,7 +1482,7 @@ input, textarea, select {
       <h1 class="invoice-title">جنة</h1>
       <h2 class="invoice-subtitle">لجميع أكسسوارات المحمول</h2>
       <div class="invoice-date" id="invoiceDate"></div>
-      <div class="invoice-total">إجمالي الفاتورة: <span id="totalAmount">0.00</span> جنيه</div>
+      <div class="invoice-total">إجمالي المنتجات: <span id="totalAmount">0.00</span> جنيه</div>
     </div>
     
     <!-- قسم الشحن -->
@@ -1476,7 +1510,21 @@ input, textarea, select {
       </tbody>
     </table>
     
-    <div class="final-total"><span id="finalTotalAmount">0.00</span> جنيه<br>إجمالي الفاتورة</div>
+    <!-- تفصيل الإجمالي -->
+    <div class="total-breakdown">
+      <div class="total-item">
+        <span class="total-label">إجمالي المنتجات:</span>
+        <span class="total-value" id="productsTotal">0.00 جنيه</span>
+      </div>
+      <div class="total-item">
+        <span class="total-label">رسوم الشحن:</span>
+        <span class="total-value" id="shippingTotal">0.00 جنيه</span>
+      </div>
+      <div class="total-item">
+        <span class="total-label">الإجمالي الكلي:</span>
+        <span class="total-value" id="finalTotalAmount">0.00 جنيه</span>
+      </div>
+    </div>
     
     <div class="modal-buttons">
       <button id="sendBtn">📤 ارسل فاتورتك</button>
@@ -1967,12 +2015,15 @@ function showTotal(){
       
       const row = document.createElement("tr");
       row.innerHTML = `<td class="product-name">${cleanName}</td>
-                       <td>${qty}</td>
+                       <td>
+                         <input type="number" min="1" value="${qty}" data-index="${idx}" 
+                                style="width: 50px; padding: 2px; text-align: center;" 
+                                onchange="updateCartItemQty(${idx}, this.value)">
+                       </td>
                        <td>${formatPrice(price)} جنيه</td>
                        <td>${formatPrice(lineTotal)} جنيه</td>
                        <td>
                          <div class="cart-actions">
-                           <button class="edit-btn" onclick="editCartItem(${idx})">✏️ تعديل</button>
                            <button class="delete-btn" onclick="deleteCartItem(${idx})">🗑️ حذف</button>
                          </div>
                        </td>`;
@@ -1980,8 +2031,11 @@ function showTotal(){
     }
   });
   
+  // تحديث تفصيل الإجمالي
   document.getElementById("totalAmount").innerText = formatPrice(total);
-  document.getElementById("finalTotalAmount").innerText = formatPrice(finalTotal);
+  document.getElementById("productsTotal").innerText = formatPrice(total) + " جنيه";
+  document.getElementById("shippingTotal").innerText = formatPrice(shipping) + " جنيه";
+  document.getElementById("finalTotalAmount").innerText = formatPrice(finalTotal) + " جنيه";
   
   // تحديث التاريخ في الفاتورة
   updateInvoiceDate();
@@ -1995,24 +2049,20 @@ function showTotal(){
   displaySavedInvoices();
 }
 
-// دالة تعديل كمية منتج في السلة
-function editCartItem(index) {
-  const cleanName = cleanProductName(productsData[index].name);
-  const newQty = prompt(`أدخل الكمية الجديدة لـ ${cleanName}:`, cart[index]);
-  
-  if (newQty !== null) {
-    const quantity = parseInt(newQty);
-    if (quantity > 0) {
-      cart[index] = quantity;
-      updateCartCount();
-      updateShippingBar();
-      showTotal();
-      showToast(`تم تعديل كمية ${cleanName} إلى ${quantity}`);
-    } else if (quantity === 0) {
-      deleteCartItem(index);
-    } else {
-      showToast('الكمية يجب أن تكون رقماً موجباً');
-    }
+// دالة جديدة لتحديث كمية المنتج في الفاتورة
+function updateCartItemQty(index, newQty) {
+  const quantity = parseInt(newQty);
+  if (quantity > 0) {
+    cart[index] = quantity;
+    updateCartCount();
+    updateShippingBar();
+    showTotal(); // إعادة عرض الفاتورة لتحديث الإجمالي
+    showToast(`تم تعديل الكمية`);
+  } else if (quantity === 0) {
+    deleteCartItem(index);
+  } else {
+    showToast('الكمية يجب أن تكون رقماً موجباً');
+    showTotal(); // إعادة العرض لاستعادة القيمة السابقة
   }
 }
 
@@ -2104,11 +2154,27 @@ function performSearch() {
   title.textContent = `نتائج البحث عن: "${keyword}"`;
 }
 
-// دالة جلب المنتجات من API
+// دالة جلب المنتجات من API - محسنة للسرعة
 async function fetchProducts() {
   try {
     document.getElementById('autoUpdateIndicator').style.display = 'block';
     
+    // استخدام البيانات المخزنة محلياً أولاً لتحسين السرعة
+    const cachedProducts = localStorage.getItem("products");
+    const cacheTime = localStorage.getItem("products_cache_time");
+    const now = Date.now();
+    
+    // إذا كانت البيانات المخزنة حديثة (أقل من 5 دقائق)، استخدمها
+    if (cachedProducts && cacheTime && (now - parseInt(cacheTime)) < 5 * 60 * 1000) {
+      productsData = JSON.parse(cachedProducts);
+      filterProductsByCategory('all');
+      checkNewProducts();
+      document.getElementById('autoUpdateIndicator').style.display = 'none';
+      showToast('تم تحميل المنتجات من الذاكرة المؤقتة');
+      return;
+    }
+    
+    // جلب البيانات الجديدة من API
     const response = await fetch(SCRIPT_PRODUCTS_URL + "?t=" + new Date().getTime(), {
       cache: "no-store",
       method: 'GET',
@@ -2133,7 +2199,10 @@ async function fetchProducts() {
       return item;
     });
     
+    // حفظ البيانات في localStorage مع وقت التخزين
     localStorage.setItem("products", JSON.stringify(productsData));
+    localStorage.setItem("products_cache_time", now.toString());
+    
     filterProductsByCategory('all');
     checkNewProducts();
     showToast('تم تحميل المنتجات بنجاح');
