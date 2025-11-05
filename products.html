@@ -126,7 +126,7 @@ header {
   font-weight: bold;
 }
 
-/* شريط التصنيفات */
+/* شريط التصنيفات الجديد - تم التثبيت */
 .categories-bar {
   display: flex;
   overflow-x: auto;
@@ -187,6 +187,7 @@ header {
   background: #6a1fbf;
 }
 
+/* تكبير عناوين التصنيفات */
 .category-title {
   text-align: center;
   margin: 12px 8px 8px;
@@ -384,6 +385,7 @@ header {
   white-space: nowrap;
 }
 
+/* تفصيل الإجمالي في الفاتورة */
 .total-breakdown {
   background: #f9f9f9;
   padding: 15px;
@@ -593,6 +595,7 @@ header {
   transform: translateX(-50%) scale(1.05);
 }
 
+/* تحسينات جديدة */
 .hide-price .product-info .price,
 .hide-price .product input,
 .hide-price .product button {
@@ -608,6 +611,7 @@ header {
   font-size: 12px;
 }
 
+/* تحسين شعار "جديد" */
 .new-product-badge {
   position: absolute;
   top: 4px;
@@ -626,6 +630,7 @@ header {
   gap: 2px;
 }
 
+/* تحسين شعار "عرض خاص" */
 .offer-product-badge {
   position: absolute;
   top: 4px;
@@ -644,6 +649,7 @@ header {
   gap: 2px;
 }
 
+/* شعار "غير متوفر" */
 .out-of-stock-badge {
   position: absolute;
   top: 50%;
@@ -675,6 +681,7 @@ header {
   pointer-events: none;
 }
 
+/* شعار الشحن المجاني */
 .free-shipping-badge {
   position: absolute;
   top: 4px;
@@ -699,6 +706,7 @@ header {
   100% { transform: scale(1); }
 }
 
+/* تحسينات إضافية للمنتجات الجديدة */
 .product.new-product {
   border: 2px solid #ff4444;
   box-shadow: 0 3px 8px rgba(255, 68, 68, 0.2);
@@ -721,6 +729,7 @@ header {
   transform: translateY(-2px);
 }
 
+/* تنسيق الأسعار للعروض - تم التعديل هنا */
 .original-price {
   text-decoration: line-through;
   color: #999 !important;
@@ -743,6 +752,7 @@ header {
   margin-right: 4px;
 }
 
+/* تحسينات للصورة بحيث لا تتأثر بالعلامات */
 .product-image-container {
   position: relative;
   width: 100%;
@@ -768,6 +778,7 @@ header {
   transform: scale(1.05);
 }
 
+/* أزرار التعديل والحذف في السلة */
 .cart-actions {
   display: flex;
   justify-content: center;
@@ -806,6 +817,7 @@ header {
   background: #cc0000;
 }
 
+/* أنماط جديدة لحفظ الفواتير */
 .saved-invoices {
   margin-top: 15px;
   display: none;
@@ -872,6 +884,7 @@ header {
   font-size: 13px;
 }
 
+/* شريط الشحن المجاني */
 .shipping-bar {
   background: linear-gradient(135deg, #ff6b00, #ff4444);
   color: white;
@@ -906,6 +919,7 @@ header {
   100% { transform: scale(1); }
 }
 
+/* قسم الشحن في الفاتورة */
 .shipping-section {
   background: #f9f9f9;
   padding: 12px;
@@ -1101,25 +1115,22 @@ header {
   color: var(--primary-color);
 }
 
-.error-message {
-  text-align: center;
-  padding: 20px;
-  color: #ff4444;
-  font-weight: bold;
-}
-
-.retry-button {
+.back-button {
   background: var(--primary-color);
   color: white;
   border: none;
-  padding: 10px 20px;
+  padding: 6px 12px;
   border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
-  margin-top: 10px;
+  margin: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
 }
 
-.retry-button:hover {
+.back-button:hover {
   background: #6a1fbf;
 }
 
@@ -1159,6 +1170,7 @@ header {
   display: none;
 }
 
+/* تحسينات إضافية */
 .category-indicator {
   position: fixed;
   top: 150px;
@@ -1175,104 +1187,173 @@ header {
   font-size: 12px;
 }
 
+/* تحسينات لعرض أسماء المنتجات بشكل أفضل */
+.product-info .name {
+  font-size: 13px; 
+  margin-bottom: 4px; 
+  color: var(--text-color); 
+  font-weight: bold;
+  height: 36px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  line-height: 1.3;
+}
+
+/* تحسينات للعناوين الطويلة */
+.product-name-short {
+  font-weight: bold;
+  font-size: 13px;
+}
+
+.product-name-full {
+  font-size: 10px;
+  color: #666;
+  margin-top: 2px;
+  line-height: 1.2;
+}
+
+/* تحسينات للشاشات المتوسطة */
+@media (min-width: 768px) {
+  .product-image-container {
+    height: 160px;
+  }
+}
+
+/* تحسينات للشاشات الكبيرة */
+@media (min-width: 1024px) {
+  .product-image-container {
+    height: 170px;
+  }
+}
+
+/* تحسينات للشاشات الصغيرة جداً */
 @media (max-width: 360px){
   body { font-size: 12px; }
+  
   header { 
     padding: 6px 3px; 
     font-size: 14px;
   }
+  
   .header-buttons {
     gap: 3px;
   }
+  
   .header-buttons button {
     padding: 5px 8px;
     font-size: 10px;
     max-width: 100px;
   }
+  
   #notifBtn {
     font-size: 10px;
     padding: 5px 8px;
   }
+  
   .categories-bar {
     top: 100px;
     padding: 6px 3px;
   }
+  
   .category-btn {
     padding: 5px 10px;
     font-size: 11px;
   }
+  
   .category-title {
     font-size: 16px;
     padding: 8px;
     margin: 10px 6px 6px;
   }
+  
   #products-container { 
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); 
     gap: 8px;
     padding: 8px;
   }
+  
   .product-image-container { height: 130px; }
+  
   .product-info .name { 
     font-size: 12px; 
     height: 32px;
   }
+  
   .product-info .price { font-size: 12px; }
+  
   .product button { font-size: 11px; }
+  
   .search-container {
     gap: 4px;
   }
+  
   #searchBox {
     font-size: 12px;
     min-width: 130px;
   }
+  
   #offerBtn {
     font-size: 11px;
     padding: 5px 8px;
   }
+  
   .modal-content {
     padding: 10px;
     margin: 5px auto;
   }
+  
   .invoice-table {
     font-size: 12px;
   }
+  
   .invoice-table th, 
   .invoice-table td {
     padding: 6px 4px;
     font-size: 11px;
   }
+  
   .invoice-title {
     font-size: 18px;
   }
+  
   .invoice-subtitle {
     font-size: 14px;
   }
+  
   .action-buttons {
     gap: 6px;
   }
+  
   .action-btn {
     padding: 8px 12px;
     font-size: 12px;
     min-width: 120px;
   }
+  
   .cart-actions {
     gap: 3px;
   }
+  
   .edit-btn, .delete-btn {
     padding: 2px 4px;
     font-size: 10px;
     min-width: 40px;
   }
+  
   .saved-invoice-item {
     flex-direction: column;
     gap: 8px;
     text-align: center;
   }
+  
   .shipping-info {
     flex-direction: column;
     gap: 6px;
     text-align: center;
   }
+  
   #saveCartBtn {
     padding: 8px 16px;
     font-size: 12px;
@@ -1284,15 +1365,19 @@ header {
   #products-container { 
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); 
   }
+  
   .product-image-container { height: 110px; }
+  
   .header-buttons button {
     font-size: 9px;
     padding: 4px 6px;
     max-width: 85px;
   }
+  
   .modal-content {
     padding: 8px;
   }
+  
   .category-btn {
     padding: 4px 8px;
     font-size: 10px;
@@ -1304,30 +1389,36 @@ input, textarea, select {
   font-size: 16px !important;
 }
 
+/* تحسينات للشاشات العمودية */
 @media (orientation: portrait) {
   .header-buttons {
     gap: 3px;
   }
+  
   .header-buttons button {
     padding: 5px 8px;
     font-size: 11px;
   }
 }
 
+/* تحسينات للشاشات الأفقية على الموبايل */
 @media (max-height: 500px) and (orientation: landscape) {
   header {
     position: relative;
     top: auto;
   }
+  
   .categories-bar {
     position: relative;
     top: auto;
   }
+  
   #products-container {
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
     gap: 8px;
     padding: 8px;
   }
+  
   .product-image-container {
     height: 120px;
   }
@@ -1340,10 +1431,12 @@ input, textarea, select {
   👁️ اعرض الأسعار
 </div>
 
+<!-- مؤشر القسم المحدد -->
 <div id="categoryIndicator" class="category-indicator">
   القسم المحدد: <span id="currentCategoryName">الكل</span>
 </div>
 
+<!-- شريط الشحن المجاني -->
 <div id="shippingBar" class="shipping-bar">
   <div>🚚 الشحن مجاني للطلبات فوق 500 جنيه!</div>
   <div class="shipping-progress">
@@ -1371,6 +1464,7 @@ input, textarea, select {
   </div>
 </header>
 
+<!-- شريط التصنيفات الجديد - تم التثبيت -->
 <div class="categories-bar" id="categoriesBar">
   <button class="category-btn active" data-category="all">الكل</button>
   <button class="category-btn" data-category="صب">الصبات</button>
@@ -1384,8 +1478,10 @@ input, textarea, select {
 
 <div id="newBanner">🎉 منتجات جديدة اليوم!</div>
 
+<!-- مؤشر التحديث التلقائي -->
 <div id="autoUpdateIndicator" class="auto-update-indicator">🔄 جاري التحديث</div>
 
+<!-- الصفحة الرئيسية للمنتجات -->
 <div id="main-products-page">
   <div id="products-container">
     <div class="loading">جاري تحميل المنتجات...</div>
@@ -1419,6 +1515,7 @@ input, textarea, select {
       <div class="invoice-total">إجمالي المنتجات: <span id="totalAmount">0.00</span> جنيه</div>
     </div>
     
+    <!-- قسم الشحن -->
     <div id="shippingSection" class="shipping-section">
       <div class="shipping-info">
         <div id="shippingStatus" class="shipping-free">🚚 الشحن مجاني!</div>
@@ -1443,6 +1540,7 @@ input, textarea, select {
       </tbody>
     </table>
     
+    <!-- تفصيل الإجمالي -->
     <div class="total-breakdown">
       <div class="total-item">
         <span class="total-label">إجمالي المنتجات:</span>
@@ -1464,6 +1562,7 @@ input, textarea, select {
       <button onclick="closeTotalModal()">❌ إغلاق</button>
     </div>
     
+    <!-- قسم الفواتير المحفوظة -->
     <div id="savedInvoices" class="saved-invoices">
       <h3 style="text-align: center; margin: 15px 0 8px; color: var(--primary-color); font-size: 16px;">الفواتير المحفوظة</h3>
       <div id="savedInvoicesList"></div>
@@ -1480,45 +1579,12 @@ input, textarea, select {
 
 <div id="toast">تمت الإضافة إلى السلة</div>
 
+<!-- إشعار صوتي -->
 <audio id="notificationSound" class="audio-notification">
   <source src="https://assets.mixkit.co/sfx/preview/mixkit-alarm-tone-996.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-// بيانات تجريبية في حالة فشل تحميل البيانات من API
-const SAMPLE_PRODUCTS = [
-  {
-    name: "كابل شحن سريع Type C..",
-    price: "25.00",
-    image: "https://via.placeholder.com/150?text=كابل+شحن"
-  },
-  {
-    name: "سماعة ايربود بلوتوث&",
-    price: "150.00", 
-    image: "https://via.placeholder.com/150?text=سماعة+بلوتوث"
-  },
-  {
-    name: "شاحن سريع 20 وات#",
-    price: "80.00",
-    image: "https://via.placeholder.com/150?text=شاحن+سريع"
-  },
-  {
-    name: "جراب سامسونج A25",
-    price: "35.00",
-    image: "https://via.placeholder.com/150?text=جراب+جوال"
-  },
-  {
-    name: "اسكرين حماية زجاجي",
-    price: "20.00",
-    image: "https://via.placeholder.com/150?text=زجاج+حماية"
-  },
-  {
-    name: "سماعة رأس ستريو@",
-    price: "120.00",
-    image: "https://via.placeholder.com/150?text=سماعة+رأس"
-  }
-];
-
 const SCRIPT_PRODUCTS_URL = "https://script.google.com/macros/s/AKfycbxW3_pcjSfffMTLZefZpzFIrbhijiaWY_u_4ZAmXEV2O04SMN5zplucKnAugWWbP8zzmA/exec";
 const container = document.getElementById("products-container");
 let productsData = [];
@@ -2119,7 +2185,7 @@ function performSearch() {
   title.textContent = `نتائج البحث عن: "${keyword}"`;
 }
 
-// دالة محسنة لجلب المنتجات مع معالجة الأخطاء
+// دالة جلب المنتجات من API - محسنة للسرعة
 async function fetchProducts() {
   try {
     document.getElementById('autoUpdateIndicator').style.display = 'block';
@@ -2140,7 +2206,6 @@ async function fetchProducts() {
     }
     
     // جلب البيانات الجديدة من API
-    console.log('جاري تحميل البيانات من API...');
     const response = await fetch(SCRIPT_PRODUCTS_URL + "?t=" + new Date().getTime(), {
       cache: "no-store",
       method: 'GET',
@@ -2152,36 +2217,31 @@ async function fetchProducts() {
     }
     
     const data = await response.json();
-    console.log('تم تحميل البيانات بنجاح:', data);
     
     // معالجة البيانات
-    if (Array.isArray(data) && data.length > 0) {
-      productsData = data.reverse().map(item => {
-        if (isNaN(parseFloat(item.price))) {
-          item.price = "0.00";
-        }
-        // التأكد من وجود صورة افتراضية إذا لم تكن موجودة
-        if (!item.image || item.image.trim() === '') {
-          item.image = 'https://via.placeholder.com/150?text=صورة+منتج';
-        }
-        return item;
-      });
-      
-      // حفظ البيانات في localStorage مع وقت التخزين
-      localStorage.setItem("products", JSON.stringify(productsData));
-      localStorage.setItem("products_cache_time", now.toString());
-      
-      filterProductsByCategory('all');
-      checkNewProducts();
-      showToast('تم تحميل المنتجات بنجاح');
-    } else {
-      throw new Error('لا توجد بيانات متاحة');
-    }
+    productsData = data.reverse().map(item => {
+      if (isNaN(parseFloat(item.price))) {
+        item.price = "0.00";
+      }
+      // التأكد من وجود صورة افتراضية إذا لم تكن موجودة
+      if (!item.image || item.image.trim() === '') {
+        item.image = 'https://via.placeholder.com/150?text=صورة+منتج';
+      }
+      return item;
+    });
+    
+    // حفظ البيانات في localStorage مع وقت التخزين
+    localStorage.setItem("products", JSON.stringify(productsData));
+    localStorage.setItem("products_cache_time", now.toString());
+    
+    filterProductsByCategory('all');
+    checkNewProducts();
+    showToast('تم تحميل المنتجات بنجاح');
     
   } catch (error) {
     console.error("❌ خطأ في جلب المنتجات:", error);
     
-    // استخدام البيانات المخزنة محلياً كبديل
+    // محاولة استخدام البيانات المخزنة محلياً
     const cachedProducts = localStorage.getItem("products");
     if (cachedProducts) {
       try {
@@ -2190,23 +2250,14 @@ async function fetchProducts() {
         showToast('تم تحميل المنتجات من الذاكرة المؤقتة');
       } catch (e) {
         console.error("❌ خطأ في تحميل البيانات المخزنة:", e);
-        // استخدام البيانات التجريبية
-        useSampleData();
+        showToast('حدث خطأ في تحميل المنتجات');
       }
     } else {
-      // استخدام البيانات التجريبية
-      useSampleData();
+      showToast('حدث خطأ في تحميل المنتجات');
     }
   } finally {
     document.getElementById('autoUpdateIndicator').style.display = 'none';
   }
-}
-
-// دالة لاستخدام البيانات التجريبية
-function useSampleData() {
-  productsData = SAMPLE_PRODUCTS;
-  filterProductsByCategory('all');
-  showToast('تم تحميل البيانات التجريبية');
 }
 
 // دالة حفظ الفاتورة بتاريخ
