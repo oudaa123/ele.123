@@ -562,7 +562,7 @@ input, textarea {
     <button onclick="showInfo('تواصل معنا:<br>01067070423<br>01022495795<br>01012253500')">📞 تواصل معنا</button>
     <button onclick="window.open('https://www.facebook.com/share/174s1yLKfA/?mibextid=wwXIfr','_blank')">📘 فيسبوك</button>
     <button class="telegram-style-btn" onclick="goToProducts()">🔥 المنتجات والعروض</button>
-    <button class="telegram-style-btn" onclick="showTelegramBox()">📲 تليجرام التفعيلات</button>
+    <button class="telegram-style-btn" onclick="showSubscriptionsBox()">📲 تفعيل الصبات</button>
   </div>
 
   <div id="infoBox" class="info-box">
@@ -591,12 +591,12 @@ input, textarea {
     </div>
   </div>
 
-  <div id="telegramBox" class="password-box">
-    <h2>ادخل تليجرام التفعيلات 🔑</h2>
-    <input type="text" id="telegramPass" placeholder="فارغ حالياً">
-    <div style="margin:10px 0;">سيتم وضع الرابط لاحقاً</div>
-    <button onclick="checkTelegram()">دخول</button>
-    <button onclick="closeTelegramBox()">رجوع</button>
+  <div id="subscriptionsBox" class="password-box">
+    <h2>تفعيل الصبات 🔑</h2>
+    <input type="text" id="subscriptionName" placeholder="اسم الصب المطلوب تفعيله">
+    <div style="margin:10px 0;">سيتم إرسال طلب التفعيل إلى واتساب</div>
+    <button onclick="sendSubscriptionRequest()">إرسال الطلب</button>
+    <button onclick="closeSubscriptionsBox()">رجوع</button>
   </div>
 </div>
 
@@ -717,14 +717,30 @@ function showInfo(text){
 function closeInfo(){ 
     infoBox.style.display = 'none'; 
 }
-function showTelegramBox(){ 
-    document.getElementById('telegramBox').style.display='block'; 
+
+// دوال تفعيل الصبات
+function showSubscriptionsBox(){ 
+    document.getElementById('subscriptionsBox').style.display='block'; 
 }
-function closeTelegramBox(){ 
-    document.getElementById('telegramBox').style.display='none'; 
+function closeSubscriptionsBox(){ 
+    document.getElementById('subscriptionsBox').style.display='none'; 
 }
-function checkTelegram(){ 
-    alert("سيتم وضع الرابط لاحقاً"); 
+function sendSubscriptionRequest(){ 
+    const subscriptionName = document.getElementById('subscriptionName').value.trim();
+    if(!subscriptionName) {
+        alert("الرجاء إدخال اسم الصب المطلوب تفعيله");
+        return;
+    }
+    
+    // إرسال طلب تفعيل الصب إلى واتساب
+    const whatsappNumber = "201022495795";
+    const message = `طلب تفعيل صب جديد:\nاسم الصب: ${subscriptionName}`;
+    const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+    
+    window.open(whatsappURL, '_blank');
+    document.getElementById('subscriptionName').value = '';
+    closeSubscriptionsBox();
+    alert("تم إرسال طلب تفعيل الصب إلى واتساب");
 }
 
 // تأثير انفجار الشعار والانتقال المباشر للموقع
@@ -737,7 +753,7 @@ function explodeLogo() {
   }, 700); // وقت أقل للانتظار (0.7 ثانية فقط)
 }
 
-// تسجيل بيانات المستخدم
+// تسجيل بيانات المستخدم وإرسالها إلى واتساب
 submitBtn.addEventListener("click", (e)=>{
   e.preventDefault();
   const nameVal = document.getElementById("name").value.trim();
@@ -768,6 +784,13 @@ submitBtn.addEventListener("click", (e)=>{
       return; 
   }
   
+  // إرسال البيانات إلى واتساب بدلاً من الشيت
+  const whatsappNumber = "201022495795";
+  const message = `تسجيل جديد في شركة جنة:\nالاسم: ${nameVal}\nرقم الموبايل: ${phoneVal}\nالعنوان: ${addressVal}\nالمجال: ${fieldVal}`;
+  const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+  
+  window.open(whatsappURL, '_blank');
+  
   successModal.style.display='flex';
   document.getElementById("name").value='';
   document.getElementById("phone").value='';
@@ -787,8 +810,8 @@ window.addEventListener('click', function(event) {
     if (event.target == infoBox) {
         closeInfo();
     }
-    if (event.target == document.getElementById('telegramBox')) {
-        closeTelegramBox();
+    if (event.target == document.getElementById('subscriptionsBox')) {
+        closeSubscriptionsBox();
     }
     if (event.target == partnersContainer) {
         partnersContainer.style.display = 'none';
