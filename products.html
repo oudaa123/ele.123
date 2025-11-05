@@ -2066,10 +2066,11 @@ function updateCartItemQty(index, newQty) {
   }
 }
 
-// دالة حذف منتج من السلة
+// دالة حذف منتج من السلة - تم إصلاحها
 function deleteCartItem(index) {
   const cleanName = cleanProductName(productsData[index].name);
   if (confirm(`هل تريد حذف ${cleanName} من السلة؟`)) {
+    // إصلاح مشكلة الحذف - استخدام delete بدلاً من تعيين null
     delete cart[index];
     updateCartCount();
     updateShippingBar();
