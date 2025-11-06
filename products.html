@@ -679,7 +679,7 @@ header {
 }
 
 #saveCartBtn:hover {
-  background: #6a1bf;
+  background: #6a1fbf;
   transform: translateX(-50%) scale(1.05);
 }
 
@@ -971,6 +971,31 @@ header {
   display: none;
 }
 
+/* زر الدعم الفني منفصل */
+.support-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #25d366;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 30px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.support-button:hover {
+  background: #128c7e;
+  transform: scale(1.05);
+}
+
 /* تحسينات للشاشات الصغيرة */
 @media (max-width: 768px) {
   .products-grid {
@@ -986,6 +1011,13 @@ header {
   .category-btn {
     padding: 6px 12px;
     font-size: 13px;
+  }
+  
+  .support-button {
+    bottom: 80px;
+    right: 10px;
+    font-size: 14px;
+    padding: 10px 15px;
   }
 }
 
@@ -1019,12 +1051,226 @@ header {
     height: 120px;
   }
 }
+
+/* إشعار المنتجات الجديدة */
+.new-products-notification {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(135deg, #ff4444, #cc0000);
+  color: white;
+  padding: 20px 30px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(255, 0, 0, 0.5);
+  z-index: 1006;
+  text-align: center;
+  font-weight: bold;
+  font-size: 18px;
+  animation: pulse-red 1s infinite;
+  display: none;
+}
+
+@keyframes pulse-red {
+  0% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -50%) scale(1.05); }
+  100% { transform: translate(-50%, -50%) scale(1); }
+}
+
+/* تحسينات للفواتير المحفوظة */
+.saved-invoices {
+  margin-top: 20px;
+  border-top: 2px solid #8a2be2;
+  padding-top: 15px;
+}
+
+.saved-invoice-item {
+  background: #f9f9f9;
+  padding: 10px 15px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.saved-invoice-info {
+  flex: 1;
+}
+
+.saved-invoice-actions {
+  display: flex;
+  gap: 5px;
+}
+
+.saved-invoice-actions button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.saved-invoice-load {
+  background: #8a2be2;
+  color: white;
+}
+
+.saved-invoice-delete {
+  background: #ff4444;
+  color: white;
+}
+
+.saved-invoice-send {
+  background: #25d366;
+  color: white;
+}
+
+/* تحسينات لعرض أسماء المنتجات في الفاتورة */
+.product-name-invoice {
+  max-width: 200px;
+  white-space: normal;
+  word-wrap: break-word;
+  text-align: right;
+  line-height: 1.4;
+}
+
+/* مودال الأرقام المنفصل */
+.numbers-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 1007;
+  overflow-y: auto;
+  padding: 15px;
+}
+
+.numbers-content {
+  background: #fff;
+  margin: 100px auto;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 95%;
+  width: 400px;
+  position: relative;
+  text-align: center;
+}
+
+.numbers-close {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #ff4444;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.numbers-title {
+  font-size: 20px;
+  color: var(--primary-color);
+  margin-bottom: 20px;
+}
+
+.numbers-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.number-item {
+  background: var(--primary-color);
+  color: white;
+  padding: 12px 15px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: all 0.3s;
+}
+
+.number-item:hover {
+  background: #6a1fbf;
+  transform: translateY(-2px);
+}
+
+/* تفاصيل الشحن والفاتورة */
+.invoice-details {
+  background: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  margin: 15px 0;
+  border: 1px solid #ddd;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.detail-row:last-child {
+  border-bottom: none;
+}
+
+.detail-label {
+  font-weight: bold;
+  color: #333;
+}
+
+.detail-value {
+  color: var(--primary-color);
+  font-weight: bold;
+}
+
+.shipping-details {
+  background: #f0f8ff;
+  padding: 15px;
+  border-radius: 8px;
+  margin: 15px 0;
+  border: 1px solid #8a2be2;
+}
+
+.shipping-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.shipping-row:last-child {
+  border-bottom: none;
+}
+
+.shipping-label {
+  font-weight: bold;
+  color: #333;
+}
+
+.shipping-value {
+  color: #ff4444;
+  font-weight: bold;
+}
 </style>
 </head>
 <body class="hide-price">
 
 <div id="showPricesBar" onclick="showPasswordModal()">
   👁️ اعرض الأسعار
+</div>
+
+<!-- إشعار المنتجات الجديدة -->
+<div id="newProductsNotification" class="new-products-notification">
+  🎉 هناك منتجات جديدة تمت إضافتها اليوم!
 </div>
 
 <!-- شريط الشحن المجاني -->
@@ -1038,20 +1284,24 @@ header {
 
 <button id="saveCartBtn" onclick="saveCart()">💾 حفظ السلة</button>
 
+<!-- زر الدعم الفني منفصل -->
+<button class="support-button" onclick="window.open('https://wa.me/201022495795', '_blank')">
+  ☎️ الدعم الفني
+</button>
+
 <header>
   📦ELEC.123.تاج وجميع منتجات جنة
   <div class="header-buttons">
     <button id="cartBtn">🛒 السلة <span id="cart-count">0</span></button>
-    <button id="totalBtn">💰 اجمالي الفاتورة الخاصه بك</button>
-    <button id="supportBtn">☎️ الدعم الفني للبرنامج</button>
+    <button id="totalBtn">💰 اجمالي الفاتورة</button>
     <button onclick="window.location.href='index.html'">🔙 الرئيسية</button>
-    <button id="notifBtn">🔔صل علي النبي محمد هناك منتجات جديده <span id="notif-count">0</span></button>
+    <button id="notifBtn">🔔 منتجات جديده <span id="notif-count">0</span></button>
     <button id="clearCartBtn" onclick="clearCart()">🗑️ مسح السلة</button>
   </div>
 
   <div class="search-container">
     <input type="text" id="searchBox" placeholder="🔍ابدأ و ابحث عن منتج...">
-    <button id="offerBtn">💥خصم خاص للمناديب بدعم من شركة جنة </button>
+    <button id="offerBtn">💥خصم خاص للمناديب</button>
   </div>
 </header>
 
@@ -1097,6 +1347,19 @@ header {
   </div>
 </div>
 
+<!-- مودال الأرقام المنفصل -->
+<div id="numbersModal" class="numbers-modal">
+  <div class="numbers-content">
+    <button class="numbers-close" onclick="closeNumbersModal()">×</button>
+    <h2 class="numbers-title">اختر رقم لإرسال الطلب</h2>
+    <div class="numbers-list">
+      <a href="#" class="number-item" id="officeNumber">📞 01067070423 (المكتب)</a>
+      <a href="#" class="number-item" id="storeNumber">📞 01022495795 (المحل)</a>
+      <a href="#" class="number-item" id="carNumber">📞 01012253500 (السيارة)</a>
+    </div>
+  </div>
+</div>
+
 <div id="totalModal">
   <div class="modal-content">
     <button class="modal-close" onclick="closeTotalModal()">×</button>
@@ -1108,14 +1371,41 @@ header {
       <div class="invoice-total">إجمالي الفاتورة: <span id="totalAmount">0.00</span> جنيه</div>
     </div>
     
-    <!-- قسم الشحن -->
-    <div id="shippingSection" class="shipping-section">
-      <div class="shipping-info">
-        <div id="shippingStatus" class="shipping-free">🚚 الشحن مجاني!</div>
-        <div id="shippingCost" class="shipping-cost">+0.00 جنيه</div>
+    <!-- تفاصيل الفاتورة -->
+    <div class="invoice-details">
+      <h3 style="text-align: center; margin-bottom: 15px; color: var(--primary-color);">تفاصيل الفاتورة</h3>
+      <div class="detail-row">
+        <span class="detail-label">عدد المنتجات:</span>
+        <span class="detail-value" id="productsCount">0</span>
       </div>
-      <div id="shippingNote" class="shipping-message">
-        مبروك! لقد حصلت على الشحن المجاني
+      <div class="detail-row">
+        <span class="detail-label">إجمالي المنتجات:</span>
+        <span class="detail-value" id="productsTotal">0.00 جنيه</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">الخصومات:</span>
+        <span class="detail-value" id="discountsTotal">0.00 جنيه</span>
+      </div>
+    </div>
+    
+    <!-- تفاصيل الشحن -->
+    <div class="shipping-details">
+      <h3 style="text-align: center; margin-bottom: 15px; color: #ff4444;">تفاصيل الشحن</h3>
+      <div class="shipping-row">
+        <span class="shipping-label">تكلفة الشحن:</span>
+        <span class="shipping-value" id="shippingCostDetail">0.00 جنيه</span>
+      </div>
+      <div class="shipping-row">
+        <span class="shipping-label">الحد الأدنى للشحن المجاني:</span>
+        <span class="shipping-value">500.00 جنيه</span>
+      </div>
+      <div class="shipping-row">
+        <span class="shipping-label">المتبقي للشحن المجاني:</span>
+        <span class="shipping-value" id="remainingForFreeShipping">500.00 جنيه</span>
+      </div>
+      <div class="shipping-row">
+        <span class="shipping-label">حالة الشحن:</span>
+        <span class="shipping-value" id="shippingStatusDetail">غير مؤهل للشحن المجاني</span>
       </div>
     </div>
     
@@ -1146,13 +1436,6 @@ header {
       <h3 style="text-align: center; margin: 20px 0 10px; color: var(--primary-color);">الفواتير المحفوظة</h3>
       <div id="savedInvoicesList"></div>
     </div>
-    
-    <div id="orderNumbers" class="order-numbers">
-      <p>اختر رقم لإرسال الطلب 👇</p>
-      <a href="https://wa.me/201067070423" target="_blank">📞 01067070423</a>
-      <a href="https://wa.me/201022495795" target="_blank">📞 01022495795</a>
-      <a href="https://wa.me/201012253500" target="_blank">📞 01012253500</a>
-    </div>
   </div>
 </div>
 
@@ -1164,58 +1447,7 @@ header {
 </audio>
 
 <script>
-// البيانات التجريبية
-const SAMPLE_PRODUCTS = [
-  {
-    name: "كابل شحن سريع Type C..",
-    price: "25.00",
-    image: "https://via.placeholder.com/200?text=كابل+شحن",
-    category: "كابل"
-  },
-  {
-    name: "سماعة ايربود بلوتوث&",
-    price: "150.00", 
-    image: "https://via.placeholder.com/200?text=سماعة+بلوتوث",
-    category: "سماعة"
-  },
-  {
-    name: "شاحن سريع 20 وات#",
-    price: "80.00",
-    image: "https://via.placeholder.com/200?text=شاحن+سريع",
-    category: "شاحن"
-  },
-  {
-    name: "جراب سامسونج A25",
-    price: "35.00",
-    image: "https://via.placeholder.com/200?text=جراب+جوال",
-    category: "جراب"
-  },
-  {
-    name: "اسكرين حماية زجاجي",
-    price: "20.00",
-    image: "https://via.placeholder.com/200?text=زجاج+حماية",
-    category: "اسكرين"
-  },
-  {
-    name: "سماعة رأس ستريو@",
-    price: "120.00",
-    image: "https://via.placeholder.com/200?text=سماعة+رأس",
-    category: "سماعة"
-  },
-  {
-    name: "بطارية باور بانك 10000 مللي",
-    price: "200.00",
-    image: "https://via.placeholder.com/200?text=بطارية+شحن",
-    category: "بطارية"
-  },
-  {
-    name: "صب شحن متنقل",
-    price: "45.00",
-    image: "https://via.placeholder.com/200?text=صب+شحن",
-    category: "صب"
-  }
-];
-
+// إعدادات التطبيق
 const SCRIPT_PRODUCTS_URL = "https://script.google.com/macros/s/AKfycbxW3_pcjSfffMTLZefZpzFIrbhijiaWY_u_4ZAmXEV2O04SMN5zplucKnAugWWbP8zzmA/exec";
 const container = document.getElementById("products-container");
 let productsData = [];
@@ -1234,6 +1466,9 @@ const PASSWORD = "2525";
 
 // إضافة متغير جديد لتخزين الفواتير المحفوظة
 let savedInvoices = JSON.parse(localStorage.getItem('savedInvoices')) || [];
+
+// متغير لتتبع آخر تحديث للمنتجات
+let lastUpdateTime = localStorage.getItem('lastUpdateTime') || 0;
 
 // دالة محسنة لتحديد تصنيف المنتج بناءً على اسمه
 function getProductCategory(productName) {
@@ -1554,30 +1789,13 @@ function addToCart(index){
   showToast(`${cleanName} تم إضافته إلى السلة`);
 }
 
-// باقي الدوال (showTotal, updateQty, removeItem, closeTotalModal, etc.)
-// تبقى كما هي مع تعديلات طفيفة لتتناسب مع التصميم الجديد
-
-// دالة جلب المنتجات من API
+// دالة جلب المنتجات من API - محسنة للكشف عن المنتجات الجديدة
 async function fetchProducts() {
   try {
     document.getElementById('autoUpdateIndicator').style.display = 'block';
     
-    // استخدام البيانات المخزنة محلياً أولاً
-    const cachedProducts = localStorage.getItem("products");
-    const cacheTime = localStorage.getItem("products_cache_time");
     const now = Date.now();
-    
-    if (cachedProducts && cacheTime && (now - parseInt(cacheTime)) < 5 * 60 * 1000) {
-      productsData = JSON.parse(cachedProducts);
-      filterProductsByCategory('all');
-      checkNewProducts();
-      document.getElementById('autoUpdateIndicator').style.display = 'none';
-      showToast('تم تحميل المنتجات من الذاكرة المؤقتة');
-      return;
-    }
-    
-    // جلب البيانات الجديدة من API
-    const response = await fetch(SCRIPT_PRODUCTS_URL + "?t=" + new Date().getTime(), {
+    const response = await fetch(SCRIPT_PRODUCTS_URL + "?t=" + now, {
       cache: "no-store",
       method: 'GET',
       mode: 'cors'
@@ -1590,7 +1808,7 @@ async function fetchProducts() {
     const data = await response.json();
     
     if (Array.isArray(data) && data.length > 0) {
-      productsData = data.reverse().map(item => {
+      const newProductsData = data.reverse().map(item => {
         if (isNaN(parseFloat(item.price))) {
           item.price = "0.00";
         }
@@ -1600,12 +1818,23 @@ async function fetchProducts() {
         return item;
       });
       
+      // التحقق من وجود منتجات جديدة
+      const oldProducts = JSON.parse(localStorage.getItem("products") || "[]");
+      const newProducts = checkForNewProducts(oldProducts, newProductsData);
+      
+      // حفظ البيانات الجديدة
+      productsData = newProductsData;
       localStorage.setItem("products", JSON.stringify(productsData));
-      localStorage.setItem("products_cache_time", now.toString());
+      localStorage.setItem("lastUpdateTime", now.toString());
       
       filterProductsByCategory('all');
       checkNewProducts();
       showToast('تم تحميل المنتجات بنجاح');
+      
+      // إظهار إشعار المنتجات الجديدة إذا كان هناك منتجات جديدة
+      if (newProducts.length > 0) {
+        showNewProductsNotification();
+      }
     } else {
       throw new Error('لا توجد بيانات متاحة');
     }
@@ -1622,62 +1851,355 @@ async function fetchProducts() {
         showToast('تم تحميل المنتجات من الذاكرة المؤقتة');
       } catch (e) {
         console.error("❌ خطأ في تحميل البيانات المخزنة:", e);
-        // استخدام البيانات التجريبية
-        useSampleData();
+        productsData = [];
       }
     } else {
-      // استخدام البيانات التجريبية
-      useSampleData();
+      productsData = [];
     }
   } finally {
     document.getElementById('autoUpdateIndicator').style.display = 'none';
   }
 }
 
-// دالة لاستخدام البيانات التجريبية
-function useSampleData() {
-  productsData = SAMPLE_PRODUCTS;
-  filterProductsByCategory('all');
-  showToast('تم تحميل البيانات التجريبية');
+// دالة للتحقق من المنتجات الجديدة - محسنة
+function checkForNewProducts(oldProducts, newProducts) {
+  if (!oldProducts || oldProducts.length === 0) return newProducts;
+  
+  const oldProductNames = oldProducts.map(p => p.name);
+  return newProducts.filter(product => !oldProductNames.includes(product.name));
 }
 
-// تهيئة الصفحة
-document.addEventListener('DOMContentLoaded', function() {
-  // تحميل المنتجات من API
-  fetchProducts();
+// دالة لعرض إشعار المنتجات الجديدة
+function showNewProductsNotification() {
+  const notification = document.getElementById('newProductsNotification');
+  notification.style.display = 'block';
   
-  // تحميل السلة المحفوظة
-  loadSavedCart();
+  // إخفاء الإشعار بعد 10 ثواني
+  setTimeout(() => {
+    notification.style.display = 'none';
+  }, 10000);
+}
+
+// دالة محسنة لعرض الفاتورة مع تفاصيل الشحن
+function showTotal(){
+  if (!pricesVisible) {
+    showPasswordModal();
+    showToast('يجب إدخال كلمة السر أولاً لعرض الفاتورة');
+    return;
+  }
   
-  // إضافة مستمعي الأحداث لأزرار التصنيفات
-  document.querySelectorAll('.category-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-      const category = this.getAttribute('data-category');
-      filterProductsByCategory(category);
-    });
-  });
+  let total = calculateTotal();
+  const shipping = total >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_COST;
+  const finalTotal = total + shipping;
   
-  // باقي مستمعي الأحداث
-  document.getElementById("searchBox").addEventListener("input", performSearch);
-  document.getElementById("cartBtn").onclick = showTotal;
-  document.getElementById("totalBtn").onclick = showTotal;
-  document.getElementById("supportBtn").onclick = () => window.open("https://wa.me/201022495795", "_blank");
+  // تحديث تفاصيل الفاتورة
+  updateInvoiceDetails(total);
   
-  document.getElementById('passwordInput').addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') {
-      checkPassword();
+  // تحديث تفاصيل الشحن
+  updateShippingDetails(total, shipping);
+  
+  const cartList = document.getElementById("cartList");
+  cartList.innerHTML = "";
+  
+  cart.forEach((qty, idx) => {
+    if(qty && productsData[idx]){
+      const price = parseFloat(productsData[idx].price) || 0;
+      const lineTotal = qty * price;
+      
+      const cleanName = cleanProductName(productsData[idx].name);
+      
+      const row = document.createElement("tr");
+      row.innerHTML = `<td class="product-name-invoice">${cleanName}</td>
+                       <td>
+                         <input type="number" class="quantity-input-modal" min="1" value="${qty}" data-index="${idx}" style="width: 60px; padding: 5px; text-align: center;">
+                       </td>
+                       <td>${formatPrice(price)} جنيه</td>
+                       <td>${formatPrice(lineTotal)} جنيه</td>
+                       <td>
+                         <div class="cart-actions">
+                           <button class="delete-btn" onclick="deleteCartItem(${idx})">🗑️ حذف</button>
+                         </div>
+                       </td>`;
+      cartList.appendChild(row);
     }
   });
   
-  // تحديث زر حفظ السلة
-  setInterval(() => {
-    const cartCount = cart.reduce((sum, qty) => qty ? sum + qty : sum, 0);
-    document.getElementById('saveCartBtn').style.display = cartCount > 0 ? 'flex' : 'none';
-  }, 1000);
-});
+  // إضافة مستمعي الأحداث لحقول الكمية في الفاتورة
+  cartList.querySelectorAll('.quantity-input-modal').forEach(input => {
+    input.addEventListener('change', function() {
+      const index = parseInt(this.getAttribute('data-index'));
+      const value = parseInt(this.value);
+      updateQty(index, value);
+      showTotal(); // تحديث الفاتورة فوراً
+    });
+  });
+  
+  document.getElementById("totalAmount").innerText = formatPrice(total);
+  document.getElementById("finalTotalAmount").innerText = formatPrice(finalTotal);
+  
+  updateInvoiceDate();
+  document.getElementById("totalModal").style.display = "block";
+  displaySavedInvoices();
+  
+  // إضافة مستمع حدث لزر الإرسال
+  document.getElementById("sendBtn").onclick = sendInvoice;
+}
 
-// باقي الدوال (performSearch, showTotal, etc.) تبقى كما هي
-// مع تعديلات طفيفة لتتناسب مع التصميم الجديد
+// دالة تحديث تفاصيل الفاتورة
+function updateInvoiceDetails(total) {
+  const productsCount = cart.reduce((sum, qty) => qty ? sum + 1 : sum, 0);
+  const discounts = calculateDiscounts();
+  
+  document.getElementById("productsCount").textContent = productsCount;
+  document.getElementById("productsTotal").textContent = formatPrice(total) + " جنيه";
+  document.getElementById("discountsTotal").textContent = formatPrice(discounts) + " جنيه";
+}
+
+// دالة تحديث تفاصيل الشحن
+function updateShippingDetails(total, shipping) {
+  const remaining = Math.max(0, FREE_SHIPPING_THRESHOLD - total);
+  const shippingStatus = total >= FREE_SHIPPING_THRESHOLD ? 
+    "مؤهل للشحن المجاني 🎉" : 
+    "غير مؤهل للشحن المجاني";
+  
+  document.getElementById("shippingCostDetail").textContent = formatPrice(shipping) + " جنيه";
+  document.getElementById("remainingForFreeShipping").textContent = formatPrice(remaining) + " جنيه";
+  document.getElementById("shippingStatusDetail").textContent = shippingStatus;
+}
+
+// دالة حساب الخصومات
+function calculateDiscounts() {
+  let discounts = 0;
+  cart.forEach((qty, idx) => {
+    if(qty && productsData[idx] && productsData[idx].name.includes("&")) {
+      const originalPrice = parseFloat(productsData[idx].price) || 0;
+      const increasedPrice = originalPrice * 1.45;
+      const discountPerItem = increasedPrice - originalPrice;
+      discounts += discountPerItem * qty;
+    }
+  });
+  return discounts;
+}
+
+function updateQty(idx, value){
+  value = parseInt(value);
+  if(value <= 0) delete cart[idx];
+  else cart[idx] = value;
+  updateCartCount();
+  updateShippingBar();
+}
+
+function deleteCartItem(index) {
+  const cleanName = cleanProductName(productsData[index].name);
+  if (confirm(`هل تريد حذف ${cleanName} من السلة؟`)) {
+    delete cart[index];
+    updateCartCount();
+    updateShippingBar();
+    showTotal();
+    showToast(`تم حذف ${cleanName} من السلة`);
+  }
+}
+
+function closeTotalModal(){ 
+  document.getElementById("totalModal").style.display = 'none'; 
+}
+
+function calculateTotal() {
+  let total = 0;
+  cart.forEach((qty, idx) => {
+    if (qty && productsData[idx]) {
+      const price = parseFloat(productsData[idx].price) || 0;
+      total += qty * price;
+    }
+  });
+  return total;
+}
+
+function updateInvoiceDate() {
+  const now = new Date();
+  const options = { 
+    weekday: 'long', 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  };
+  
+  const dateStr = now.toLocaleDateString('ar-EG', options);
+  document.getElementById("invoiceDate").innerText = `📅 ${dateStr}`;
+}
+
+// دالة إرسال الفاتورة عبر الواتساب مع مودال الأرقام المنفصل
+function sendInvoice() {
+  const total = calculateTotal();
+  const shipping = total >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_COST;
+  const finalTotal = total + shipping;
+  
+  let message = `📋 *فاتورة طلب من جنة*\n\n`;
+  message += `📅 ${new Date().toLocaleDateString('ar-EG')}\n\n`;
+  
+  cart.forEach((qty, idx) => {
+    if(qty && productsData[idx]){
+      const price = parseFloat(productsData[idx].price) || 0;
+      const lineTotal = qty * price;
+      const cleanName = cleanProductName(productsData[idx].name);
+      
+      message += `🔹 ${cleanName}\n`;
+      message += `   الكمية: ${qty} × ${formatPrice(price)} = ${formatPrice(lineTotal)} جنيه\n\n`;
+    }
+  });
+  
+  message += `💰 *الإجمالي:* ${formatPrice(total)} جنيه\n`;
+  message += `🚚 *الشحن:* ${formatPrice(shipping)} جنيه\n`;
+  message += `💵 *المجموع النهائي:* ${formatPrice(finalTotal)} جنيه\n\n`;
+  message += `شكراً لثقتكم بنا! 🎉`;
+  
+  // حفظ الرسالة مؤقتاً
+  localStorage.setItem('currentInvoiceMessage', message);
+  
+  // عرض مودال الأرقام المنفصل
+  showNumbersModal();
+}
+
+// دالة عرض مودال الأرقام المنفصل
+function showNumbersModal() {
+  const message = localStorage.getItem('currentInvoiceMessage');
+  
+  // تحديث روابط الواتساب بالرسالة
+  document.getElementById('officeNumber').href = `https://wa.me/201067070423?text=${encodeURIComponent(message)}`;
+  document.getElementById('storeNumber').href = `https://wa.me/201022495795?text=${encodeURIComponent(message)}`;
+  document.getElementById('carNumber').href = `https://wa.me/201012253500?text=${encodeURIComponent(message)}`;
+  
+  document.getElementById('numbersModal').style.display = 'block';
+}
+
+// دالة إغلاق مودال الأرقام
+function closeNumbersModal() {
+  document.getElementById('numbersModal').style.display = 'none';
+}
+
+// دالة حفظ الفاتورة بتاريخ
+function saveInvoiceWithDate() {
+  const total = calculateTotal();
+  const shipping = total >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_COST;
+  const finalTotal = total + shipping;
+  
+  const invoice = {
+    date: new Date().toLocaleString('ar-EG'),
+    items: [],
+    total: total,
+    shipping: shipping,
+    finalTotal: finalTotal
+  };
+  
+  cart.forEach((qty, idx) => {
+    if(qty && productsData[idx]){
+      const price = parseFloat(productsData[idx].price) || 0;
+      const lineTotal = qty * price;
+      const cleanName = cleanProductName(productsData[idx].name);
+      
+      invoice.items.push({
+        name: cleanName,
+        quantity: qty,
+        price: price,
+        total: lineTotal
+      });
+    }
+  });
+  
+  savedInvoices.push(invoice);
+  localStorage.setItem('savedInvoices', JSON.stringify(savedInvoices));
+  
+  showToast('تم حفظ الفاتورة بنجاح');
+  displaySavedInvoices();
+}
+
+// دالة عرض الفواتير المحفوظة
+function displaySavedInvoices() {
+  const savedInvoicesList = document.getElementById('savedInvoicesList');
+  savedInvoicesList.innerHTML = '';
+  
+  if (savedInvoices.length === 0) {
+    savedInvoicesList.innerHTML = '<p style="text-align: center; color: #666;">لا توجد فواتير محفوظة</p>';
+    return;
+  }
+  
+  savedInvoices.forEach((invoice, index) => {
+    const invoiceElement = document.createElement('div');
+    invoiceElement.className = 'saved-invoice-item';
+    
+    invoiceElement.innerHTML = `
+      <div class="saved-invoice-info">
+        <strong>فاتورة ${index + 1}</strong>
+        <div>${invoice.date}</div>
+        <div>المجموع: ${formatPrice(invoice.finalTotal)} جنيه</div>
+      </div>
+      <div class="saved-invoice-actions">
+        <button class="saved-invoice-load" onclick="loadSavedInvoice(${index})">📂 فتح</button>
+        <button class="saved-invoice-send" onclick="sendSavedInvoice(${index})">📤 إرسال</button>
+        <button class="saved-invoice-delete" onclick="deleteSavedInvoice(${index})">🗑️ حذف</button>
+      </div>
+    `;
+    
+    savedInvoicesList.appendChild(invoiceElement);
+  });
+}
+
+// دالة تحميل فاتورة محفوظة
+function loadSavedInvoice(index) {
+  const invoice = savedInvoices[index];
+  
+  // مسح السلة الحالية
+  cart = [];
+  
+  // تحميل عناصر الفاتورة المحفوظة
+  invoice.items.forEach(item => {
+    const productIndex = productsData.findIndex(p => cleanProductName(p.name) === item.name);
+    if (productIndex !== -1) {
+      cart[productIndex] = item.quantity;
+    }
+  });
+  
+  updateCartCount();
+  updateShippingBar();
+  showTotal();
+  showToast('تم تحميل الفاتورة المحفوظة');
+}
+
+// دالة إرسال فاتورة محفوظة
+function sendSavedInvoice(index) {
+  const invoice = savedInvoices[index];
+  
+  let message = `📋 *فاتورة محفوظة من جنة*\n\n`;
+  message += `📅 ${invoice.date}\n\n`;
+  
+  invoice.items.forEach(item => {
+    message += `🔹 ${item.name}\n`;
+    message += `   الكمية: ${item.quantity} × ${formatPrice(item.price)} = ${formatPrice(item.total)} جنيه\n\n`;
+  });
+  
+  message += `💰 *الإجمالي:* ${formatPrice(invoice.total)} جنيه\n`;
+  message += `🚚 *الشحن:* ${formatPrice(invoice.shipping)} جنيه\n`;
+  message += `💵 *المجموع النهائي:* ${formatPrice(invoice.finalTotal)} جنيه\n\n`;
+  message += `شكراً لثقتكم بنا! 🎉`;
+  
+  // حفظ الرسالة مؤقتاً
+  localStorage.setItem('currentInvoiceMessage', message);
+  
+  // عرض مودال الأرقام المنفصل
+  showNumbersModal();
+}
+
+// دالة حذف فاتورة محفوظة
+function deleteSavedInvoice(index) {
+  if (confirm('هل تريد حذف هذه الفاتورة المحفوظة؟')) {
+    savedInvoices.splice(index, 1);
+    localStorage.setItem('savedInvoices', JSON.stringify(savedInvoices));
+    displaySavedInvoices();
+    showToast('تم حذف الفاتورة المحفوظة');
+  }
+}
 
 function performSearch() {
   const keyword = document.getElementById("searchBox").value.trim().toLowerCase();
@@ -1725,128 +2247,42 @@ function playNotificationSound() {
   }
 }
 
-// تحتاج لإضافة الدوال المتبقية مثل showTotal, updateQty, etc.
-// سأضيف الدوال الأساسية المتبقية:
-
-function showTotal(){
-  if (!pricesVisible) {
-    showPasswordModal();
-    showToast('يجب إدخال كلمة السر أولاً لعرض الفاتورة');
-    return;
-  }
+// تهيئة الصفحة
+document.addEventListener('DOMContentLoaded', function() {
+  // تحميل المنتجات من API
+  fetchProducts();
   
-  let total = calculateTotal();
-  const shipping = total >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_COST;
-  const finalTotal = total + shipping;
+  // تحميل السلة المحفوظة
+  loadSavedCart();
   
-  const cartList = document.getElementById("cartList");
-  cartList.innerHTML = "";
+  // إضافة مستمعي الأحداث لأزرار التصنيفات
+  document.querySelectorAll('.category-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const category = this.getAttribute('data-category');
+      filterProductsByCategory(category);
+    });
+  });
   
-  cart.forEach((qty, idx) => {
-    if(qty && productsData[idx]){
-      const price = parseFloat(productsData[idx].price) || 0;
-      const lineTotal = qty * price;
-      
-      const cleanName = cleanProductName(productsData[idx].name);
-      
-      const row = document.createElement("tr");
-      row.innerHTML = `<td class="product-name">${cleanName}</td>
-                       <td>${qty}</td>
-                       <td>${formatPrice(price)} جنيه</td>
-                       <td>${formatPrice(lineTotal)} جنيه</td>
-                       <td>
-                         <div class="cart-actions">
-                           <button class="delete-btn" onclick="deleteCartItem(${idx})">🗑️ حذف</button>
-                         </div>
-                       </td>`;
-      cartList.appendChild(row);
+  // باقي مستمعي الأحداث
+  document.getElementById("searchBox").addEventListener("input", performSearch);
+  document.getElementById("cartBtn").onclick = showTotal;
+  document.getElementById("totalBtn").onclick = showTotal;
+  
+  document.getElementById('passwordInput').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+      checkPassword();
     }
   });
   
-  document.getElementById("totalAmount").innerText = formatPrice(total);
-  document.getElementById("finalTotalAmount").innerText = formatPrice(finalTotal);
+  // تحديث زر حفظ السلة
+  setInterval(() => {
+    const cartCount = cart.reduce((sum, qty) => qty ? sum + qty : sum, 0);
+    document.getElementById('saveCartBtn').style.display = cartCount > 0 ? 'flex' : 'none';
+  }, 1000);
   
-  updateInvoiceDate();
-  updateShippingSection(total);
-  document.getElementById("totalModal").style.display = "block";
-  displaySavedInvoices();
-}
-
-function updateQty(idx, value){
-  value = parseInt(value);
-  if(value <= 0) delete cart[idx];
-  else cart[idx] = value;
-  updateCartCount();
-  updateShippingBar();
-  showTotal();
-}
-
-function deleteCartItem(index) {
-  const cleanName = cleanProductName(productsData[index].name);
-  if (confirm(`هل تريد حذف ${cleanName} من السلة؟`)) {
-    delete cart[index];
-    updateCartCount();
-    updateShippingBar();
-    showTotal();
-    showToast(`تم حذف ${cleanName} من السلة`);
-  }
-}
-
-function closeTotalModal(){ 
-  document.getElementById("totalModal").style.display = 'none'; 
-}
-
-function calculateTotal() {
-  let total = 0;
-  cart.forEach((qty, idx) => {
-    if (qty && productsData[idx]) {
-      const price = parseFloat(productsData[idx].price) || 0;
-      total += qty * price;
-    }
-  });
-  return total;
-}
-
-function updateInvoiceDate() {
-  const now = new Date();
-  const options = { 
-    weekday: 'long', 
-    year: 'numeric', 
-    month: 'long', 
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
-  };
-  
-  const dateStr = now.toLocaleDateString('ar-EG', options);
-  document.getElementById("invoiceDate").innerText = `📅 ${dateStr}`;
-}
-
-function updateShippingSection(total) {
-  const shippingSection = document.getElementById('shippingSection');
-  const shippingStatus = document.getElementById('shippingStatus');
-  const shippingCost = document.getElementById('shippingCost');
-  const shippingNote = document.getElementById('shippingNote');
-  
-  if (total >= FREE_SHIPPING_THRESHOLD) {
-    shippingStatus.innerHTML = '🚚 الشحن مجاني!';
-    shippingStatus.className = 'shipping-free';
-    shippingCost.innerHTML = '+0.00 جنيه';
-    shippingCost.className = 'shipping-cost';
-    shippingNote.innerHTML = 'مبروك! لقد حصلت على الشحن المجاني';
-    shippingSection.style.borderColor = '#25d366';
-  } else {
-    const remaining = FREE_SHIPPING_THRESHOLD - total;
-    shippingStatus.innerHTML = '🚚 شحن عادي';
-    shippingStatus.className = 'shipping-cost';
-    shippingCost.innerHTML = `+${formatPrice(SHIPPING_COST)} جنيه`;
-    shippingCost.className = 'shipping-cost';
-    shippingNote.innerHTML = `أنفق ${formatPrice(remaining)} جنيه أخرى للحصول على شحن مجاني`;
-    shippingSection.style.borderColor = '#ff4444';
-  }
-}
-
-// يمكنك إضافة الدوال المتبقية حسب الحاجة
+  // تحديث المنتجات كل دقيقة للكشف عن المنتجات الجديدة
+  setInterval(fetchProducts, 60000);
+});
 </script>
 </body>
 </html>
