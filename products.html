@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>جميع منتجات جنة</title>
 <style>
+/* جميع الأنماط السابقة تبقى كما هي */
 :root {
   --primary-color: #8a2be2;
   --secondary-color: #ffd814;
@@ -16,15 +17,20 @@
 
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body { 
   font-family: Tahoma, sans-serif; 
-  margin: 0; 
   background: var(--light-bg);
   font-size: 14px;
   padding-bottom: 60px;
   -webkit-text-size-adjust: 100%;
+  /* إصلاح مشكلة الرجفة */
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 header {
@@ -1202,36 +1208,92 @@ header {
   transform: translateY(-2px);
 }
 
-/* تفاصيل الشحن والفاتورة */
-.invoice-details {
-  background: #f9f9f9;
-  padding: 15px;
-  border-radius: 8px;
-  margin: 15px 0;
-  border: 1px solid #ddd;
+/* التحسينات الجديدة */
+
+/* شريط المنتجات الجديدة المثبت */
+.new-products-sticky-bar {
+  position: sticky;
+  top: 170px;
+  background: linear-gradient(135deg, #ff4444, #cc0000);
+  color: white;
+  padding: 8px 15px;
+  text-align: center;
+  font-weight: bold;
+  z-index: 998;
+  display: none;
+  box-shadow: 0 2px 10px rgba(255, 0, 0, 0.3);
+  animation: pulse-sticky 2s infinite;
 }
 
-.detail-row {
+@keyframes pulse-sticky {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.01); }
+  100% { transform: scale(1); }
+}
+
+/* زر طلب منتج غير متوفر */
+.request-product-button {
+  position: fixed;
+  bottom: 80px;
+  left: 20px;
+  background: #ff6b00;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 30px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+  z-index: 999;
   display: flex;
-  justify-content: space-between;
-  padding: 8px 0;
-  border-bottom: 1px solid #eee;
+  align-items: center;
+  gap: 5px;
 }
 
-.detail-row:last-child {
-  border-bottom: none;
+.request-product-button:hover {
+  background: #ff5500;
+  transform: scale(1.05);
 }
 
-.detail-label {
+/* تحسينات تخطيط الفاتورة */
+.cart-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: center;
+}
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.quantity-btn {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
   font-weight: bold;
-  color: #333;
 }
 
-.detail-value {
-  color: var(--primary-color);
+.delete-btn {
+  background: #ff4444;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
   font-weight: bold;
+  font-size: 12px;
+  margin-top: 5px;
 }
 
+/* تحسينات تفاصيل الشحن في الفاتورة */
 .shipping-details {
   background: #f0f8ff;
   padding: 15px;
@@ -1240,29 +1302,88 @@ header {
   border: 1px solid #8a2be2;
 }
 
-.shipping-row {
+.shipping-breakdown {
   display: flex;
   justify-content: space-between;
-  padding: 8px 0;
-  border-bottom: 1px solid #ddd;
+  margin: 5px 0;
+  font-size: 16px;
 }
 
-.shipping-row:last-child {
-  border-bottom: none;
-}
-
-.shipping-label {
+.shipping-total {
   font-weight: bold;
-  color: #333;
-}
-
-.shipping-value {
+  font-size: 18px;
   color: #ff4444;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed #8a2be2;
+}
+
+/* إشعار توجيه البحث */
+.search-suggestion {
+  background: #fff3cd;
+  color: #856404;
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin: 10px;
+  text-align: center;
+  border: 1px solid #ffeaa7;
+  display: none;
+}
+
+.search-suggestion a {
+  color: #8a2be2;
   font-weight: bold;
+  text-decoration: none;
+  margin: 0 5px;
+}
+
+.search-suggestion a:hover {
+  text-decoration: underline;
+}
+
+/* تحسينات للمنتجات غير المتوفرة */
+.out-of-stock-price {
+  color: #999 !important;
+  font-style: italic;
+}
+
+/* تحسينات جديدة للفاتورة */
+.invoice-summary {
+  background: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  margin: 15px 0;
+  border: 2px dashed #8a2be2;
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  margin: 8px 0;
+  font-size: 16px;
+}
+
+.summary-total {
+  font-weight: bold;
+  font-size: 18px;
+  color: #ff4444;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #ddd;
+}
+
+/* إزالة التكرار في الفاتورة */
+.final-total {
+  display: none;
 }
 </style>
 </head>
 <body class="hide-price">
+
+<!-- شريط المنتجات الجديدة المثبت -->
+<div id="newProductsStickyBar" class="new-products-sticky-bar">
+  🎉 منتجات جديدة اليوم! كل لحظة عندنا جديد 🎉
+</div>
 
 <div id="showPricesBar" onclick="showPasswordModal()">
   👁️ اعرض الأسعار
@@ -1281,6 +1402,11 @@ header {
   </div>
   <div id="shippingMessage">أنفق <span id="remainingAmount">500</span> جنيه أخرى للحصول على شحن مجاني!</div>
 </div>
+
+<!-- زر طلب منتج غير متوفر -->
+<button class="request-product-button" onclick="openProductRequestModal()">
+  📦 طلب منتج غير متوفر
+</button>
 
 <button id="saveCartBtn" onclick="saveCart()">💾 حفظ السلة</button>
 
@@ -1304,6 +1430,10 @@ header {
     <button id="offerBtn">💥خصم خاص للمناديب</button>
   </div>
 </header>
+
+<!-- إشعار توجيه البحث -->
+<div id="searchSuggestion" class="search-suggestion">
+</div>
 
 <!-- شريط التصنيفات الجديد -->
 <div class="categories-bar" id="categoriesBar">
@@ -1347,6 +1477,20 @@ header {
   </div>
 </div>
 
+<!-- مودال طلب منتج غير متوفر -->
+<div id="productRequestModal" class="numbers-modal">
+  <div class="numbers-content">
+    <button class="numbers-close" onclick="closeProductRequestModal()">×</button>
+    <h2 class="numbers-title">طلب منتج غير متوفر</h2>
+    <p>اكتب اسم المنتج الذي تريده وسنحاول توفيره لك في أقرب وقت</p>
+    <textarea id="productRequestText" placeholder="اكتب اسم المنتج المطلوب هنا..." rows="4" style="width: 100%; padding: 10px; margin: 15px 0; border: 2px solid #ddd; border-radius: 8px; font-size: 16px;"></textarea>
+    <div class="password-buttons">
+      <button onclick="sendProductRequest()">📤 إرسال الطلب</button>
+      <button onclick="closeProductRequestModal()">إلغاء</button>
+    </div>
+  </div>
+</div>
+
 <!-- مودال الأرقام المنفصل -->
 <div id="numbersModal" class="numbers-modal">
   <div class="numbers-content">
@@ -1368,44 +1512,20 @@ header {
       <h1 class="invoice-title">جنة</h1>
       <h2 class="invoice-subtitle">لجميع أكسسوارات المحمول</h2>
       <div class="invoice-date" id="invoiceDate"></div>
-      <div class="invoice-total">إجمالي الفاتورة: <span id="totalAmount">0.00</span> جنيه</div>
-    </div>
-    
-    <!-- تفاصيل الفاتورة -->
-    <div class="invoice-details">
-      <h3 style="text-align: center; margin-bottom: 15px; color: var(--primary-color);">تفاصيل الفاتورة</h3>
-      <div class="detail-row">
-        <span class="detail-label">عدد المنتجات:</span>
-        <span class="detail-value" id="productsCount">0</span>
-      </div>
-      <div class="detail-row">
-        <span class="detail-label">إجمالي المنتجات:</span>
-        <span class="detail-value" id="productsTotal">0.00 جنيه</span>
-      </div>
-      <div class="detail-row">
-        <span class="detail-label">الخصومات:</span>
-        <span class="detail-value" id="discountsTotal">0.00 جنيه</span>
-      </div>
-    </div>
-    
-    <!-- تفاصيل الشحن -->
-    <div class="shipping-details">
-      <h3 style="text-align: center; margin-bottom: 15px; color: #ff4444;">تفاصيل الشحن</h3>
-      <div class="shipping-row">
-        <span class="shipping-label">تكلفة الشحن:</span>
-        <span class="shipping-value" id="shippingCostDetail">0.00 جنيه</span>
-      </div>
-      <div class="shipping-row">
-        <span class="shipping-label">الحد الأدنى للشحن المجاني:</span>
-        <span class="shipping-value">500.00 جنيه</span>
-      </div>
-      <div class="shipping-row">
-        <span class="shipping-label">المتبقي للشحن المجاني:</span>
-        <span class="shipping-value" id="remainingForFreeShipping">500.00 جنيه</span>
-      </div>
-      <div class="shipping-row">
-        <span class="shipping-label">حالة الشحن:</span>
-        <span class="shipping-value" id="shippingStatusDetail">غير مؤهل للشحن المجاني</span>
+      <!-- إزالة التكرار وإعادة تنظيم الفاتورة -->
+      <div class="invoice-summary">
+        <div class="summary-item">
+          <span>إجمالي المنتجات:</span>
+          <span id="productsTotal">0.00 جنيه</span>
+        </div>
+        <div class="summary-item">
+          <span>تكلفة الشحن:</span>
+          <span id="shippingCostBreakdown">0.00 جنيه</span>
+        </div>
+        <div class="summary-item summary-total">
+          <span>المجموع النهائي:</span>
+          <span id="finalTotalBreakdown">0.00 جنيه</span>
+        </div>
       </div>
     </div>
     
@@ -1422,8 +1542,6 @@ header {
       <tbody id="cartList">
       </tbody>
     </table>
-    
-    <div class="final-total"><span id="finalTotalAmount">0.00</span> جنيه<br>إجمالي الفاتورة</div>
     
     <div class="modal-buttons">
       <button id="sendBtn">📤 ارسل فاتورتك واستلمها في اقل من 12 ساعه</button>
@@ -1448,7 +1566,7 @@ header {
 
 <script>
 // إعدادات التطبيق
-const SCRIPT_PRODUCTS_URL = "https://script.google.com/macros/s/AKfycbxW3_pcjSfffMTLZefZpzFIrbhijiaWY_u_4ZAmXEV2O04SMN5zplucKnAugWWbP8zzmA/exec";
+const SCRIPT_PRODUCTS_URL = "https://script.google.com/macros/s/AKfycbxQCsDkj7GP1HPc8YfLuIIiQxval8l3OpapKN8TuHdGXiP_5juG_9CMQ1qSbVLGCcV9lg/exec";
 const container = document.getElementById("products-container");
 let productsData = [];
 let cart = [];
@@ -1457,6 +1575,7 @@ let newProductsCount = 0;
 let isSearching = false;
 let currentSearchTerm = "";
 let currentCategory = "all";
+let autoUpdateInterval;
 
 // إعدادات الشحن المجاني
 const FREE_SHIPPING_THRESHOLD = 500;
@@ -1466,9 +1585,6 @@ const PASSWORD = "2525";
 
 // إضافة متغير جديد لتخزين الفواتير المحفوظة
 let savedInvoices = JSON.parse(localStorage.getItem('savedInvoices')) || [];
-
-// متغير لتتبع آخر تحديث للمنتجات
-let lastUpdateTime = localStorage.getItem('lastUpdateTime') || 0;
 
 // دالة محسنة لتحديد تصنيف المنتج بناءً على اسمه
 function getProductCategory(productName) {
@@ -1619,7 +1735,7 @@ function clearCart() {
   }
 }
 
-// دالة محسنة لعرض المنتجات مع التصميم الجديد
+// دالة محسنة لعرض المنتجات مع التصميم الجديد - إصلاح عرض السعر للمنتجات غير المتوفرة
 function renderProducts(data, containerElement){
   let html = "";
   
@@ -1666,14 +1782,18 @@ function renderProducts(data, containerElement){
                        <div class="product-price discount-price">
                          <span class="discount-percent">خصم 45%</span>${formatPrice(originalPrice)} جنيه
                        </div>` : 
-                      `<div class="product-price">${formattedPrice} جنيه</div>`
+                      `<div class="product-price ${isOutOfStockProduct ? 'out-of-stock-price' : ''}">${formattedPrice} جنيه</div>`
                     }
                     ${!isOutOfStockProduct ? 
                       `<div class="product-controls">
                          <input type="number" class="quantity-input" min="1" value="${cart[index] || 1}" data-index="${index}">
                          <button class="add-to-cart-btn" onclick="addToCart(${index})">أضف إلى السلة</button>
                        </div>` : 
-                      `<div style="height: 50px;"></div>`}
+                      `<div class="product-controls">
+                         <div style="height: 50px; display: flex; align-items: center; justify-content: center; color: #ff4444; font-weight: bold;">
+                           ⛔ غير متوفر حالياً
+                         </div>
+                       </div>`}
                   </div>
                </div>`;
     });
@@ -1789,13 +1909,26 @@ function addToCart(index){
   showToast(`${cleanName} تم إضافته إلى السلة`);
 }
 
-// دالة جلب المنتجات من API - محسنة للكشف عن المنتجات الجديدة
+// دالة جلب المنتجات من API مع التحديث التلقائي
 async function fetchProducts() {
   try {
     document.getElementById('autoUpdateIndicator').style.display = 'block';
     
+    // استخدام البيانات المخزنة محلياً أولاً
+    const cachedProducts = localStorage.getItem("products");
+    const cacheTime = localStorage.getItem("products_cache_time");
     const now = Date.now();
-    const response = await fetch(SCRIPT_PRODUCTS_URL + "?t=" + now, {
+    
+    if (cachedProducts && cacheTime && (now - parseInt(cacheTime)) < 60 * 1000) {
+      productsData = JSON.parse(cachedProducts);
+      filterProductsByCategory('all');
+      checkNewProducts();
+      document.getElementById('autoUpdateIndicator').style.display = 'none';
+      return;
+    }
+    
+    // جلب البيانات الجديدة من API
+    const response = await fetch(SCRIPT_PRODUCTS_URL + "?t=" + new Date().getTime(), {
       cache: "no-store",
       method: 'GET',
       mode: 'cors'
@@ -1808,7 +1941,7 @@ async function fetchProducts() {
     const data = await response.json();
     
     if (Array.isArray(data) && data.length > 0) {
-      const newProductsData = data.reverse().map(item => {
+      productsData = data.reverse().map(item => {
         if (isNaN(parseFloat(item.price))) {
           item.price = "0.00";
         }
@@ -1820,16 +1953,13 @@ async function fetchProducts() {
       
       // التحقق من وجود منتجات جديدة
       const oldProducts = JSON.parse(localStorage.getItem("products") || "[]");
-      const newProducts = checkForNewProducts(oldProducts, newProductsData);
+      const newProducts = checkForNewProducts(oldProducts, productsData);
       
-      // حفظ البيانات الجديدة
-      productsData = newProductsData;
       localStorage.setItem("products", JSON.stringify(productsData));
-      localStorage.setItem("lastUpdateTime", now.toString());
+      localStorage.setItem("products_cache_time", now.toString());
       
       filterProductsByCategory('all');
       checkNewProducts();
-      showToast('تم تحميل المنتجات بنجاح');
       
       // إظهار إشعار المنتجات الجديدة إذا كان هناك منتجات جديدة
       if (newProducts.length > 0) {
@@ -1848,24 +1978,27 @@ async function fetchProducts() {
       try {
         productsData = JSON.parse(cachedProducts);
         filterProductsByCategory('all');
-        showToast('تم تحميل المنتجات من الذاكرة المؤقتة');
       } catch (e) {
         console.error("❌ خطأ في تحميل البيانات المخزنة:", e);
-        productsData = [];
+        // استخدام البيانات التجريبية
+        useSampleData();
       }
     } else {
-      productsData = [];
+      // استخدام البيانات التجريبية
+      useSampleData();
     }
   } finally {
     document.getElementById('autoUpdateIndicator').style.display = 'none';
   }
 }
 
-// دالة للتحقق من المنتجات الجديدة - محسنة
+// دالة للتحقق من المنتجات الجديدة
 function checkForNewProducts(oldProducts, newProducts) {
-  if (!oldProducts || oldProducts.length === 0) return newProducts;
+  if (!oldProducts || oldProducts.length === 0) return [];
   
   const oldProductNames = oldProducts.map(p => p.name);
+  const newProductNames = newProducts.map(p => p.name);
+  
   return newProducts.filter(product => !oldProductNames.includes(product.name));
 }
 
@@ -1874,13 +2007,24 @@ function showNewProductsNotification() {
   const notification = document.getElementById('newProductsNotification');
   notification.style.display = 'block';
   
+  // إظهار الشريط المثبت للمنتجات الجديدة
+  const stickyBar = document.getElementById('newProductsStickyBar');
+  stickyBar.style.display = 'block';
+  
   // إخفاء الإشعار بعد 10 ثواني
   setTimeout(() => {
     notification.style.display = 'none';
   }, 10000);
 }
 
-// دالة محسنة لعرض الفاتورة مع تفاصيل الشحن
+// دالة لاستخدام البيانات التجريبية
+function useSampleData() {
+  // لا نستخدم بيانات تجريبية - نتركها فارغة
+  productsData = [];
+  filterProductsByCategory('all');
+}
+
+// دالة محسنة لعرض الفاتورة مع إعادة التنظيم
 function showTotal(){
   if (!pricesVisible) {
     showPasswordModal();
@@ -1891,12 +2035,6 @@ function showTotal(){
   let total = calculateTotal();
   const shipping = total >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_COST;
   const finalTotal = total + shipping;
-  
-  // تحديث تفاصيل الفاتورة
-  updateInvoiceDetails(total);
-  
-  // تحديث تفاصيل الشحن
-  updateShippingDetails(total, shipping);
   
   const cartList = document.getElementById("cartList");
   cartList.innerHTML = "";
@@ -1910,13 +2048,15 @@ function showTotal(){
       
       const row = document.createElement("tr");
       row.innerHTML = `<td class="product-name-invoice">${cleanName}</td>
-                       <td>
-                         <input type="number" class="quantity-input-modal" min="1" value="${qty}" data-index="${idx}" style="width: 60px; padding: 5px; text-align: center;">
-                       </td>
+                       <td>${qty}</td>
                        <td>${formatPrice(price)} جنيه</td>
                        <td>${formatPrice(lineTotal)} جنيه</td>
                        <td>
                          <div class="cart-actions">
+                           <div class="quantity-controls">
+                             <button class="quantity-btn" onclick="decreaseQty(${idx})">-</button>
+                             <button class="quantity-btn" onclick="increaseQty(${idx})">+</button>
+                           </div>
                            <button class="delete-btn" onclick="deleteCartItem(${idx})">🗑️ حذف</button>
                          </div>
                        </td>`;
@@ -1924,18 +2064,10 @@ function showTotal(){
     }
   });
   
-  // إضافة مستمعي الأحداث لحقول الكمية في الفاتورة
-  cartList.querySelectorAll('.quantity-input-modal').forEach(input => {
-    input.addEventListener('change', function() {
-      const index = parseInt(this.getAttribute('data-index'));
-      const value = parseInt(this.value);
-      updateQty(index, value);
-      showTotal(); // تحديث الفاتورة فوراً
-    });
-  });
-  
-  document.getElementById("totalAmount").innerText = formatPrice(total);
-  document.getElementById("finalTotalAmount").innerText = formatPrice(finalTotal);
+  // تحديث ملخص الفاتورة
+  document.getElementById("productsTotal").innerText = formatPrice(total) + " جنيه";
+  document.getElementById("shippingCostBreakdown").innerText = formatPrice(shipping) + " جنيه";
+  document.getElementById("finalTotalBreakdown").innerText = formatPrice(finalTotal) + " جنيه";
   
   updateInvoiceDate();
   document.getElementById("totalModal").style.display = "block";
@@ -1945,40 +2077,20 @@ function showTotal(){
   document.getElementById("sendBtn").onclick = sendInvoice;
 }
 
-// دالة تحديث تفاصيل الفاتورة
-function updateInvoiceDetails(total) {
-  const productsCount = cart.reduce((sum, qty) => qty ? sum + 1 : sum, 0);
-  const discounts = calculateDiscounts();
-  
-  document.getElementById("productsCount").textContent = productsCount;
-  document.getElementById("productsTotal").textContent = formatPrice(total) + " جنيه";
-  document.getElementById("discountsTotal").textContent = formatPrice(discounts) + " جنيه";
+function decreaseQty(index) {
+  if (cart[index] > 1) {
+    cart[index]--;
+    showTotal();
+    updateCartCount();
+    updateShippingBar();
+  }
 }
 
-// دالة تحديث تفاصيل الشحن
-function updateShippingDetails(total, shipping) {
-  const remaining = Math.max(0, FREE_SHIPPING_THRESHOLD - total);
-  const shippingStatus = total >= FREE_SHIPPING_THRESHOLD ? 
-    "مؤهل للشحن المجاني 🎉" : 
-    "غير مؤهل للشحن المجاني";
-  
-  document.getElementById("shippingCostDetail").textContent = formatPrice(shipping) + " جنيه";
-  document.getElementById("remainingForFreeShipping").textContent = formatPrice(remaining) + " جنيه";
-  document.getElementById("shippingStatusDetail").textContent = shippingStatus;
-}
-
-// دالة حساب الخصومات
-function calculateDiscounts() {
-  let discounts = 0;
-  cart.forEach((qty, idx) => {
-    if(qty && productsData[idx] && productsData[idx].name.includes("&")) {
-      const originalPrice = parseFloat(productsData[idx].price) || 0;
-      const increasedPrice = originalPrice * 1.45;
-      const discountPerItem = increasedPrice - originalPrice;
-      discounts += discountPerItem * qty;
-    }
-  });
-  return discounts;
+function increaseQty(index) {
+  cart[index]++;
+  showTotal();
+  updateCartCount();
+  updateShippingBar();
 }
 
 function updateQty(idx, value){
@@ -2201,12 +2313,14 @@ function deleteSavedInvoice(index) {
   }
 }
 
+// دالة البحث المحسنة مع توجيه المستخدم
 function performSearch() {
   const keyword = document.getElementById("searchBox").value.trim().toLowerCase();
   currentSearchTerm = keyword;
   
   if (keyword === "") {
     isSearching = false;
+    document.getElementById('searchSuggestion').style.display = 'none';
     filterProductsByCategory(currentCategory);
     return;
   }
@@ -2222,7 +2336,72 @@ function performSearch() {
   }
   
   filtered = filtered.filter(p => p.name.toLowerCase().includes(keyword));
+  
+  // إذا لم توجد نتائج، عرض اقتراحات للمستخدم
+  if (filtered.length === 0) {
+    showSearchSuggestion(keyword);
+  } else {
+    document.getElementById('searchSuggestion').style.display = 'none';
+  }
+  
   renderProducts(filtered, container);
+}
+
+// دالة لعرض اقتراحات البحث
+function showSearchSuggestion(keyword) {
+  const suggestionElement = document.getElementById('searchSuggestion');
+  
+  // تحديد التصنيف المناسب للكلمة المفتاحية
+  let suggestedCategory = 'all';
+  
+  if (keyword.includes('شاحن') || keyword.includes('شحن')) {
+    suggestedCategory = 'شاحن';
+  } else if (keyword.includes('كابل') || keyword.includes('سلك')) {
+    suggestedCategory = 'كابل';
+  } else if (keyword.includes('سماع') || keyword.includes('هيدفون')) {
+    suggestedCategory = 'سماعة';
+  } else if (keyword.includes('صب') || keyword.includes('سبت')) {
+    suggestedCategory = 'صب';
+  } else if (keyword.includes('جراب') || keyword.includes('غطاء')) {
+    suggestedCategory = 'جراب';
+  } else if (keyword.includes('اسكرين') || keyword.includes('شاشة')) {
+    suggestedCategory = 'اسكرين';
+  } else if (keyword.includes('بطارية') || keyword.includes('باور')) {
+    suggestedCategory = 'بطارية';
+  }
+  
+  if (suggestedCategory !== currentCategory && suggestedCategory !== 'all') {
+    suggestionElement.innerHTML = `لم نعثر على "${keyword}" في قسم ${getCategoryName(currentCategory)}. 
+    <a href="javascript:void(0)" onclick="switchToCategory('${suggestedCategory}')">ابحث في قسم ${getCategoryName(suggestedCategory)}</a>`;
+    suggestionElement.style.display = 'block';
+  } else {
+    suggestionElement.innerHTML = `لم نعثر على "${keyword}" في قسم ${getCategoryName(currentCategory)}.`;
+    suggestionElement.style.display = 'block';
+  }
+}
+
+// دالة للتبديل إلى قسم آخر
+function switchToCategory(category) {
+  filterProductsByCategory(category);
+  document.getElementById('searchSuggestion').style.display = 'none';
+  performSearch(); // إعادة البحث في القسم الجديد
+}
+
+// دالة للحصول على اسم القسم بالعربية
+function getCategoryName(category) {
+  const categoryNames = {
+    'all': 'الكل',
+    'صب': 'الصبات',
+    'كابل': 'الكابلات',
+    'شاحن': 'الشواحن',
+    'جراب': 'الجرابات',
+    'اسكرين': 'الاسكرينات',
+    'سماعة': 'السماعات',
+    'بطارية': 'البطاريات',
+    'اخرى': 'منتجات أخرى'
+  };
+  
+  return categoryNames[category] || category;
 }
 
 function checkNewProducts(){
@@ -2247,10 +2426,48 @@ function playNotificationSound() {
   }
 }
 
+// دالة فتح مودال طلب منتج غير متوفر
+function openProductRequestModal() {
+  document.getElementById('productRequestModal').style.display = 'block';
+  document.getElementById('productRequestText').focus();
+}
+
+// دالة إغلاق مودال طلب منتج غير متوفر
+function closeProductRequestModal() {
+  document.getElementById('productRequestModal').style.display = 'none';
+  document.getElementById('productRequestText').value = '';
+}
+
+// دالة إرسال طلب منتج غير متوفر
+function sendProductRequest() {
+  const requestText = document.getElementById('productRequestText').value.trim();
+  
+  if (!requestText) {
+    showToast('يرجى كتابة اسم المنتج المطلوب');
+    return;
+  }
+  
+  const message = `📦 *طلب منتج غير متوفر*\n\nالمنتج المطلوب: ${requestText}\n\nطلب من: متجر جنة`;
+  const whatsappUrl = `https://wa.me/201022495795?text=${encodeURIComponent(message)}`;
+  
+  window.open(whatsappUrl, '_blank');
+  closeProductRequestModal();
+  showToast('تم إرسال طلبك بنجاح');
+}
+
+// تهيئة التحديث التلقائي
+function initializeAutoUpdate() {
+  // تحديث المنتجات كل 60 ثانية
+  autoUpdateInterval = setInterval(fetchProducts, 60000);
+}
+
 // تهيئة الصفحة
 document.addEventListener('DOMContentLoaded', function() {
   // تحميل المنتجات من API
   fetchProducts();
+  
+  // بدء التحديث التلقائي
+  initializeAutoUpdate();
   
   // تحميل السلة المحفوظة
   loadSavedCart();
@@ -2279,9 +2496,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const cartCount = cart.reduce((sum, qty) => qty ? sum + qty : sum, 0);
     document.getElementById('saveCartBtn').style.display = cartCount > 0 ? 'flex' : 'none';
   }, 1000);
-  
-  // تحديث المنتجات كل دقيقة للكشف عن المنتجات الجديدة
-  setInterval(fetchProducts, 60000);
 });
 </script>
 </body>
