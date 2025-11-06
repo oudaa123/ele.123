@@ -1382,16 +1382,29 @@ header {
   display: block;
 }
 
-/* تحسينات حجم الفاتورة */
-.modal-content {
-  max-height: 90vh;
-  overflow-y: auto;
-}
-
 /* إخفاء الأزرار الثابتة القديمة */
 .support-button-fixed,
 .request-product-button-fixed {
   display: none !important;
+}
+
+/* إعادة الفاتورة إلى شكلها الأصلي */
+.modal-content {
+  max-height: none;
+  overflow-y: visible;
+}
+
+.cart-item-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: center;
+}
+
+.quantity-controls-invoice {
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 </style>
 </head>
@@ -2041,7 +2054,7 @@ function useSampleData() {
   filterProductsByCategory('all');
 }
 
-// دالة محسنة لعرض الفاتورة مع إعادة التنظيم
+// دالة محسنة لعرض الفاتورة مع إعادة التنظيم إلى الشكل الأصلي
 function showTotal(){
   if (!pricesVisible) {
     showPasswordModal();
@@ -2065,13 +2078,12 @@ function showTotal(){
       
       const row = document.createElement("tr");
       row.innerHTML = `<td class="product-name-invoice">${cleanName}</td>
-                       <td>
-                         <input type="number" class="quantity-input-modal" min="1" value="${qty}" data-index="${idx}">
-                       </td>
+                       <td>${qty}</td>
                        <td>${formatPrice(price)} جنيه</td>
                        <td>${formatPrice(lineTotal)} جنيه</td>
                        <td>
-                         <div class="cart-actions">
+                         <div class="cart-item-controls">
+                           <input type="number" class="quantity-input-modal" min="1" value="${qty}" data-index="${idx}">
                            <button class="delete-btn" onclick="deleteCartItem(${idx})">🗑️ حذف</button>
                          </div>
                        </td>`;
