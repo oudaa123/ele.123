@@ -1371,43 +1371,9 @@ header {
       <div class="invoice-total">إجمالي الفاتورة: <span id="totalAmount">0.00</span> جنيه</div>
     </div>
     
-    <!-- تفاصيل الفاتورة -->
-    <div class="invoice-details">
-      <h3 style="text-align: center; margin-bottom: 15px; color: var(--primary-color);">تفاصيل الفاتورة</h3>
-      <div class="detail-row">
-        <span class="detail-label">عدد المنتجات:</span>
-        <span class="detail-value" id="productsCount">0</span>
-      </div>
-      <div class="detail-row">
-        <span class="detail-label">إجمالي المنتجات:</span>
-        <span class="detail-value" id="productsTotal">0.00 جنيه</span>
-      </div>
-      <div class="detail-row">
-        <span class="detail-label">الخصومات:</span>
-        <span class="detail-value" id="discountsTotal">0.00 جنيه</span>
-      </div>
-    </div>
+    <!-- تم إزالة قسم تفاصيل الفاتورة -->
     
-    <!-- تفاصيل الشحن -->
-    <div class="shipping-details">
-      <h3 style="text-align: center; margin-bottom: 15px; color: #ff4444;">تفاصيل الشحن</h3>
-      <div class="shipping-row">
-        <span class="shipping-label">تكلفة الشحن:</span>
-        <span class="shipping-value" id="shippingCostDetail">0.00 جنيه</span>
-      </div>
-      <div class="shipping-row">
-        <span class="shipping-label">الحد الأدنى للشحن المجاني:</span>
-        <span class="shipping-value">500.00 جنيه</span>
-      </div>
-      <div class="shipping-row">
-        <span class="shipping-label">المتبقي للشحن المجاني:</span>
-        <span class="shipping-value" id="remainingForFreeShipping">500.00 جنيه</span>
-      </div>
-      <div class="shipping-row">
-        <span class="shipping-label">حالة الشحن:</span>
-        <span class="shipping-value" id="shippingStatusDetail">غير مؤهل للشحن المجاني</span>
-      </div>
-    </div>
+    <!-- تم إزالة قسم تفاصيل الشحن -->
     
     <table class="invoice-table">
       <thead>
@@ -1423,7 +1389,12 @@ header {
       </tbody>
     </table>
     
-    <div class="final-total"><span id="finalTotalAmount">0.00</span> جنيه<br>إجمالي الفاتورة</div>
+    <!-- تم تعديل قسم الإجمالي النهائي -->
+    <div class="final-total">
+      <div>إجمالي المنتجات: <span id="productsTotal">0.00</span> جنيه</div>
+      <div>تكلفة الشحن: <span id="shippingCostDetail">0.00</span> جنيه</div>
+      <div style="font-size: 24px; margin-top: 10px;">المجموع النهائي: <span id="finalTotalAmount">0.00</span> جنيه</div>
+    </div>
     
     <div class="modal-buttons">
       <button id="sendBtn">📤 ارسل فاتورتك واستلمها في اقل من 12 ساعه</button>
@@ -1893,10 +1864,7 @@ function showTotal(){
   const finalTotal = total + shipping;
   
   // تحديث تفاصيل الفاتورة
-  updateInvoiceDetails(total);
-  
-  // تحديث تفاصيل الشحن
-  updateShippingDetails(total, shipping);
+  updateInvoiceDetails(total, shipping, finalTotal);
   
   const cartList = document.getElementById("cartList");
   cartList.innerHTML = "";
@@ -1945,40 +1913,11 @@ function showTotal(){
   document.getElementById("sendBtn").onclick = sendInvoice;
 }
 
-// دالة تحديث تفاصيل الفاتورة
-function updateInvoiceDetails(total) {
-  const productsCount = cart.reduce((sum, qty) => qty ? sum + 1 : sum, 0);
-  const discounts = calculateDiscounts();
-  
-  document.getElementById("productsCount").textContent = productsCount;
-  document.getElementById("productsTotal").textContent = formatPrice(total) + " جنيه";
-  document.getElementById("discountsTotal").textContent = formatPrice(discounts) + " جنيه";
-}
-
-// دالة تحديث تفاصيل الشحن
-function updateShippingDetails(total, shipping) {
-  const remaining = Math.max(0, FREE_SHIPPING_THRESHOLD - total);
-  const shippingStatus = total >= FREE_SHIPPING_THRESHOLD ? 
-    "مؤهل للشحن المجاني 🎉" : 
-    "غير مؤهل للشحن المجاني";
-  
-  document.getElementById("shippingCostDetail").textContent = formatPrice(shipping) + " جنيه";
-  document.getElementById("remainingForFreeShipping").textContent = formatPrice(remaining) + " جنيه";
-  document.getElementById("shippingStatusDetail").textContent = shippingStatus;
-}
-
-// دالة حساب الخصومات
-function calculateDiscounts() {
-  let discounts = 0;
-  cart.forEach((qty, idx) => {
-    if(qty && productsData[idx] && productsData[idx].name.includes("&")) {
-      const originalPrice = parseFloat(productsData[idx].price) || 0;
-      const increasedPrice = originalPrice * 1.45;
-      const discountPerItem = increasedPrice - originalPrice;
-      discounts += discountPerItem * qty;
-    }
-  });
-  return discounts;
+// دالة تحديث تفاصيل الفاتورة - تم تبسيطها
+function updateInvoiceDetails(total, shipping, finalTotal) {
+  document.getElementById("productsTotal").textContent = formatPrice(total);
+  document.getElementById("shippingCostDetail").textContent = formatPrice(shipping);
+  document.getElementById("finalTotalAmount").textContent = formatPrice(finalTotal);
 }
 
 function updateQty(idx, value){
