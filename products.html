@@ -16,46 +16,43 @@
 
 * {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
 }
 
 body { 
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: Tahoma, sans-serif; 
+  margin: 0; 
   background: var(--light-bg);
   font-size: 14px;
   padding-bottom: 60px;
-  line-height: 1.6;
+  -webkit-text-size-adjust: 100%;
 }
 
 header {
-  background: linear-gradient(135deg, #131921, #232f3e);
+  background: #131921;
   color: white;
-  padding: 15px 10px;
+  padding: 10px 5px;
   text-align: center;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
   position: sticky;
   top: 0;
   z-index: 1000;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  border-bottom: 3px solid var(--primary-color);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
 .header-buttons {
-  margin-top: 12px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 8px;
-  position: relative;
+   margin-top: 8px;
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: center;
+   gap: 5px;
+   position: relative;
 }
-
 .header-buttons button {
   background: var(--secondary-color);
   border: 1px solid #fcd200;
-  padding: 8px 15px;
-  border-radius: 8px;
+  padding: 6px 12px;
+  border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
   font-size: 14px;
@@ -63,29 +60,21 @@ header {
   position: relative;
   flex: 1;
   min-width: 0;
-  max-width: 150px;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  max-width: 140px;
 }
-
-.header-buttons button:hover { 
-  background: #f7ca00; 
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-}
+.header-buttons button:hover { background: #f7ca00; }
 
 #notifBtn {
   position: relative;
   background: var(--accent-color);
   border: 1px solid #cc0000;
-  padding: 8px 15px;
-  border-radius: 8px;
+  padding: 6px 12px;
+  border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
   color: #fff;
   animation: ring 1.5s infinite;
 }
-
 #notif-count {
   position: absolute;
   top: -8px;
@@ -128,28 +117,27 @@ header {
 
 #newBanner {
   display: none;
-  background: linear-gradient(135deg, #ff4444, #cc0000);
+  background: red;
   color: white;
   text-align: center;
-  padding: 10px;
+  padding: 8px;
   font-size: 16px;
   font-weight: bold;
-  box-shadow: 0 2px 10px rgba(255,0,0,0.2);
 }
 
+/* شريط التصنيفات الجديد */
 .categories-bar {
   display: flex;
   overflow-x: auto;
   background: white;
-  padding: 12px 8px;
+  padding: 10px 5px;
   border-bottom: 1px solid #ddd;
   position: sticky;
   top: 120px;
   z-index: 999;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  gap: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  gap: 5px;
 }
 
 .categories-bar::-webkit-scrollbar {
@@ -159,7 +147,7 @@ header {
 .category-btn {
   background: #f0f0f0;
   border: 1px solid #ddd;
-  padding: 8px 16px;
+  padding: 8px 15px;
   border-radius: 20px;
   cursor: pointer;
   font-weight: bold;
@@ -174,7 +162,7 @@ header {
   background: var(--primary-color);
   color: white;
   border-color: var(--primary-color);
-  box-shadow: 0 2px 8px rgba(138, 43, 226, 0.3);
+  box-shadow: 0 2px 5px rgba(138, 43, 226, 0.3);
   transform: translateY(-1px);
 }
 
@@ -198,36 +186,37 @@ header {
   background: #6a1fbf;
 }
 
+/* تحسين عرض المنتجات بدون كروت */
 .products-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 18px;
-  padding: 18px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 15px;
+  padding: 15px;
 }
 
 .product-item {
   background: var(--card-bg);
   border-radius: 12px;
   padding: 15px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
   display: flex;
   flex-direction: column;
   align-items: center;
   transition: all 0.3s ease;
   position: relative;
   border: 2px solid transparent;
-  overflow: hidden;
 }
 
 .product-item:hover {
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-  transform: translateY(-4px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+  transform: translateY(-2px);
   border-color: var(--primary-color);
 }
 
+/* تحسين حجم الصورة */
 .product-image-container {
   width: 100%;
-  height: 160px;
+  height: 180px;
   background: #f9f9f9;
   display: flex;
   align-items: center;
@@ -239,14 +228,14 @@ header {
 }
 
 .product-image-container img {
-  max-width: 85%;
-  max-height: 85%;
+  max-width: 90%;
+  max-height: 90%;
   object-fit: contain;
   transition: transform 0.3s ease;
 }
 
 .product-item:hover .product-image-container img {
-  transform: scale(1.08);
+  transform: scale(1.05);
 }
 
 .product-info {
@@ -259,8 +248,8 @@ header {
   font-weight: bold;
   color: var(--text-color);
   margin-bottom: 8px;
-  line-height: 1.4;
-  height: 42px;
+  line-height: 1.3;
+  height: 40px;
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -282,35 +271,33 @@ header {
 }
 
 .quantity-input {
-  width: 70px;
+  width: 60px;
   margin: 0 auto;
   padding: 6px;
   border: 1px solid #ccc;
   border-radius: 6px;
   text-align: center;
   font-size: 14px;
-  font-weight: bold;
 }
 
 .add-to-cart-btn {
   background: var(--primary-color);
   color: white;
   border: none;
-  padding: 10px 12px;
-  border-radius: 8px;
+  padding: 8px 12px;
+  border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
   font-size: 14px;
   transition: all 0.3s;
-  box-shadow: 0 2px 5px rgba(138, 43, 226, 0.3);
 }
 
 .add-to-cart-btn:hover {
   background: #6a1fbf;
   transform: scale(1.05);
-  box-shadow: 0 4px 8px rgba(138, 43, 226, 0.4);
 }
 
+/* تحسينات البادجات */
 .new-product-badge {
   position: absolute;
   top: 10px;
@@ -362,6 +349,7 @@ header {
   100% { transform: scale(1); }
 }
 
+/* تحسينات للمنتجات الخاصة */
 .product-item.new-product {
   border: 2px solid #ff4444;
 }
@@ -374,6 +362,7 @@ header {
   border: 2px solid #ff6b00;
 }
 
+/* تنسيق الأسعار للعروض */
 .original-price {
   text-decoration: line-through;
   color: #999 !important;
@@ -396,6 +385,7 @@ header {
   margin-right: 5px;
 }
 
+/* شعار غير متوفر */
 .out-of-stock-badge {
   position: absolute;
   top: 50%;
@@ -428,6 +418,7 @@ header {
   pointer-events: none;
 }
 
+/* باقي الأنماط تبقى كما هي */
 #totalModal {
   display: none;
   position: fixed;
@@ -445,11 +436,11 @@ header {
   background: #fff;
   margin: 20px auto;
   padding: 20px;
-  border-radius: 12px;
+  border-radius: 10px;
   max-width: 95%;
   width: 500px;
   position: relative;
-  box-shadow: 0 0 25px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
 .modal-close {
@@ -464,12 +455,6 @@ header {
   height: 30px;
   cursor: pointer;
   font-weight: bold;
-  transition: all 0.3s;
-}
-
-.modal-close:hover {
-  background: #cc0000;
-  transform: scale(1.1);
 }
 
 .invoice-header {
@@ -593,7 +578,7 @@ header {
 }
 
 .modal-buttons button { 
-  padding: 10px 15px; 
+  padding: 8px 12px; 
   border: none; 
   border-radius: 6px; 
   background: var(--primary-color); 
@@ -605,10 +590,7 @@ header {
   flex: 1;
   min-width: 120px;
 }
-.modal-buttons button:hover { 
-  background: #6a1fbf; 
-  transform: translateY(-2px);
-}
+.modal-buttons button:hover { background: #6a1fbf; }
 
 #toast {
   position: fixed;
@@ -617,56 +599,42 @@ header {
   left: 20px;
   background: #25d366;
   color: #fff;
-  padding: 12px 15px;
+  padding: 10px 15px;
   border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
   display: none;
   z-index: 1003;
   text-align: center;
   font-size: 14px;
-  font-weight: bold;
 }
 
 .search-container {
   display: flex;
   justify-content: center;
-  gap: 10px;
-  margin: 12px 0;
-  padding: 0 8px;
+  gap: 8px;
+  margin: 10px 0;
+  padding: 0 5px;
 }
 
 #searchBox {
   flex: 1;
-  max-width: 320px;
-  padding: 10px 15px;
+  max-width: 300px;
+  padding: 8px 12px;
   border: 1px solid #ccc;
-  border-radius: 8px;
+  border-radius: 6px;
   font-size: 14px;
-  transition: all 0.3s;
-}
-
-#searchBox:focus {
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 2px rgba(138, 43, 226, 0.2);
-  outline: none;
 }
 
 #offerBtn {
-  padding: 10px 15px;
+  padding: 8px 12px;
   background: #ff6600;
   color: #fff;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   font-weight: bold;
   cursor: pointer;
   font-size: 14px;
   white-space: nowrap;
-  transition: all 0.3s;
-}
-
-#offerBtn:hover {
-  background: #e55a00;
-  transform: translateY(-2px);
 }
 
 .order-numbers {
@@ -697,24 +665,22 @@ header {
   transform: translateX(-50%);
   background: var(--primary-color);
   color: white;
-  padding: 14px 28px;
+  padding: 12px 24px;
   border: none;
   border-radius: 30px;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
   cursor: pointer;
   font-weight: bold;
   font-size: 16px;
   z-index: 999;
   display: flex;
   align-items: center;
-  gap: 8px;
-  transition: all 0.3s;
+  gap: 5px;
 }
 
 #saveCartBtn:hover {
   background: #6a1fbf;
   transform: translateX(-50%) scale(1.05);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
 }
 
 .hide-price .product-price,
@@ -732,24 +698,24 @@ header {
   font-size: 14px;
 }
 
+/* شريط الشحن المجاني */
 .shipping-bar {
   background: linear-gradient(135deg, #ff6b00, #ff4444);
   color: white;
-  padding: 12px;
+  padding: 10px;
   text-align: center;
   font-weight: bold;
-  margin: 12px;
+  margin: 10px;
   border-radius: 8px;
   animation: pulse-shipping 2s infinite;
   display: none;
-  box-shadow: 0 4px 10px rgba(255, 107, 0, 0.3);
 }
 
 .shipping-progress {
   background: rgba(255,255,255,0.3);
   height: 8px;
   border-radius: 4px;
-  margin: 10px 0;
+  margin: 8px 0;
   overflow: hidden;
 }
 
@@ -766,6 +732,7 @@ header {
   100% { transform: scale(1); }
 }
 
+/* قسم الشحن في الفاتورة */
 .shipping-section {
   background: #f9f9f9;
   padding: 15px;
@@ -814,13 +781,12 @@ header {
 .password-content {
   background: #fff;
   margin: 100px auto;
-  padding: 25px;
-  border-radius: 12px;
+  padding: 20px;
+  border-radius: 10px;
   max-width: 95%;
   width: 400px;
   position: relative;
   text-align: center;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }
 
 .password-close {
@@ -845,13 +811,6 @@ header {
   border-radius: 8px;
   font-size: 16px;
   text-align: center;
-  transition: all 0.3s;
-}
-
-#passwordInput:focus {
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 2px rgba(138, 43, 226, 0.2);
-  outline: none;
 }
 
 .password-buttons {
@@ -868,7 +827,6 @@ header {
   cursor: pointer;
   font-weight: bold;
   font-size: 16px;
-  transition: all 0.3s;
 }
 
 #submitPassword {
@@ -876,19 +834,9 @@ header {
   color: white;
 }
 
-#submitPassword:hover {
-  background: #6a1fbf;
-  transform: translateY(-2px);
-}
-
 #cancelPassword {
   background: #ccc;
   color: #333;
-}
-
-#cancelPassword:hover {
-  background: #bbb;
-  transform: translateY(-2px);
 }
 
 .password-support {
@@ -914,18 +862,12 @@ header {
   color: white;
   padding: 15px 25px;
   border-radius: 10px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
   z-index: 999;
   cursor: pointer;
   font-weight: bold;
   text-align: center;
   animation: pulse 2s infinite;
-  transition: all 0.3s;
-}
-
-#showPricesBar:hover {
-  background: #6a1fbf;
-  transform: translate(-50%, -50%) scale(1.05);
 }
 
 @keyframes pulse {
@@ -943,12 +885,10 @@ header {
   cursor: pointer;
   font-weight: bold;
   margin-left: 5px;
-  transition: all 0.3s;
 }
 
 #clearCartBtn:hover {
   background: #cc0000;
-  transform: translateY(-2px);
 }
 
 .image-error {
@@ -989,17 +929,15 @@ header {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  transition: all 0.3s;
 }
 
 .back-button:hover {
   background: #6a1fbf;
-  transform: translateY(-2px);
 }
 
 .image-placeholder {
   width: 100%;
-  height: 160px;
+  height: 180px;
   background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
   display: flex;
   align-items: center;
@@ -1021,7 +959,6 @@ header {
   z-index: 1005;
   display: none;
   animation: blink 2s infinite;
-  box-shadow: 0 2px 8px rgba(37, 211, 102, 0.3);
 }
 
 @keyframes blink {
@@ -1034,6 +971,7 @@ header {
   display: none;
 }
 
+/* زر الدعم الفني منفصل */
 .support-button {
   position: fixed;
   bottom: 20px;
@@ -1043,7 +981,7 @@ header {
   border: none;
   padding: 12px 20px;
   border-radius: 30px;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
   cursor: pointer;
   font-weight: bold;
   font-size: 16px;
@@ -1051,15 +989,70 @@ header {
   display: flex;
   align-items: center;
   gap: 5px;
-  transition: all 0.3s;
 }
 
 .support-button:hover {
   background: #128c7e;
   transform: scale(1.05);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
 }
 
+/* تحسينات للشاشات الصغيرة */
+@media (max-width: 768px) {
+  .products-grid {
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    padding: 12px;
+  }
+  
+  .product-image-container {
+    height: 160px;
+  }
+  
+  .category-btn {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+  
+  .support-button {
+    bottom: 80px;
+    right: 10px;
+    font-size: 14px;
+    padding: 10px 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .products-grid {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+    padding: 10px;
+  }
+  
+  .product-image-container {
+    height: 140px;
+  }
+  
+  .product-name {
+    font-size: 14px;
+  }
+  
+  .header-buttons button {
+    font-size: 12px;
+    padding: 5px 8px;
+  }
+}
+
+@media (max-width: 360px) {
+  .products-grid {
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  }
+  
+  .product-image-container {
+    height: 120px;
+  }
+}
+
+/* إشعار المنتجات الجديدة */
 .new-products-notification {
   position: fixed;
   top: 50%;
@@ -1084,6 +1077,7 @@ header {
   100% { transform: translate(-50%, -50%) scale(1); }
 }
 
+/* تحسينات للفواتير المحفوظة */
 .saved-invoices {
   margin-top: 20px;
   border-top: 2px solid #8a2be2;
@@ -1099,12 +1093,6 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: all 0.3s;
-}
-
-.saved-invoice-item:hover {
-  background: #f0f0f0;
-  transform: translateY(-2px);
 }
 
 .saved-invoice-info {
@@ -1122,7 +1110,6 @@ header {
   border-radius: 4px;
   cursor: pointer;
   font-size: 12px;
-  transition: all 0.3s;
 }
 
 .saved-invoice-load {
@@ -1130,17 +1117,9 @@ header {
   color: white;
 }
 
-.saved-invoice-load:hover {
-  background: #6a1fbf;
-}
-
 .saved-invoice-delete {
   background: #ff4444;
   color: white;
-}
-
-.saved-invoice-delete:hover {
-  background: #cc0000;
 }
 
 .saved-invoice-send {
@@ -1148,10 +1127,7 @@ header {
   color: white;
 }
 
-.saved-invoice-send:hover {
-  background: #128c7e;
-}
-
+/* تحسينات لعرض أسماء المنتجات في الفاتورة */
 .product-name-invoice {
   max-width: 200px;
   white-space: normal;
@@ -1160,6 +1136,7 @@ header {
   line-height: 1.4;
 }
 
+/* مودال الأرقام المنفصل */
 .numbers-modal {
   display: none;
   position: fixed;
@@ -1182,7 +1159,6 @@ header {
   width: 400px;
   position: relative;
   text-align: center;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }
 
 .numbers-close {
@@ -1226,6 +1202,7 @@ header {
   transform: translateY(-2px);
 }
 
+/* تفاصيل الشحن والفاتورة */
 .invoice-details {
   background: #f9f9f9;
   padding: 15px;
@@ -1283,70 +1260,6 @@ header {
   color: #ff4444;
   font-weight: bold;
 }
-
-@media (max-width: 768px) {
-  .products-grid {
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 15px;
-    padding: 15px;
-  }
-  
-  .product-image-container {
-    height: 150px;
-  }
-  
-  .category-btn {
-    padding: 6px 12px;
-    font-size: 13px;
-  }
-  
-  .support-button {
-    bottom: 80px;
-    right: 10px;
-    font-size: 14px;
-    padding: 10px 15px;
-  }
-  
-  .header-buttons button {
-    font-size: 13px;
-    padding: 7px 10px;
-  }
-}
-
-@media (max-width: 480px) {
-  .products-grid {
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 12px;
-    padding: 12px;
-  }
-  
-  .product-image-container {
-    height: 140px;
-  }
-  
-  .product-name {
-    font-size: 14px;
-  }
-  
-  .header-buttons button {
-    font-size: 12px;
-    padding: 6px 8px;
-  }
-  
-  .modal-content {
-    padding: 15px;
-  }
-}
-
-@media (max-width: 360px) {
-  .products-grid {
-    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-  }
-  
-  .product-image-container {
-    height: 130px;
-  }
-}
 </style>
 </head>
 <body class="hide-price">
@@ -1355,10 +1268,12 @@ header {
   👁️ اعرض الأسعار
 </div>
 
+<!-- إشعار المنتجات الجديدة -->
 <div id="newProductsNotification" class="new-products-notification">
   🎉 هناك منتجات جديدة تمت إضافتها اليوم!
 </div>
 
+<!-- شريط الشحن المجاني -->
 <div id="shippingBar" class="shipping-bar">
   <div>🚚 الشحن مجاني للطلبات فوق 500 جنيه!</div>
   <div class="shipping-progress">
@@ -1369,6 +1284,7 @@ header {
 
 <button id="saveCartBtn" onclick="saveCart()">💾 حفظ السلة</button>
 
+<!-- زر الدعم الفني منفصل -->
 <button class="support-button" onclick="window.open('https://wa.me/201022495795', '_blank')">
   ☎️ الدعم الفني
 </button>
@@ -1384,11 +1300,12 @@ header {
   </div>
 
   <div class="search-container">
-    <input type="text" id="searchBox" placeholder="🔍 ابدأ و ابحث عن منتج...">
-    <button id="offerBtn">💥 خصم خاص للمناديب</button>
+    <input type="text" id="searchBox" placeholder="🔍ابدأ و ابحث عن منتج...">
+    <button id="offerBtn">💥خصم خاص للمناديب</button>
   </div>
 </header>
 
+<!-- شريط التصنيفات الجديد -->
 <div class="categories-bar" id="categoriesBar">
   <button class="category-btn active" data-category="all">الكل</button>
   <button class="category-btn" data-category="صب">الصبات</button>
@@ -1403,14 +1320,17 @@ header {
 
 <div id="newBanner">🎉 منتجات جديدة اليوم!</div>
 
+<!-- مؤشر التحديث التلقائي -->
 <div id="autoUpdateIndicator" class="auto-update-indicator">🔄 جاري التحديث</div>
 
+<!-- الصفحة الرئيسية للمنتجات -->
 <div id="main-products-page">
   <div id="products-container" class="products-grid">
     <div class="loading">جاري تحميل المنتجات...</div>
   </div>
 </div>
 
+<!-- باقي الـ HTML يبقى كما هو -->
 <div id="passwordModal">
   <div class="password-content">
     <button class="password-close" onclick="closePasswordModal()">×</button>
@@ -1427,6 +1347,7 @@ header {
   </div>
 </div>
 
+<!-- مودال الأرقام المنفصل -->
 <div id="numbersModal" class="numbers-modal">
   <div class="numbers-content">
     <button class="numbers-close" onclick="closeNumbersModal()">×</button>
@@ -1450,6 +1371,44 @@ header {
       <div class="invoice-total">إجمالي الفاتورة: <span id="totalAmount">0.00</span> جنيه</div>
     </div>
     
+    <!-- تفاصيل الفاتورة -->
+    <div class="invoice-details">
+      <h3 style="text-align: center; margin-bottom: 15px; color: var(--primary-color);">تفاصيل الفاتورة</h3>
+      <div class="detail-row">
+        <span class="detail-label">عدد المنتجات:</span>
+        <span class="detail-value" id="productsCount">0</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">إجمالي المنتجات:</span>
+        <span class="detail-value" id="productsTotal">0.00 جنيه</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">الخصومات:</span>
+        <span class="detail-value" id="discountsTotal">0.00 جنيه</span>
+      </div>
+    </div>
+    
+    <!-- تفاصيل الشحن -->
+    <div class="shipping-details">
+      <h3 style="text-align: center; margin-bottom: 15px; color: #ff4444;">تفاصيل الشحن</h3>
+      <div class="shipping-row">
+        <span class="shipping-label">تكلفة الشحن:</span>
+        <span class="shipping-value" id="shippingCostDetail">0.00 جنيه</span>
+      </div>
+      <div class="shipping-row">
+        <span class="shipping-label">الحد الأدنى للشحن المجاني:</span>
+        <span class="shipping-value">500.00 جنيه</span>
+      </div>
+      <div class="shipping-row">
+        <span class="shipping-label">المتبقي للشحن المجاني:</span>
+        <span class="shipping-value" id="remainingForFreeShipping">500.00 جنيه</span>
+      </div>
+      <div class="shipping-row">
+        <span class="shipping-label">حالة الشحن:</span>
+        <span class="shipping-value" id="shippingStatusDetail">غير مؤهل للشحن المجاني</span>
+      </div>
+    </div>
+    
     <table class="invoice-table">
       <thead>
         <tr>
@@ -1464,11 +1423,7 @@ header {
       </tbody>
     </table>
     
-    <div class="final-total">
-      <div>إجمالي المنتجات: <span id="productsTotal">0.00</span> جنيه</div>
-      <div>تكلفة الشحن: <span id="shippingCostDetail">0.00</span> جنيه</div>
-      <div style="font-size: 24px; margin-top: 10px;">المجموع النهائي: <span id="finalTotalAmount">0.00</span> جنيه</div>
-    </div>
+    <div class="final-total"><span id="finalTotalAmount">0.00</span> جنيه<br>إجمالي الفاتورة</div>
     
     <div class="modal-buttons">
       <button id="sendBtn">📤 ارسل فاتورتك واستلمها في اقل من 12 ساعه</button>
@@ -1476,6 +1431,7 @@ header {
       <button onclick="closeTotalModal()">❌ إغلاق</button>
     </div>
     
+    <!-- قسم الفواتير المحفوظة -->
     <div id="savedInvoices" class="saved-invoices">
       <h3 style="text-align: center; margin: 20px 0 10px; color: var(--primary-color);">الفواتير المحفوظة</h3>
       <div id="savedInvoicesList"></div>
@@ -1485,6 +1441,7 @@ header {
 
 <div id="toast">تمت الإضافة إلى السلة</div>
 
+<!-- إشعار صوتي -->
 <audio id="notificationSound" class="audio-notification">
   <source src="https://assets.mixkit.co/sfx/preview/mixkit-alarm-tone-996.mp3" type="audio/mpeg">
 </audio>
@@ -1832,7 +1789,7 @@ function addToCart(index){
   showToast(`${cleanName} تم إضافته إلى السلة`);
 }
 
-// دالة جلب المنتجات من API - محسنة للتعامل مع الأخطاء
+// دالة جلب المنتجات من API - محسنة للكشف عن المنتجات الجديدة
 async function fetchProducts() {
   try {
     document.getElementById('autoUpdateIndicator').style.display = 'block';
@@ -1852,11 +1809,9 @@ async function fetchProducts() {
     
     if (Array.isArray(data) && data.length > 0) {
       const newProductsData = data.reverse().map(item => {
-        // التأكد من أن السعر رقم صحيح
         if (isNaN(parseFloat(item.price))) {
           item.price = "0.00";
         }
-        // التأكد من وجود صورة
         if (!item.image || item.image.trim() === '') {
           item.image = 'https://via.placeholder.com/200?text=صورة+منتج';
         }
@@ -1938,7 +1893,10 @@ function showTotal(){
   const finalTotal = total + shipping;
   
   // تحديث تفاصيل الفاتورة
-  updateInvoiceDetails(total, shipping, finalTotal);
+  updateInvoiceDetails(total);
+  
+  // تحديث تفاصيل الشحن
+  updateShippingDetails(total, shipping);
   
   const cartList = document.getElementById("cartList");
   cartList.innerHTML = "";
@@ -1987,11 +1945,40 @@ function showTotal(){
   document.getElementById("sendBtn").onclick = sendInvoice;
 }
 
-// دالة تحديث تفاصيل الفاتورة - تم تبسيطها
-function updateInvoiceDetails(total, shipping, finalTotal) {
-  document.getElementById("productsTotal").textContent = formatPrice(total);
-  document.getElementById("shippingCostDetail").textContent = formatPrice(shipping);
-  document.getElementById("finalTotalAmount").textContent = formatPrice(finalTotal);
+// دالة تحديث تفاصيل الفاتورة
+function updateInvoiceDetails(total) {
+  const productsCount = cart.reduce((sum, qty) => qty ? sum + 1 : sum, 0);
+  const discounts = calculateDiscounts();
+  
+  document.getElementById("productsCount").textContent = productsCount;
+  document.getElementById("productsTotal").textContent = formatPrice(total) + " جنيه";
+  document.getElementById("discountsTotal").textContent = formatPrice(discounts) + " جنيه";
+}
+
+// دالة تحديث تفاصيل الشحن
+function updateShippingDetails(total, shipping) {
+  const remaining = Math.max(0, FREE_SHIPPING_THRESHOLD - total);
+  const shippingStatus = total >= FREE_SHIPPING_THRESHOLD ? 
+    "مؤهل للشحن المجاني 🎉" : 
+    "غير مؤهل للشحن المجاني";
+  
+  document.getElementById("shippingCostDetail").textContent = formatPrice(shipping) + " جنيه";
+  document.getElementById("remainingForFreeShipping").textContent = formatPrice(remaining) + " جنيه";
+  document.getElementById("shippingStatusDetail").textContent = shippingStatus;
+}
+
+// دالة حساب الخصومات
+function calculateDiscounts() {
+  let discounts = 0;
+  cart.forEach((qty, idx) => {
+    if(qty && productsData[idx] && productsData[idx].name.includes("&")) {
+      const originalPrice = parseFloat(productsData[idx].price) || 0;
+      const increasedPrice = originalPrice * 1.45;
+      const discountPerItem = increasedPrice - originalPrice;
+      discounts += discountPerItem * qty;
+    }
+  });
+  return discounts;
 }
 
 function updateQty(idx, value){
