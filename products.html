@@ -979,27 +979,22 @@ header {
 
 /* زر الدعم الفني منفصل */
 .support-button {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
   background: #25d366;
   color: white;
   border: none;
-  padding: 12px 20px;
-  border-radius: 30px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  padding: 8px 12px;
+  border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
-  font-size: 16px;
-  z-index: 999;
+  font-size: 14px;
   display: flex;
   align-items: center;
   gap: 5px;
+  white-space: nowrap;
 }
 
 .support-button:hover {
   background: #128c7e;
-  transform: scale(1.05);
 }
 
 /* تحسينات للشاشات الصغيرة */
@@ -1017,13 +1012,6 @@ header {
   .category-btn {
     padding: 6px 12px;
     font-size: 13px;
-  }
-  
-  .support-button {
-    bottom: 80px;
-    right: 10px;
-    font-size: 14px;
-    padding: 10px 15px;
   }
 }
 
@@ -1233,27 +1221,22 @@ header {
 
 /* زر طلب منتج غير متوفر */
 .request-product-button {
-  position: fixed;
-  bottom: 80px;
-  left: 20px;
   background: #ff6b00;
   color: white;
   border: none;
-  padding: 12px 20px;
-  border-radius: 30px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  padding: 8px 12px;
+  border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
-  font-size: 16px;
-  z-index: 999;
+  font-size: 14px;
   display: flex;
   align-items: center;
   gap: 5px;
+  white-space: nowrap;
 }
 
 .request-product-button:hover {
   background: #ff5500;
-  transform: scale(1.05);
 }
 
 /* تحسينات تخطيط الفاتورة */
@@ -1376,6 +1359,40 @@ header {
 .final-total {
   display: none;
 }
+
+/* أزرار إضافية تحت البحث */
+.additional-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 10px 0;
+  padding: 0 5px;
+  flex-wrap: wrap;
+}
+
+/* تحسينات تعديل الكمية في الفاتورة */
+.quantity-input-modal {
+  width: 70px;
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  text-align: center;
+  font-size: 14px;
+  margin: 0 auto;
+  display: block;
+}
+
+/* تحسينات حجم الفاتورة */
+.modal-content {
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+/* إخفاء الأزرار الثابتة القديمة */
+.support-button-fixed,
+.request-product-button-fixed {
+  display: none !important;
+}
 </style>
 </head>
 <body class="hide-price">
@@ -1403,17 +1420,7 @@ header {
   <div id="shippingMessage">أنفق <span id="remainingAmount">500</span> جنيه أخرى للحصول على شحن مجاني!</div>
 </div>
 
-<!-- زر طلب منتج غير متوفر -->
-<button class="request-product-button" onclick="openProductRequestModal()">
-  📦 طلب منتج غير متوفر
-</button>
-
 <button id="saveCartBtn" onclick="saveCart()">💾 حفظ السلة</button>
-
-<!-- زر الدعم الفني منفصل -->
-<button class="support-button" onclick="window.open('https://wa.me/201022495795', '_blank')">
-  ☎️ الدعم الفني
-</button>
 
 <header>
   📦ELEC.123.تاج وجميع منتجات جنة
@@ -1428,6 +1435,16 @@ header {
   <div class="search-container">
     <input type="text" id="searchBox" placeholder="🔍ابدأ و ابحث عن منتج...">
     <button id="offerBtn">💥خصم خاص للمناديب</button>
+  </div>
+
+  <!-- الأزرار الإضافية تحت البحث -->
+  <div class="additional-buttons">
+    <button class="support-button" onclick="window.open('https://wa.me/201022495795', '_blank')">
+      ☎️ الدعم الفني
+    </button>
+    <button class="request-product-button" onclick="openProductRequestModal()">
+      📦 طلب منتج غير متوفر
+    </button>
   </div>
 </header>
 
@@ -2048,20 +2065,28 @@ function showTotal(){
       
       const row = document.createElement("tr");
       row.innerHTML = `<td class="product-name-invoice">${cleanName}</td>
-                       <td>${qty}</td>
+                       <td>
+                         <input type="number" class="quantity-input-modal" min="1" value="${qty}" data-index="${idx}">
+                       </td>
                        <td>${formatPrice(price)} جنيه</td>
                        <td>${formatPrice(lineTotal)} جنيه</td>
                        <td>
                          <div class="cart-actions">
-                           <div class="quantity-controls">
-                             <button class="quantity-btn" onclick="decreaseQty(${idx})">-</button>
-                             <button class="quantity-btn" onclick="increaseQty(${idx})">+</button>
-                           </div>
                            <button class="delete-btn" onclick="deleteCartItem(${idx})">🗑️ حذف</button>
                          </div>
                        </td>`;
       cartList.appendChild(row);
     }
+  });
+  
+  // إضافة مستمعي الأحداث لحقول الكمية في الفاتورة
+  cartList.querySelectorAll('.quantity-input-modal').forEach(input => {
+    input.addEventListener('change', function() {
+      const index = parseInt(this.getAttribute('data-index'));
+      const value = parseInt(this.value);
+      updateQty(index, value);
+      showTotal(); // تحديث الفاتورة فوراً
+    });
   });
   
   // تحديث ملخص الفاتورة
@@ -2075,22 +2100,6 @@ function showTotal(){
   
   // إضافة مستمع حدث لزر الإرسال
   document.getElementById("sendBtn").onclick = sendInvoice;
-}
-
-function decreaseQty(index) {
-  if (cart[index] > 1) {
-    cart[index]--;
-    showTotal();
-    updateCartCount();
-    updateShippingBar();
-  }
-}
-
-function increaseQty(index) {
-  cart[index]++;
-  showTotal();
-  updateCartCount();
-  updateShippingBar();
 }
 
 function updateQty(idx, value){
