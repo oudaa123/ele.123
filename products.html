@@ -119,16 +119,6 @@ header {
   100% { transform: rotate(0deg); }
 }
 
-#newBanner {
-  display: none;
-  background: red;
-  color: white;
-  text-align: center;
-  padding: 8px;
-  font-size: 16px;
-  font-weight: bold;
-}
-
 /* تحسينات شريط التصنيفات لجعله أكثر ثباتاً */
 .categories-container {
   position: sticky;
@@ -1727,8 +1717,6 @@ img {
   </div>
 </div>
 
-<div id="newBanner">🎉 منتجات جديدة اليوم!</div>
-
 <!-- مؤشر التحديث التلقائي -->
 <div id="autoUpdateIndicator" class="auto-update-indicator">🔄 جاري التحديث</div>
 
@@ -1853,8 +1841,7 @@ img {
 
 <script>
 // إعدادات التطبيق
-const SCRIPT_PRODUCTS_URL = fetch("https://script.google.com/macros/s/AKfycbxQCsDkj7GP1HPc8YfLuIIiQxval8l3OpapKN8TuHdGXiP_5juG_9CMQ1qSbVLGCcV9lg/exec?v=" + Date.now())
-
+const SCRIPT_PRODUCTS_URL = "https://script.google.com/macros/s/AKfycbxQCsDkj7GP1HPc8YfLuIIiQxval8l3OpapKN8TuHdGXiP_5juG_9CMQ1qSbVLGCcV9lg/exec";
 const container = document.getElementById("products-container");
 let productsData = [];
 let cart = [];
@@ -2786,7 +2773,6 @@ function checkNewProducts(){
   if(newProductsCount > 0){
     document.getElementById("notif-count").innerText = newProductsCount;
     document.getElementById("notif-count").style.display = "inline-block";
-    document.getElementById("newBanner").style.display = "block";
   }
 }
 
@@ -2832,8 +2818,8 @@ function sendProductRequest() {
 
 // تهيئة التحديث التلقائي
 function initializeAutoUpdate() {
-  // تحديث المنتجات كل 30 ثانية بدلاً من 60 ثانية
-  autoUpdateInterval = setInterval(fetchProducts, 30000);
+  // تحديث المنتجات كل 60 ثانية
+  autoUpdateInterval = setInterval(fetchProducts, 60000);
 }
 
 // تهيئة الصفحة
@@ -2888,4 +2874,3 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 </body>
 </html>
-
