@@ -269,7 +269,7 @@ header {
   height: 40px;
   overflow: hidden;
   display: -webkit-box;
-  -webkit-line-ramp: 2;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 }
 
@@ -1721,29 +1721,61 @@ img {
 /* مؤشر التحديث الإجباري */
 .force-update-indicator {
   position: fixed;
-  top: 10px;
-  left: 10px;
-  background: #ff4444;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--primary-color);
   color: white;
-  padding: 8px 15px;
-  border-radius: 20px;
-  font-size: 12px;
+  padding: 15px 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
   z-index: 1008;
-  display: none;
-  animation: pulse-update 1s infinite;
   cursor: pointer;
+  font-weight: bold;
+  text-align: center;
+  animation: pulse 2s infinite;
+  display: none;
 }
 
-@keyframes pulse-update {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
+@keyframes pulse {
+  0% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -50%) scale(1.05); }
+  100% { transform: translate(-50%, -50%) scale(1); }
+}
+
+/* إضافة نمط جديد لرسالة الخطأ */
+.error-message {
+  text-align: center;
+  padding: 40px 20px;
+  color: #ff4444;
+  font-size: 18px;
+  font-weight: bold;
+  background: #fff;
+  border-radius: 12px;
+  margin: 20px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+.error-message button {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 15px;
+  font-size: 16px;
+}
+
+.error-message button:hover {
+  background: #6a1fbf;
 }
 </style>
 </head>
 <body class="hide-price">
 
-<!-- مؤشر التحديث الإجباري -->
+<!-- مؤشر التحديث الإجباري - تم تعديل موقعه -->
 <div id="forceUpdateIndicator" class="force-update-indicator" onclick="forceUpdate()">
   🔄 تحديث البيانات
 </div>
@@ -1969,16 +2001,6 @@ const PASSWORD = "2525"; // تعمل مع "٢٥٢٥" و "2525"
 
 // إضافة متغير جديد لتخزين الفواتير المحفوظة
 let savedInvoices = JSON.parse(localStorage.getItem('savedInvoices')) || [];
-
-// بيانات تجريبية احتياطية
-const SAMPLE_PRODUCTS = [
-  { name: "شاحن سامسونج اصلي (2)", price: "120", image: "https://via.placeholder.com/200?text=شاحن+سامسونج" },
-  { name: "كابل شحن نوع C (5)", price: "80", image: "https://via.placeholder.com/200?text=كابل+شحن" },
-  { name: "جراب ايفون 14", price: "150", image: "https://via.placeholder.com/200?text=جراب+ايفون" },
-  { name: "سماعات ايربودز (3)", price: "300", image: "https://via.placeholder.com/200?text=سماعات" },
-  { name: "شاحن متنقل 10000", price: "400", image: "https://via.placeholder.com/200?text=شاحن+متنقل" },
-  { name: "زجاج حماية شاشة (10)", price: "50", image: "https://via.placeholder.com/200?text=زجاج+حماية" }
-];
 
 // دالة لتحويل الأرقام العربية إلى إنجليزية
 function convertArabicToEnglishNumbers(str) {
@@ -2412,7 +2434,7 @@ function updateCartCount(){
   badge.innerText = count;
 }
 
-// دالة جلب المنتجات من API مع التحديث التلقائي - محسنة للأداء
+// دالة محسنة لجلب المنتجات من API مع التحديث التلقائي
 async function fetchProducts() {
   try {
     document.getElementById('loadingStatus').textContent = 'جاري التحقق من البيانات المخزنة...';
@@ -2431,7 +2453,7 @@ async function fetchProducts() {
       productsData = JSON.parse(cachedProducts);
       filterProductsByCategory('all');
       checkNewProducts();
-      updateCategoryCounts(); // تحديث أعداد المنتجات في الأقسام
+      updateCategoryCounts();
       document.getElementById('loadingProgressBar').style.width = '100%';
       document.getElementById('loadingStatus').textContent = 'تم التحميل بنجاح!';
       
@@ -2491,11 +2513,14 @@ async function fetchProducts() {
       
       filterProductsByCategory('all');
       checkNewProducts();
-      updateCategoryCounts(); // تحديث أعداد المنتجات في الأقسام
+      updateCategoryCounts();
       
       // إظهار إشعار المنتجات الجديدة إذا كان هناك منتجات جديدة
       if (newProducts.length > 0) {
         showNewProductsNotification();
+        
+        // إظهار زر تحديث البيانات فقط عند وجود منتجات جديدة
+        document.getElementById('forceUpdateIndicator').style.display = 'block';
       }
       
       setTimeout(() => {
@@ -2509,7 +2534,7 @@ async function fetchProducts() {
     
   } catch (error) {
     console.error("❌ خطأ في جلب المنتجات:", error);
-    document.getElementById('loadingStatus').textContent = 'جاري استخدام البيانات الاحتياطية...';
+    document.getElementById('loadingStatus').textContent = 'حدث خطأ في تحميل البيانات';
     
     // استخدام البيانات المخزنة محلياً كبديل
     const cachedProducts = localStorage.getItem("products");
@@ -2518,7 +2543,7 @@ async function fetchProducts() {
         productsData = JSON.parse(cachedProducts);
         document.getElementById('loadingProgressBar').style.width = '100%';
         document.getElementById('loadingStatus').textContent = 'تم التحميل من الذاكرة المؤقتة';
-        updateCategoryCounts(); // تحديث أعداد المنتجات في الأقسام
+        updateCategoryCounts();
         
         setTimeout(() => {
           document.getElementById('products-container').innerHTML = '';
@@ -2527,27 +2552,28 @@ async function fetchProducts() {
         
       } catch (e) {
         console.error("❌ خطأ في تحميل البيانات المخزنة:", e);
-        // استخدام البيانات التجريبية
-        useSampleData();
+        // عرض رسالة خطأ بدلاً من استخدام بيانات تجريبية
+        showErrorMessage();
       }
     } else {
-      // استخدام البيانات التجريبية
-      useSampleData();
+      // عرض رسالة خطأ بدلاً من استخدام بيانات تجريبية
+      showErrorMessage();
     }
   }
 }
 
-// دالة استخدام البيانات التجريبية
-function useSampleData() {
-  productsData = SAMPLE_PRODUCTS;
+// دالة لعرض رسالة الخطأ بدلاً من البيانات التجريبية
+function showErrorMessage() {
+  document.getElementById('products-container').innerHTML = `
+    <div class="error-message">
+      <div style="font-size: 48px; margin-bottom: 20px;">😔</div>
+      <div>حدث خطأ في تحميل المنتجات</div>
+      <div style="font-size: 14px; color: #666; margin-top: 10px;">اذكر الله وحدث الصفحة، هناك مشكلة في الاتصال</div>
+      <button onclick="forceUpdate()">🔄 تحديث الصفحة</button>
+    </div>
+  `;
   document.getElementById('loadingProgressBar').style.width = '100%';
-  document.getElementById('loadingStatus').textContent = 'تم التحميل باستخدام البيانات الاحتياطية';
-  updateCategoryCounts(); // تحديث أعداد المنتجات في الأقسام
-  
-  setTimeout(() => {
-    document.getElementById('products-container').innerHTML = '';
-    filterProductsByCategory('all');
-  }, 500);
+  document.getElementById('loadingStatus').textContent = 'فشل التحميل';
 }
 
 // دالة للتحقق من المنتجات الجديدة
@@ -2639,11 +2665,8 @@ function initializeEnhancedUpdateSystem() {
   // التحقق من التحديثات في الخلفية كل 15 ثانية
   setInterval(checkForUpdatesInBackground, 15000);
   
-  // التحديث الإجباري كل 3 دقائق
-  forceUpdateInterval = setInterval(() => {
-    document.getElementById('forceUpdateIndicator').style.display = 'block';
-    document.getElementById('forceUpdateIndicator').innerHTML = '🔄 تحديث البيانات';
-  }, 3 * 60 * 1000);
+  // إخفاء زر التحديث الإجباري في البداية
+  document.getElementById('forceUpdateIndicator').style.display = 'none';
 }
 
 // دالة محسنة لعرض الفاتورة مع إعادة التنظيم إلى الشكل الأصلي
