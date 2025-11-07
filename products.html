@@ -18,6 +18,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body { 
@@ -107,6 +108,19 @@ header {
   z-index: 1001;
 }
 
+#update-count {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #ff4444;
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+  padding: 2px 5px;
+  border-radius: 50%;
+  display: none;
+}
+
 @keyframes ring {
   0% { transform: rotate(0deg); }
   1% { transform: rotate(15deg); }
@@ -141,6 +155,7 @@ header {
   gap: 8px;
   background: white;
   position: static;
+  -webkit-overflow-scrolling: touch;
 }
 
 .categories-bar::-webkit-scrollbar {
@@ -1192,13 +1207,13 @@ header {
   color: white;
 }
 
-.saved-invoice-delete {
-  background: #ff4444;
+.saved-invoice-send {
+  background: #25d366;
   color: white;
 }
 
-.saved-invoice-send {
-  background: #25d366;
+.saved-invoice-delete {
+  background: #ff4444;
   color: white;
 }
 
@@ -1771,6 +1786,24 @@ img {
 .error-message button:hover {
   background: #6a1fbf;
 }
+
+/* زر تحديث البيانات الجديد */
+#updateBtn {
+  position: relative;
+  background: #ff6600;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+#updateBtn:hover {
+  background: #ff5500;
+}
 </style>
 </head>
 <body class="hide-price">
@@ -1817,7 +1850,8 @@ img {
     <button id="cartBtn">🛒 السلة <span id="cart-count">0</span></button>
     <button id="totalBtn">💰 اجمالي الفاتورة</button>
     <button onclick="window.location.href='index.html'">🔙 الرئيسية</button>
-    <button id="notifBtn">🔔 منتجات جديده <span id="notif-count">0</span></button>
+    <!-- تم إزالة زر الجرس وإضافة زر تحديث البيانات -->
+    <button id="updateBtn">🔄 تحديث <span id="update-count">0</span></button>
     <button id="clearCartBtn" onclick="clearCart()">🗑️ مسح السلة</button>
   </div>
 
@@ -1991,6 +2025,7 @@ let currentSearchTerm = "";
 let currentCategory = "all";
 let autoUpdateInterval;
 let forceUpdateInterval;
+let newProductsDetected = 0;
 
 // إعدادات الشحن المجاني
 const FREE_SHIPPING_THRESHOLD = 500;
@@ -2505,6 +2540,10 @@ async function fetchProducts() {
       const oldProducts = JSON.parse(localStorage.getItem("products") || "[]");
       const newProducts = checkForNewProducts(oldProducts, productsData);
       
+      // تحديث عدد المنتجات الجديدة
+      newProductsDetected = newProducts.length;
+      updateNewProductsCount();
+      
       localStorage.setItem("products", JSON.stringify(productsData));
       localStorage.setItem("products_cache_time", now.toString());
       
@@ -2559,6 +2598,17 @@ async function fetchProducts() {
       // عرض رسالة خطأ بدلاً من استخدام بيانات تجريبية
       showErrorMessage();
     }
+  }
+}
+
+// دالة لتحديث عدد المنتجات الجديدة على زر التحديث
+function updateNewProductsCount() {
+  const updateCount = document.getElementById("update-count");
+  if (newProductsDetected > 0) {
+    updateCount.style.display = "inline-block";
+    updateCount.innerText = newProductsDetected;
+  } else {
+    updateCount.style.display = "none";
   }
 }
 
@@ -3043,11 +3093,6 @@ function getCategoryName(category) {
 function checkNewProducts(){
   const newProducts = productsData.filter(p => p.name && p.name.includes(".."));
   newProductsCount = newProducts.length;
-  
-  if(newProductsCount > 0){
-    document.getElementById("notif-count").innerText = newProductsCount;
-    document.getElementById("notif-count").style.display = "inline-block";
-  }
 }
 
 // دالة تشغيل الصوت
@@ -3108,6 +3153,9 @@ document.addEventListener('DOMContentLoaded', function() {
       filterProductsByCategory(category);
     });
   });
+  
+  // إضافة مستمع حدث لزر تحديث البيانات
+  document.getElementById("updateBtn").onclick = forceUpdate;
   
   // باقي مستمعي الأحداث
   document.getElementById("searchBox").addEventListener("input", performSearch);
