@@ -469,6 +469,50 @@ header h2 {
   }
 }
 
+/* سهم إعلان أحمر */
+.ad-arrow {
+  position: fixed;
+  top: 70px;
+  left: 180px;
+  z-index: 1001;
+  animation: bounce 2s infinite;
+  display: none;
+}
+
+.arrow {
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-right: 20px solid #ff0000;
+  position: relative;
+}
+
+.arrow-text {
+  position: absolute;
+  top: -8px;
+  left: 25px;
+  background: #ff0000;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateX(0);
+  }
+  40% {
+    transform: translateX(-5px);
+  }
+  60% {
+    transform: translateX(-3px);
+  }
+}
+
 /* تحسينات للشاشات الصغيرة جداً */
 @media (max-width: 350px) {
   header h1 { 
@@ -505,6 +549,10 @@ header h2 {
     width: 200px;
     height: 200px;
   }
+  
+  .ad-arrow {
+    left: 150px;
+  }
 }
 
 /* تحسينات لتجربة التطبيق */
@@ -540,6 +588,12 @@ input, textarea {
   <div class="logo-content">
     <img src="555.jpg" alt="شعار شركة جنة" class="logo-image" id="companyLogo">
   </div>
+</div>
+
+<!-- سهم الإعلان الأحمر -->
+<div id="adArrow" class="ad-arrow">
+  <div class="arrow"></div>
+  <div class="arrow-text">إعلان لمحلك مجاناً</div>
 </div>
 
 <div class="app-container" style="display:none;" id="mainContent">
@@ -652,6 +706,7 @@ const partnersGrid = document.getElementById("partnersGrid");
 const logoOverlay = document.getElementById("logoOverlay");
 const companyLogo = document.getElementById("companyLogo");
 const mainContent = document.getElementById("mainContent");
+const adArrow = document.getElementById("adArrow");
 
 // بيانات شركاء النجاح (يمكن إضافة المزيد لاحقاً)
 const partnersData = [
@@ -699,6 +754,12 @@ function toggleServices() {
   }
 }
 
+// إغلاق جميع القوائم
+function closeAllMenus() {
+  partnersContainer.style.display = 'none';
+  servicesContainer.style.display = 'none';
+}
+
 // عرض رسالة الخدمة
 function showServiceMessage(serviceName) {
   alert(`قريباً خدمة ${serviceName} مجانية بالكامل مع التحديثات`);
@@ -713,6 +774,7 @@ function goToProducts() {
 function showInfo(text){ 
     infoText.innerHTML = text; 
     infoBox.style.display = 'block'; 
+    closeAllMenus();
 }
 function closeInfo(){ 
     infoBox.style.display = 'none'; 
@@ -721,6 +783,7 @@ function closeInfo(){
 // دوال تفعيل الصبات
 function showSubscriptionsBox(){ 
     document.getElementById('subscriptionsBox').style.display='block'; 
+    closeAllMenus();
 }
 function closeSubscriptionsBox(){ 
     document.getElementById('subscriptionsBox').style.display='none'; 
@@ -750,6 +813,11 @@ function explodeLogo() {
     // إخفاء شاشة الشعار مباشرة بعد الانفجار وإظهار المحتوى الرئيسي
     logoOverlay.style.display = 'none';
     mainContent.style.display = 'block';
+    
+    // إظهار سهم الإعلان بعد 2 ثانية
+    setTimeout(() => {
+      adArrow.style.display = 'block';
+    }, 2000);
   }, 700); // وقت أقل للانتظار (0.7 ثانية فقط)
 }
 
@@ -796,6 +864,8 @@ submitBtn.addEventListener("click", (e)=>{
   document.getElementById("phone").value='';
   document.getElementById("address").value='';
   document.getElementById("field").value='';
+  
+  closeAllMenus();
 });
 
 function closeModal(){ 
@@ -819,6 +889,17 @@ window.addEventListener('click', function(event) {
     if (event.target == servicesContainer) {
         servicesContainer.style.display = 'none';
     }
+});
+
+// إغلاق القوائم عند النقر على أي زر آخر
+document.addEventListener('click', function(event) {
+  // إذا كان النقر خارج القوائم والأزرار الخاصة بها
+  if (!event.target.closest('.success-partners-btn') && 
+      !event.target.closest('.services-btn') &&
+      !event.target.closest('.success-partners-container') &&
+      !event.target.closest('.services-container')) {
+    closeAllMenus();
+  }
 });
 
 // تهيئة الصفحة عند التحميل
