@@ -127,7 +127,6 @@ header {
   background: white;
   border-bottom: 1px solid #ddd;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  /* التأكد من أن الأقسام ثابتة دائماً */
   display: block !important;
   visibility: visible !important;
   opacity: 1 !important;
@@ -141,7 +140,6 @@ header {
   -ms-overflow-style: none;
   gap: 8px;
   background: white;
-  /* التأكد من أن الأقسام ثابتة دائماً */
   position: static;
 }
 
@@ -725,31 +723,32 @@ header {
   font-size: 14px;
 }
 
-/* شريط الشحن المجاني */
+/* شريط الشحن المجاني - تم تعديل موقعه */
 .shipping-bar {
   background: linear-gradient(135deg, #ff6b00, #ff4444);
   color: white;
-  padding: 10px;
+  padding: 8px 12px;
   text-align: center;
   font-weight: bold;
-  margin: 10px;
+  margin: 5px;
   border-radius: 8px;
   animation: pulse-shipping 2s infinite;
   display: none;
+  font-size: 12px;
 }
 
 .shipping-progress {
   background: rgba(255,255,255,0.3);
-  height: 8px;
-  border-radius: 4px;
-  margin: 8px 0;
+  height: 6px;
+  border-radius: 3px;
+  margin: 5px 0;
   overflow: hidden;
 }
 
 .shipping-progress-fill {
   background: white;
   height: 100%;
-  border-radius: 4px;
+  border-radius: 3px;
   transition: width 0.5s ease;
 }
 
@@ -1299,13 +1298,13 @@ header {
   100% { transform: scale(1); }
 }
 
-/* شريط العروض المتحرك */
+/* شريط العروض المتحرك - تم تعديل موقعه */
 .moving-offer-bar {
   position: sticky;
   top: 200px;
   background: linear-gradient(135deg, #ff6600, #ff3300);
   color: white;
-  padding: 10px 15px;
+  padding: 8px 12px;
   text-align: center;
   font-weight: bold;
   z-index: 997;
@@ -1313,6 +1312,7 @@ header {
   overflow: hidden;
   white-space: nowrap;
   box-shadow: 0 2px 10px rgba(255, 102, 0, 0.3);
+  font-size: 12px;
 }
 
 .moving-offer-text {
@@ -1636,20 +1636,107 @@ img {
     -webkit-overflow-scrolling: touch;
   }
 }
+
+/* تحسينات الكميات الثابتة */
+.fixed-quantity {
+  background: #f0f8ff;
+  border: 1px solid #8a2be2;
+  color: #8a2be2;
+  font-weight: bold;
+  padding: 8px;
+  border-radius: 6px;
+  text-align: center;
+  margin: 5px 0;
+  font-size: 14px;
+}
+
+.fixed-quantity-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+/* شريط الإشعارات الجانبي */
+.notifications-sidebar {
+  position: fixed;
+  top: 140px;
+  left: 10px;
+  z-index: 996;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 200px;
+}
+
+.notification-item {
+  background: linear-gradient(135deg, #ff6600, #ff3300);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(255, 102, 0, 0.3);
+  animation: pulse-notification 2s infinite;
+  text-align: center;
+}
+
+@keyframes pulse-notification {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+
+/* تحسينات التجاوب مع الموبايل */
+@media (max-width: 768px) {
+  .notifications-sidebar {
+    position: static;
+    max-width: 100%;
+    margin: 10px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .notification-item {
+    flex: 1;
+    min-width: 45%;
+    font-size: 11px;
+    padding: 6px 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .notifications-sidebar {
+    flex-direction: column;
+  }
+  
+  .notification-item {
+    min-width: 100%;
+  }
+}
 </style>
 </head>
 <body class="hide-price">
 
+<!-- شريط الإشعارات الجانبي -->
+<div class="notifications-sidebar">
+  <div id="shippingBar" class="notification-item">
+    <div>🚚 الشحن مجاني للطلبات فوق 500 جنيه!</div>
+    <div class="shipping-progress">
+      <div class="shipping-progress-fill" id="shippingProgress"></div>
+    </div>
+    <div id="shippingMessage" style="font-size: 10px;">أنفق <span id="remainingAmount">500</span> جنيه أخرى</div>
+  </div>
+  
+  <div id="movingOfferBar" class="notification-item">
+    💥 خصم خاص للمندوب
+  </div>
+</div>
+
 <!-- شريط المنتجات الجديدة المثبت -->
 <div id="newProductsStickyBar" class="new-products-sticky-bar">
   🎉 منتجات جديدة اليوم! كل لحظة عندنا جديد 🎉
-</div>
-
-<!-- شريط العروض المتحرك -->
-<div id="movingOfferBar" class="moving-offer-bar">
-  <div class="moving-offer-text">
-    💥 خصم خاص للمندوب برعاية شركة جنة 💥 | 🚚 توصيل مجاني للطلبات فوق 500 جنيه 💥 | 📞 للطلب: 01022495795 💥 | 🎁 عروض خاصة على جميع المنتجات 💥
-  </div>
 </div>
 
 <div id="showPricesBar" onclick="showPasswordModal()">
@@ -1659,15 +1746,6 @@ img {
 <!-- إشعار المنتجات الجديدة -->
 <div id="newProductsNotification" class="new-products-notification">
   🎉 هناك منتجات جديدة تمت إضافتها اليوم!
-</div>
-
-<!-- شريط الشحن المجاني -->
-<div id="shippingBar" class="shipping-bar">
-  <div>🚚 الشحن مجاني للطلبات فوق 500 جنيه!</div>
-  <div class="shipping-progress">
-    <div class="shipping-progress-fill" id="shippingProgress"></div>
-  </div>
-  <div id="shippingMessage">أنفق <span id="remainingAmount">500</span> جنيه أخرى للحصول على شحن مجاني!</div>
 </div>
 
 <button id="saveCartBtn" onclick="saveCart()">💾 حفظ السلة</button>
@@ -1856,20 +1934,49 @@ let autoUpdateInterval;
 const FREE_SHIPPING_THRESHOLD = 500;
 const SHIPPING_COST = 50;
 
-const PASSWORD = "2525";
+// كلمة السر تقبل الأرقام العربية والإنجليزية
+const PASSWORD = "2525"; // تعمل مع "٢٥٢٥" و "2525"
 
 // إضافة متغير جديد لتخزين الفواتير المحفوظة
 let savedInvoices = JSON.parse(localStorage.getItem('savedInvoices')) || [];
 
 // بيانات تجريبية احتياطية
 const SAMPLE_PRODUCTS = [
-  { name: "شاحن سامسونج اصلي", price: "120", image: "https://via.placeholder.com/200?text=شاحن+سامسونج" },
-  { name: "كابل شحن نوع C", price: "80", image: "https://via.placeholder.com/200?text=كابل+شحن" },
+  { name: "شاحن سامسونج اصلي (2)", price: "120", image: "https://via.placeholder.com/200?text=شاحن+سامسونج" },
+  { name: "كابل شحن نوع C (5)", price: "80", image: "https://via.placeholder.com/200?text=كابل+شحن" },
   { name: "جراب ايفون 14", price: "150", image: "https://via.placeholder.com/200?text=جراب+ايفون" },
-  { name: "سماعات ايربودز", price: "300", image: "https://via.placeholder.com/200?text=سماعات" },
+  { name: "سماعات ايربودز (3)", price: "300", image: "https://via.placeholder.com/200?text=سماعات" },
   { name: "شاحن متنقل 10000", price: "400", image: "https://via.placeholder.com/200?text=شاحن+متنقل" },
-  { name: "زجاج حماية شاشة", price: "50", image: "https://via.placeholder.com/200?text=زجاج+حماية" }
+  { name: "زجاج حماية شاشة (10)", price: "50", image: "https://via.placeholder.com/200?text=زجاج+حماية" }
 ];
+
+// دالة لتحويل الأرقام العربية إلى إنجليزية
+function convertArabicToEnglishNumbers(str) {
+  if (!str) return str;
+  
+  const arabicNumbers = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+  const englishNumbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+  
+  let result = str.toString();
+  for (let i = 0; i < arabicNumbers.length; i++) {
+    const regex = new RegExp(arabicNumbers[i], 'g');
+    result = result.replace(regex, englishNumbers[i]);
+  }
+  
+  return result;
+}
+
+// دالة لاستخراج الكمية من الأقواس
+function extractQuantityFromName(productName) {
+  if (!productName) return null;
+  
+  const match = productName.match(/\((\d+)\)/);
+  if (match && match[1]) {
+    return parseInt(match[1]);
+  }
+  
+  return null;
+}
 
 // دالة محسنة لتحديد تصنيف المنتج بناءً على اسمه
 function getProductCategory(productName) {
@@ -1922,7 +2029,7 @@ function formatPrice(price) {
 // دالة محسنة لإزالة الرموز من اسم المنتج
 function cleanProductName(name) {
   if (!name) return '';
-  return name.replace(/\.\./g, "").replace(/&/g, "").replace(/@/g, "").replace(/#/g, "");
+  return name.replace(/\.\./g, "").replace(/&/g, "").replace(/@/g, "").replace(/#/g, "").replace(/\(\d+\)/g, "");
 }
 
 function handleImageError(img) {
@@ -1943,11 +2050,11 @@ function togglePricesVisibility() {
     document.body.classList.remove('hide-price');
     document.getElementById('showPricesBar').style.display = 'none';
     // إظهار شريط العروض المتحرك عند إدخال كلمة السر
-    document.getElementById('movingOfferBar').style.display = 'block';
+    document.querySelector('.notifications-sidebar').style.display = 'flex';
   } else {
     document.body.classList.add('hide-price');
     document.getElementById('showPricesBar').style.display = 'block';
-    document.getElementById('movingOfferBar').style.display = 'none';
+    document.querySelector('.notifications-sidebar').style.display = 'none';
   }
 }
 
@@ -1963,7 +2070,10 @@ function closePasswordModal() {
 
 function checkPassword() {
   const input = document.getElementById('passwordInput').value;
-  if (input === PASSWORD) {
+  // تحويل الأرقام العربية إلى إنجليزية للمقارنة
+  const convertedInput = convertArabicToEnglishNumbers(input);
+  
+  if (convertedInput === PASSWORD) {
     pricesVisible = true;
     togglePricesVisibility();
     closePasswordModal();
@@ -2023,7 +2133,7 @@ function clearCart() {
   }
 }
 
-// دالة محسنة لعرض المنتجات مع التصميم الجديد - إصلاح عرض السعر للمنتجات غير المتوفرة
+// دالة محسنة لعرض المنتجات مع التصميم الجديد - إضافة الكميات الثابتة
 function renderProducts(data, containerElement){
   let html = "";
   
@@ -2032,6 +2142,7 @@ function renderProducts(data, containerElement){
   } else {
     data.forEach((item, index) => {
       const formattedPrice = formatPrice(item.price);
+      const fixedQuantity = extractQuantityFromName(item.name);
       
       // الكشف عن المنتجات الجديدة بناءً على وجود ".." في الاسم
       const isNewProduct = item.name && item.name.includes("..");
@@ -2065,6 +2176,13 @@ function renderProducts(data, containerElement){
                   </div>
                   <div class="product-info">
                     <div class="product-name">${displayName}</div>
+                    ${fixedQuantity ? 
+                      `<div class="fixed-quantity">
+                         <div class="fixed-quantity-info">
+                           📦 الكمية الثابتة: ${fixedQuantity}
+                         </div>
+                       </div>` : ''
+                    }
                     ${isOfferProduct ? 
                       `<div class="product-price original-price">${formatPrice(increasedPrice)} جنيه</div>
                        <div class="product-price discount-price">
@@ -2074,8 +2192,14 @@ function renderProducts(data, containerElement){
                     }
                     ${!isOutOfStockProduct ? 
                       `<div class="product-controls">
-                         <input type="number" class="quantity-input" min="1" value="${cart[index] || 1}" data-index="${index}">
-                         <button class="add-to-cart-btn" onclick="addToCart(${index})">أضف إلى السلة</button>
+                         ${fixedQuantity ? 
+                           `<div style="color: #8a2be2; font-weight: bold; padding: 8px; background: #f0f8ff; border-radius: 6px; text-align: center;">
+                              الكمية محددة: ${fixedQuantity}
+                            </div>
+                            <button class="add-to-cart-btn" onclick="addToCart(${index})">أضف إلى السلة</button>` :
+                           `<input type="number" class="quantity-input" min="1" value="${cart[index] || 1}" data-index="${index}">
+                            <button class="add-to-cart-btn" onclick="addToCart(${index})">أضف إلى السلة</button>`
+                         }
                        </div>` : 
                       `<div class="product-controls">
                          <div style="height: 50px; display: flex; align-items: center; justify-content: center; color: #ff4444; font-weight: bold;">
@@ -2180,7 +2304,7 @@ function updateShippingBar() {
   
   if (total >= FREE_SHIPPING_THRESHOLD) {
     shippingProgress.style.width = '100%';
-    shippingMessage.innerHTML = '🎉 مبروك! لقد حصلت على الشحن المجاني';
+    shippingMessage.innerHTML = '🎉 مبروك! الشحن مجاني';
     shippingBar.style.background = 'linear-gradient(135deg, #25d366, #128c7e)';
   } else {
     const progress = (total / FREE_SHIPPING_THRESHOLD) * 100;
@@ -2188,7 +2312,7 @@ function updateShippingBar() {
     
     shippingProgress.style.width = `${progress}%`;
     remainingAmount.textContent = formatPrice(remaining);
-    shippingMessage.innerHTML = `أنفق <span id="remainingAmount">${formatPrice(remaining)}</span> جنيه أخرى للحصول على شحن مجاني!`;
+    shippingMessage.innerHTML = `أنفق <span id="remainingAmount">${formatPrice(remaining)}</span> جنيه أخرى`;
     shippingBar.style.background = 'linear-gradient(135deg, #ff6b00, #ff4444)';
   }
 }
@@ -2215,8 +2339,14 @@ function addToCart(index){
     return;
   }
   
-  const input = document.querySelector(`#products-container input[data-index='${index}']`);
-  const quantity = parseInt(input.value);
+  const fixedQuantity = extractQuantityFromName(productsData[index].name);
+  let quantity = fixedQuantity;
+  
+  if (!fixedQuantity) {
+    const input = document.querySelector(`#products-container input[data-index='${index}']`);
+    quantity = parseInt(input.value);
+  }
+  
   if(quantity <= 0) return;
   cart[index] = (cart[index] || 0) + quantity;
   updateCartCount();
@@ -2818,17 +2948,8 @@ function sendProductRequest() {
 
 // تهيئة التحديث التلقائي
 function initializeAutoUpdate() {
-  // تحديث المنتجات كل 35 ثانية كما هو مطلوب
-  autoUpdateInterval = setInterval(fetchProducts, 35000);
-  
-  // إظهار مؤشر التحديث عند كل تحديث
-  setInterval(() => {
-    const indicator = document.getElementById('autoUpdateIndicator');
-    indicator.style.display = 'block';
-    setTimeout(() => {
-      indicator.style.display = 'none';
-    }, 3000);
-  }, 35000);
+  // تحديث المنتجات كل 60 ثانية
+  autoUpdateInterval = setInterval(fetchProducts, 60000);
 }
 
 // تهيئة الصفحة
@@ -2869,7 +2990,7 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // إظهار شريط العروض المتحرك إذا كانت الأسعار ظاهرة
   if (pricesVisible) {
-    document.getElementById('movingOfferBar').style.display = 'block';
+    document.querySelector('.notifications-sidebar').style.display = 'flex';
   }
   
   // التأكد من أن الأقسام ثابتة دائماً
