@@ -2575,6 +2575,77 @@ function showNewProductsNotification() {
   }, 10000);
 }
 
+// دالة التحديث الإجباري المحسنة
+function forceUpdate() {
+  document.getElementById('autoUpdateIndicator').style.display = 'block';
+  document.getElementById('forceUpdateIndicator').style.display = 'none';
+  
+  // مسح البيانات المخزنة محلياً لإجبار التحديث
+  localStorage.removeItem("products");
+  localStorage.removeItem("products_cache_time");
+  
+  // إعادة تحميل البيانات مع إظهار التقدم
+  document.getElementById('products-container').innerHTML = `
+    <div class="products-loading">
+      <div class="loading-spinner"></div>
+      <div>جاري تحديث البيانات...</div>
+      <div class="loading-progress">
+        <div class="loading-progress-bar" id="loadingProgressBar" style="width: 0%"></div>
+      </div>
+      <div id="loadingStatus" style="font-size: 14px; color: #666;">جاري جلب أحدث البيانات</div>
+    </div>
+  `;
+  
+  fetchProducts().then(() => {
+    document.getElementById('autoUpdateIndicator').style.display = 'none';
+    showToast('✅ تم تحديث البيانات بنجاح');
+  }).catch(error => {
+    document.getElementById('autoUpdateIndicator').style.display = 'none';
+    showToast('❌ حدث خطأ أثناء التحديث');
+    console.error('Error in force update:', error);
+  });
+}
+
+// دالة التحقق من التحديثات في الخلفية
+async function checkForUpdatesInBackground() {
+  try {
+    const response = await fetch(SCRIPT_PRODUCTS_URL + "?t=" + new Date().getTime(), {
+      cache: "no-store",
+      method: 'GET',
+      mode: 'cors'
+    });
+    
+    if (response.ok) {
+      const newData = await response.json();
+      const cachedData = JSON.parse(localStorage.getItem("products") || "[]");
+      
+      // مقارنة البيانات الجديدة مع المخزنة
+      if (JSON.stringify(newData) !== JSON.stringify(cachedData)) {
+        // هناك تغييرات، عرض زر التحديث
+        document.getElementById('forceUpdateIndicator').style.display = 'block';
+        document.getElementById('forceUpdateIndicator').innerHTML = '🔄 تحديث البيانات (جديد!)';
+      }
+    }
+  } catch (error) {
+    console.log('Background update check failed:', error);
+  }
+}
+
+// تهيئة نظام التحديث المحسن
+function initializeEnhancedUpdateSystem() {
+  // تحديث المنتجات كل 30 ثانية (أسرع من السابق)
+  autoUpdateInterval = setInterval(fetchProducts, 30000);
+  
+  // التحقق من التحديثات في الخلفية كل 15 ثانية
+  setInterval(checkForUpdatesInBackground, 15000);
+  
+  // التحديث الإجباري كل 3 دقائق
+  forceUpdateInterval = setInterval(() => {
+    document.getElementById('forceUpdateIndicator').style.display = 'block';
+    document.getElementById('forceUpdateIndicator').innerHTML = '🔄 تحديث البيانات';
+  }, 3 * 60 * 1000);
+}
+
 // دالة محسنة لعرض الفاتورة مع إعادة التنظيم إلى الشكل الأصلي
 function showTotal(){
   if (!pricesVisible) {
@@ -2996,40 +3067,13 @@ function sendProductRequest() {
   showToast('تم إرسال طلبك بنجاح');
 }
 
-// دالة التحديث الإجباري
-function forceUpdate() {
-  document.getElementById('forceUpdateIndicator').style.display = 'none';
-  document.getElementById('autoUpdateIndicator').style.display = 'block';
-  
-  // مسح البيانات المخزنة محلياً لإجبار التحديث
-  localStorage.removeItem("products");
-  localStorage.removeItem("products_cache_time");
-  
-  // إعادة تحميل البيانات
-  fetchProducts().then(() => {
-    document.getElementById('autoUpdateIndicator').style.display = 'none';
-    showToast('تم تحديث البيانات بنجاح');
-  });
-}
-
-// تهيئة التحديث التلقائي والإجباري
-function initializeAutoUpdate() {
-  // تحديث المنتجات كل 60 ثانية
-  autoUpdateInterval = setInterval(fetchProducts, 60000);
-  
-  // التحديث الإجباري كل 5 دقائق
-  forceUpdateInterval = setInterval(() => {
-    document.getElementById('forceUpdateIndicator').style.display = 'block';
-  }, 5 * 60 * 1000); // 5 دقائق
-}
-
 // تهيئة الصفحة
 document.addEventListener('DOMContentLoaded', function() {
   // تحميل المنتجات من API
   fetchProducts();
   
-  // بدء التحديث التلقائي والإجباري
-  initializeAutoUpdate();
+  // بدء نظام التحديث المحسن
+  initializeEnhancedUpdateSystem();
   
   // تحميل السلة المحفوظة
   loadSavedCart();
