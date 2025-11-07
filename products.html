@@ -1733,29 +1733,27 @@ img {
   }
 }
 
-/* مؤشر التحديث الإجباري */
-.force-update-indicator {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: var(--primary-color);
-  color: white;
-  padding: 15px 25px;
-  border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-  z-index: 1008;
-  cursor: pointer;
-  font-weight: bold;
+/* إشعار توجيه البحث */
+.search-suggestion {
+  background: #fff3cd;
+  color: #856404;
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin: 10px;
   text-align: center;
-  animation: pulse 2s infinite;
+  border: 1px solid #ffeaa7;
   display: none;
 }
 
-@keyframes pulse {
-  0% { transform: translate(-50%, -50%) scale(1); }
-  50% { transform: translate(-50%, -50%) scale(1.05); }
-  100% { transform: translate(-50%, -50%) scale(1); }
+.search-suggestion a {
+  color: #8a2be2;
+  font-weight: bold;
+  text-decoration: none;
+  margin: 0 5px;
+}
+
+.search-suggestion a:hover {
+  text-decoration: underline;
 }
 
 /* إضافة نمط جديد لرسالة الخطأ */
@@ -1808,19 +1806,14 @@ img {
 </head>
 <body class="hide-price">
 
-<!-- مؤشر التحديث الإجباري - تم تعديل موقعه -->
-<div id="forceUpdateIndicator" class="force-update-indicator" onclick="forceUpdate()">
-  🔄 تحديث البيانات
-</div>
-
 <!-- شريط الإشعارات الجانبي -->
 <div class="notifications-sidebar">
   <div id="shippingBar" class="notification-item">
-    <div>🚚 الشحن مجاني للطلبات فوق 500 جنيه!</div>
+    <div>🚚 الشحن مجاني لجميع منتجات جنه!</div>
     <div class="shipping-progress">
       <div class="shipping-progress-fill" id="shippingProgress"></div>
     </div>
-    <div id="shippingMessage" style="font-size: 10px;">أنفق <span id="remainingAmount">500</span> جنيه أخرى</div>
+    <div id="shippingMessage" style="font-size: 10px;">اشتري <span id="remainingAmount">500</span> جنيه أخرى</div>
   </div>
   
   <div id="movingOfferBar" class="notification-item">
@@ -1850,7 +1843,7 @@ img {
     <button id="cartBtn">🛒 السلة <span id="cart-count">0</span></button>
     <button id="totalBtn">💰 اجمالي الفاتورة</button>
     <button onclick="window.location.href='index.html'">🔙 الرئيسية</button>
-    <!-- تم إزالة زر الجرس وإضافة زر تحديث البيانات -->
+    <!-- زر تحديث البيانات في الهيدر -->
     <button id="updateBtn">🔄 تحديث <span id="update-count">0</span></button>
     <button id="clearCartBtn" onclick="clearCart()">🗑️ مسح السلة</button>
   </div>
@@ -1919,7 +1912,7 @@ img {
       <button id="cancelPassword" onclick="closePasswordModal()">إلغاء</button>
     </div>
     <div class="password-support">
-      <p>إذا أردت كلمة السر تواصل مع المندوب الخاص بك أو</p>
+      <p>إذا أردت كلمة السر</p>
       <a href="https://wa.me/201022495795" target="_blank">☎️  تواصل مع الدعم الفني نزداد شرف</a>
     </div>
   </div>
@@ -1930,7 +1923,7 @@ img {
   <div class="numbers-content">
     <button class="numbers-close" onclick="closeProductRequestModal()">×</button>
     <h2 class="numbers-title">طلب منتج غير متوفر</h2>
-    <p>اكتب اسم المنتج الذي تريده وسنحاول توفيره لك في أقرب وقت</p>
+    <p>اكتب اسم المنتج الذي تريده وسنحاول توفيره لك ان شاء الله</p>
     <textarea id="productRequestText" placeholder="اكتب اسم المنتج المطلوب هنا..." rows="4" style="width: 100%; padding: 10px; margin: 15px 0; border: 2px solid #ddd; border-radius: 8px; font-size: 16px;"></textarea>
     <div class="password-buttons">
       <button onclick="sendProductRequest()">📤 إرسال الطلب</button>
@@ -1984,7 +1977,7 @@ img {
           <th>الكمية</th>
           <th>السعر</th>
           <th>المجموع</th>
-          <th>الإجراءات</th>
+          <th>عدل الكميه</th>
         </tr>
       </thead>
       <tbody id="cartList">
@@ -2032,7 +2025,7 @@ const FREE_SHIPPING_THRESHOLD = 500;
 const SHIPPING_COST = 50;
 
 // كلمة السر تقبل الأرقام العربية والإنجليزية
-const PASSWORD = "2525"; // تعمل مع "٢٥٢٥" و "2525"
+const PASSWORD = "2027"; // تعمل مع "2027" و "2027"
 
 // إضافة متغير جديد لتخزين الفواتير المحفوظة
 let savedInvoices = JSON.parse(localStorage.getItem('savedInvoices')) || [];
@@ -2254,7 +2247,7 @@ function renderProducts(data, containerElement){
                   ${isNewProduct ? '<span class="new-product-badge">🆕 جديد</span>' : ''}
                   ${isOfferProduct ? '<span class="offer-product-badge">🎁 عرض خاص</span>' : ''}
                   ${isFreeShippingProduct ? '<span class="free-shipping-badge">🚚 شحن مجاني</span>' : ''}
-                  ${isOutOfStockProduct ? '<div class="out-of-stock-overlay"></div><div class="out-of-stock-badge">⛔ غير متوفر</div>' : ''}
+                  ${isOutOfStockProduct ? '<div class="out-of-stock-overlay"></div><div class="out-of-stock-badge">⛔ غير متوفر الان</div>' : ''}
                   <div class="product-image-container">
                     <img src="${item.image || 'https://via.placeholder.com/200'}" 
                          onerror="handleImageError(this)" 
@@ -2559,7 +2552,8 @@ async function fetchProducts() {
         showNewProductsNotification();
         
         // إظهار زر تحديث البيانات فقط عند وجود منتجات جديدة
-        document.getElementById('forceUpdateIndicator').style.display = 'block';
+        document.getElementById('update-count').style.display = 'inline-block';
+        document.getElementById('update-count').textContent = newProducts.length;
       }
       
       setTimeout(() => {
@@ -2654,7 +2648,6 @@ function showNewProductsNotification() {
 // دالة التحديث الإجباري المحسنة
 function forceUpdate() {
   document.getElementById('autoUpdateIndicator').style.display = 'block';
-  document.getElementById('forceUpdateIndicator').style.display = 'none';
   
   // مسح البيانات المخزنة محلياً لإجبار التحديث
   localStorage.removeItem("products");
@@ -2698,8 +2691,8 @@ async function checkForUpdatesInBackground() {
       // مقارنة البيانات الجديدة مع المخزنة
       if (JSON.stringify(newData) !== JSON.stringify(cachedData)) {
         // هناك تغييرات، عرض زر التحديث
-        document.getElementById('forceUpdateIndicator').style.display = 'block';
-        document.getElementById('forceUpdateIndicator').innerHTML = '🔄 تحديث البيانات (جديد!)';
+        document.getElementById('update-count').style.display = 'inline-block';
+        document.getElementById('update-count').textContent = '!';
       }
     }
   } catch (error) {
@@ -2707,16 +2700,16 @@ async function checkForUpdatesInBackground() {
   }
 }
 
-// تهيئة نظام التحديث المحسن
-function initializeEnhancedUpdateSystem() {
-  // تحديث المنتجات كل 30 ثانية (أسرع من السابق)
-  autoUpdateInterval = setInterval(fetchProducts, 30000);
+// تهيئة نظام التحديث التلقائي
+function initializeAutoUpdateSystem() {
+  // تحديث المنتجات كل 60 ثانية (دقيقة واحدة)
+  autoUpdateInterval = setInterval(fetchProducts, 60000);
   
-  // التحقق من التحديثات في الخلفية كل 15 ثانية
-  setInterval(checkForUpdatesInBackground, 15000);
+  // التحقق من التحديثات في الخلفية كل 30 ثانية
+  setInterval(checkForUpdatesInBackground, 30000);
   
-  // إخفاء زر التحديث الإجباري في البداية
-  document.getElementById('forceUpdateIndicator').style.display = 'none';
+  // إخفاء العداد في البداية
+  document.getElementById('update-count').style.display = 'none';
 }
 
 // دالة محسنة لعرض الفاتورة مع إعادة التنظيم إلى الشكل الأصلي
@@ -3140,8 +3133,8 @@ document.addEventListener('DOMContentLoaded', function() {
   // تحميل المنتجات من API
   fetchProducts();
   
-  // بدء نظام التحديث المحسن
-  initializeEnhancedUpdateSystem();
+  // بدء نظام التحديث التلقائي
+  initializeAutoUpdateSystem();
   
   // تحميل السلة المحفوظة
   loadSavedCart();
