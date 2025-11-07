@@ -1802,6 +1802,64 @@ img {
 #updateBtn:hover {
   background: #ff5500;
 }
+
+/* إصلاحات خاصة لمتصفح سفاري على iOS */
+@supports (-webkit-touch-callout: none) {
+  body {
+    -webkit-overflow-scrolling: touch;
+    height: -webkit-fill-available;
+  }
+  
+  .categories-container {
+    position: -webkit-sticky;
+  }
+  
+  .categories-bar {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+  
+  /* تحسين أداء التمرير */
+  .products-grid {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+  
+  /* إصلاح مشكلة position: sticky */
+  header {
+    position: -webkit-sticky;
+  }
+  
+  /* تحسين عرض الصور */
+  .product-image-container img {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+}
+
+/* إصلاحات للشاشات الصغيرة في سفاري */
+@media screen and (max-width: 768px) {
+  .modal-content {
+    max-height: 80vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .categories-bar {
+    padding-bottom: 10px;
+  }
+}
+
+/* منع التكبير في حقول الإدخال على iOS */
+input, select, textarea {
+  font-size: 16px; /* يمنع التكبير التلقائي في iOS */
+}
+
+/* تحسينات للأزرار في iOS */
+button {
+  -webkit-appearance: none;
+  border-radius: 0;
+}
 </style>
 </head>
 <body class="hide-price">
@@ -2496,73 +2554,86 @@ async function fetchProducts() {
     document.getElementById('loadingStatus').textContent = 'جاري الاتصال بالخادم...';
     document.getElementById('loadingProgressBar').style.width = '40%';
     
-    // جلب البيانات الجديدة من API مع مهلة زمنية
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 ثواني مهلة
-    
-    const response = await fetch(SCRIPT_PRODUCTS_URL + "?t=" + new Date().getTime(), {
-      cache: "no-store",
-      method: 'GET',
-      mode: 'cors',
-      signal: controller.signal
-    });
-    
-    clearTimeout(timeoutId);
-    
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    
-    document.getElementById('loadingStatus').textContent = 'جاري معالجة البيانات...';
-    document.getElementById('loadingProgressBar').style.width = '80%';
-    
-    const data = await response.json();
-    
-    if (Array.isArray(data) && data.length > 0) {
-      productsData = data.reverse().map(item => {
-        if (isNaN(parseFloat(item.price))) {
-          item.price = "0.00";
+    // استخدام fetch مع خيارات متوافقة مع سفاري
+    try {
+      // استخدام CORS proxy لتجاوز مشاكل CORS في سفاري
+      const proxyUrl = 'https://api.allorigins.win/raw?url=';
+      const url = encodeURIComponent(SCRIPT_PRODUCTS_URL + "?t=" + new Date().getTime());
+      
+      const response = await fetch(proxyUrl + url, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
         }
-        if (!item.image || item.image.trim() === '') {
-          item.image = 'https://via.placeholder.com/200?text=صورة+منتج';
-        }
-        return item;
       });
       
-      // التحقق من وجود منتجات جديدة
-      const oldProducts = JSON.parse(localStorage.getItem("products") || "[]");
-      const newProducts = checkForNewProducts(oldProducts, productsData);
-      
-      // تحديث عدد المنتجات الجديدة
-      newProductsDetected = newProducts.length;
-      updateNewProductsCount();
-      
-      localStorage.setItem("products", JSON.stringify(productsData));
-      localStorage.setItem("products_cache_time", now.toString());
-      
-      document.getElementById('loadingStatus').textContent = 'جاري عرض المنتجات...';
-      document.getElementById('loadingProgressBar').style.width = '100%';
-      
-      filterProductsByCategory('all');
-      checkNewProducts();
-      updateCategoryCounts();
-      
-      // إظهار إشعار المنتجات الجديدة إذا كان هناك منتجات جديدة
-      if (newProducts.length > 0) {
-        showNewProductsNotification();
-        
-        // إظهار زر تحديث البيانات فقط عند وجود منتجات جديدة
-        document.getElementById('update-count').style.display = 'inline-block';
-        document.getElementById('update-count').textContent = newProducts.length;
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
       
-      setTimeout(() => {
-        document.getElementById('products-container').innerHTML = '';
-        filterProductsByCategory('all');
-      }, 500);
+      document.getElementById('loadingStatus').textContent = 'جاري معالجة البيانات...';
+      document.getElementById('loadingProgressBar').style.width = '80%';
       
-    } else {
-      throw new Error('لا توجد بيانات متاحة');
+      const data = await response.json();
+      
+      if (Array.isArray(data) && data.length > 0) {
+        productsData = data.reverse().map(item => {
+          if (isNaN(parseFloat(item.price))) {
+            item.price = "0.00";
+          }
+          if (!item.image || item.image.trim() === '') {
+            item.image = 'https://via.placeholder.com/200?text=صورة+منتج';
+          }
+          return item;
+        });
+        
+        // التحقق من وجود منتجات جديدة
+        const oldProducts = JSON.parse(localStorage.getItem("products") || "[]");
+        const newProducts = checkForNewProducts(oldProducts, productsData);
+        
+        // تحديث عدد المنتجات الجديدة
+        newProductsDetected = newProducts.length;
+        updateNewProductsCount();
+        
+        localStorage.setItem("products", JSON.stringify(productsData));
+        localStorage.setItem("products_cache_time", now.toString());
+        
+        document.getElementById('loadingStatus').textContent = 'جاري عرض المنتجات...';
+        document.getElementById('loadingProgressBar').style.width = '100%';
+        
+        filterProductsByCategory('all');
+        checkNewProducts();
+        updateCategoryCounts();
+        
+        // إظهار إشعار المنتجات الجديدة إذا كان هناك منتجات جديدة
+        if (newProducts.length > 0) {
+          showNewProductsNotification();
+          
+          // إظهار زر تحديث البيانات فقط عند وجود منتجات جديدة
+          document.getElementById('update-count').style.display = 'inline-block';
+          document.getElementById('update-count').textContent = newProducts.length;
+        }
+        
+        setTimeout(() => {
+          document.getElementById('products-container').innerHTML = '';
+          filterProductsByCategory('all');
+        }, 500);
+        
+      } else {
+        throw new Error('لا توجد بيانات متاحة');
+      }
+    } catch (fetchError) {
+      // إذا فشل الطلب باستخدام proxy، حاول الطلب المباشر
+      console.log('محاولة الطلب المباشر بعد فشل proxy:', fetchError);
+      
+      const directResponse = await fetch(SCRIPT_PRODUCTS_URL + "?t=" + new Date().getTime(), {
+        method: 'GET',
+        mode: 'no-cors'
+      }).catch(e => {
+        throw new Error('فشل كلا المحاولتين: ' + e.message);
+      });
+      
+      throw new Error('لا يمكن الوصول للبيانات حالياً');
     }
     
   } catch (error) {
@@ -2585,11 +2656,11 @@ async function fetchProducts() {
         
       } catch (e) {
         console.error("❌ خطأ في تحميل البيانات المخزنة:", e);
-        // عرض رسالة خطأ بدلاً من استخدام بيانات تجريبية
+        // عرض رسالة خطأ
         showErrorMessage();
       }
     } else {
-      // عرض رسالة خطأ بدلاً من استخدام بيانات تجريبية
+      // عرض رسالة خطأ
       showErrorMessage();
     }
   }
@@ -2678,10 +2749,11 @@ function forceUpdate() {
 // دالة التحقق من التحديثات في الخلفية
 async function checkForUpdatesInBackground() {
   try {
-    const response = await fetch(SCRIPT_PRODUCTS_URL + "?t=" + new Date().getTime(), {
-      cache: "no-store",
-      method: 'GET',
-      mode: 'cors'
+    const proxyUrl = 'https://api.allorigins.win/raw?url=';
+    const url = encodeURIComponent(SCRIPT_PRODUCTS_URL + "?t=" + new Date().getTime());
+    
+    const response = await fetch(proxyUrl + url, {
+      method: 'GET'
     });
     
     if (response.ok) {
