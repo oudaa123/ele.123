@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>جميع منتجات جنة</title>
 <style>
-/* جميع الأنماط السابقة تبقى كما هي مع بعض التحسينات */
 :root {
   --primary-color: #8a2be2;
   --secondary-color: #ffd814;
@@ -27,10 +26,9 @@ body {
   font-size: 14px;
   padding-bottom: 60px;
   -webkit-text-size-adjust: 100%;
-  /* إصلاح مشكلة الرجفة */
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: graxy;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 header {
@@ -139,8 +137,10 @@ header {
   background: white;
   border-bottom: 1px solid #ddd;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  /* جعل الأقسام ثابتة دائماً */
+  /* التأكد من أن الأقسام ثابتة دائماً */
   display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 .categories-bar {
@@ -151,7 +151,7 @@ header {
   -ms-overflow-style: none;
   gap: 8px;
   background: white;
-  /* جعل الأقسام ثابتة دائماً */
+  /* التأكد من أن الأقسام ثابتة دائماً */
   position: static;
 }
 
@@ -470,7 +470,6 @@ header {
   width: 500px;
   position: relative;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  /* منع الحركة والاهتزاز */
   transform: translateZ(0);
   backface-visibility: hidden;
   perspective: 1000;
@@ -527,7 +526,6 @@ header {
   border-collapse: collapse;
   margin: 20px 0;
   font-size: 16px;
-  /* منع اهتزاز الجدول */
   transform: translateZ(0);
 }
 
@@ -1638,6 +1636,15 @@ img {
   .moving-offer-bar {
     position: -webkit-sticky;
   }
+  
+  /* تحسينات خاصة للآيفون */
+  body {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .categories-bar {
+    -webkit-overflow-scrolling: touch;
+  }
 }
 </style>
 </head>
@@ -1846,7 +1853,7 @@ img {
 
 <script>
 // إعدادات التطبيق
-const SCRIPT_PRODUCTS_URL = "https://script.google.com/macros/s/AKfycbzCyOXHXurruDI1FvTR1wDSQ-tAOES53Ga2Tw0sCJB5LA5ossdiVkSQUPXoEae4IWutWg/exec";
+const SCRIPT_PRODUCTS_URL = "https://script.google.com/macros/s/AKfycbxQCsDkj7GP1HPc8YfLuIIiQxval8l3OpapKN8TuHdGXiP_5juG_9CMQ1qSbVLGCcV9lg/exec";
 const container = document.getElementById("products-container");
 let productsData = [];
 let cart = [];
@@ -2824,8 +2831,8 @@ function sendProductRequest() {
 
 // تهيئة التحديث التلقائي
 function initializeAutoUpdate() {
-  // تحديث المنتجات كل 60 ثانية
-  autoUpdateInterval = setInterval(fetchProducts, 60000);
+  // تحديث المنتجات كل 30 ثانية بدلاً من 60 ثانية
+  autoUpdateInterval = setInterval(fetchProducts, 30000);
 }
 
 // تهيئة الصفحة
@@ -2867,6 +2874,14 @@ document.addEventListener('DOMContentLoaded', function() {
   // إظهار شريط العروض المتحرك إذا كانت الأسعار ظاهرة
   if (pricesVisible) {
     document.getElementById('movingOfferBar').style.display = 'block';
+  }
+  
+  // التأكد من أن الأقسام ثابتة دائماً
+  const categoriesContainer = document.querySelector('.categories-container');
+  if (categoriesContainer) {
+    categoriesContainer.style.display = 'block';
+    categoriesContainer.style.visibility = 'visible';
+    categoriesContainer.style.opacity = '1';
   }
 });
 </script>
