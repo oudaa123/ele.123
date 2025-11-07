@@ -122,12 +122,11 @@ header {
 /* تحسينات شريط التصنيفات لجعله أكثر ثباتاً */
 .categories-container {
   position: sticky;
-  top: 120px;
+  top: 120px; /* تم تعديله ليكون تحت الهيدر مباشرة */
   z-index: 999;
   background: white;
   border-bottom: 1px solid #ddd;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  /* التأكد من أن الأقسام ثابتة دائماً */
   display: block !important;
   visibility: visible !important;
   opacity: 1 !important;
@@ -141,7 +140,6 @@ header {
   -ms-overflow-style: none;
   gap: 8px;
   background: white;
-  /* التأكد من أن الأقسام ثابتة دائماً */
   position: static;
 }
 
@@ -194,18 +192,55 @@ header {
   box-shadow: 0 2px 4px rgba(138, 43, 226, 0.3);
 }
 
-/* أيقونات الأقسام */
-.category-btn[data-category="all"]::before { content: "🏠 "; }
-.category-btn[data-category="صب"]::before { content: "🔋 "; }
-.category-btn[data-category="كابل"]::before { content: "🔌 "; }
-.category-btn[data-category="شاحن"]::before { content: "⚡ "; }
-.category-btn[data-category="جراب"]::before { content: "📱 "; }
-.category-btn[data-category="اسكرين"]::before { content: "🖥️ "; }
-.category-btn[data-category="سماعة"]::before { content: "🎧 "; }
-.category-btn[data-category="بطارية"]::before { content: "🔋 "; }
-.category-btn[data-category="اخرى"]::before { content: "📦 "; }
+/* شريط المنتجات الجديدة المثبت */
+.new-products-sticky-bar {
+  position: sticky;
+  top: 170px; /* تحت شريط التصنيفات مباشرة */
+  background: linear-gradient(135deg, #ff4444, #cc0000);
+  color: white;
+  padding: 8px 15px;
+  text-align: center;
+  font-weight: bold;
+  z-index: 998;
+  display: none;
+  box-shadow: 0 2px 10px rgba(255, 0, 0, 0.3);
+  animation: pulse-sticky 2s infinite;
+}
 
-/* تحسين عرض المنتجات بدون كروت */
+@keyframes pulse-sticky {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.01); }
+  100% { transform: scale(1); }
+}
+
+/* شريط العروض المتحرك */
+.moving-offer-bar {
+  position: sticky;
+  top: 200px; /* تحت شريط المنتجات الجديدة */
+  background: linear-gradient(135deg, #ff6600, #ff3300);
+  color: white;
+  padding: 10px 15px;
+  text-align: center;
+  font-weight: bold;
+  z-index: 997;
+  display: none;
+  overflow: hidden;
+  white-space: nowrap;
+  box-shadow: 0 2px 10px rgba(255, 102, 0, 0.3);
+}
+
+.moving-offer-text {
+  display: inline-block;
+  padding-left: 100%;
+  animation: marquee 15s linear infinite;
+}
+
+@keyframes marquee {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(-100%, 0); }
+}
+
+/* باقي الأنماط تبقى كما هي */
 .products-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -1276,242 +1311,36 @@ header {
   transform: translateY(-2px);
 }
 
-/* التحسينات الجديدة */
+/* أيقونات الأقسام */
+.category-btn[data-category="all"]::before { content: "🏠 "; }
+.category-btn[data-category="صب"]::before { content: "🔋 "; }
+.category-btn[data-category="كابل"]::before { content: "🔌 "; }
+.category-btn[data-category="شاحن"]::before { content: "⚡ "; }
+.category-btn[data-category="جراب"]::before { content: "📱 "; }
+.category-btn[data-category="اسكرين"]::before { content: "🖥️ "; }
+.category-btn[data-category="سماعة"]::before { content: "🎧 "; }
+.category-btn[data-category="بطارية"]::before { content: "🔋 "; }
+.category-btn[data-category="اخرى"]::before { content: "📦 "; }
 
-/* شريط المنتجات الجديدة المثبت */
-.new-products-sticky-bar {
-  position: sticky;
-  top: 170px;
-  background: linear-gradient(135deg, #ff4444, #cc0000);
+/* مؤشر عدد المنتجات في كل قسم */
+.category-count {
+  background: var(--accent-color);
   color: white;
-  padding: 8px 15px;
-  text-align: center;
-  font-weight: bold;
-  z-index: 998;
-  display: none;
-  box-shadow: 0 2px 10px rgba(255, 0, 0, 0.3);
-  animation: pulse-sticky 2s infinite;
-}
-
-@keyframes pulse-sticky {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.01); }
-  100% { transform: scale(1); }
-}
-
-/* شريط العروض المتحرك */
-.moving-offer-bar {
-  position: sticky;
-  top: 200px;
-  background: linear-gradient(135deg, #ff6600, #ff3300);
-  color: white;
-  padding: 10px 15px;
-  text-align: center;
-  font-weight: bold;
-  z-index: 997;
-  display: none;
-  overflow: hidden;
-  white-space: nowrap;
-  box-shadow: 0 2px 10px rgba(255, 102, 0, 0.3);
-}
-
-.moving-offer-text {
-  display: inline-block;
-  padding-left: 100%;
-  animation: marquee 15s linear infinite;
-}
-
-@keyframes marquee {
-  0% { transform: translate(0, 0); }
-  100% { transform: translate(-100%, 0); }
-}
-
-/* زر طلب منتج غير متوفر */
-.request-product-button {
-  background: #ff6b00;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 14px;
-  display: flex;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 10px;
+  display: inline-flex;
   align-items: center;
-  gap: 5px;
-  white-space: nowrap;
-}
-
-.request-product-button:hover {
-  background: #ff5500;
-}
-
-/* تحسينات تخطيط الفاتورة */
-.cart-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  align-items: center;
-}
-
-.quantity-controls {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.quantity-btn {
-  background: var(--primary-color);
-  color: white;
-  border: none;
-  border-radius: 4px;
-  width: 30px;
-  height: 30px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.delete-btn {
-  background: #ff4444;
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 12px;
-  margin-top: 5px;
-}
-
-/* تحسينات تفاصيل الشحن في الفاتورة */
-.shipping-details {
-  background: #f0f8ff;
-  padding: 15px;
-  border-radius: 8px;
-  margin: 15px 0;
-  border: 1px solid #8a2be2;
-}
-
-.shipping-breakdown {
-  display: flex;
-  justify-content: space-between;
-  margin: 5px 0;
-  font-size: 16px;
-}
-
-.shipping-total {
-  font-weight: bold;
-  font-size: 18px;
-  color: #ff4444;
-  margin-top: 10px;
-  padding-top: 10px;
-  border-top: 1px dashed #8a2be2;
-}
-
-/* إشعار توجيه البحث */
-.search-suggestion {
-  background: #fff3cd;
-  color: #856404;
-  padding: 10px 15px;
-  border-radius: 8px;
-  margin: 10px;
-  text-align: center;
-  border: 1px solid #ffeaa7;
-  display: none;
-}
-
-.search-suggestion a {
-  color: #8a2be2;
-  font-weight: bold;
-  text-decoration: none;
-  margin: 0 5px;
-}
-
-.search-suggestion a:hover {
-  text-decoration: underline;
-}
-
-/* تحسينات للمنتجات غير المتوفرة */
-.out-of-stock-price {
-  color: #999 !important;
-  font-style: italic;
-}
-
-/* تحسينات جديدة للفاتورة */
-.invoice-summary {
-  background: #f9f9f9;
-  padding: 15px;
-  border-radius: 8px;
-  margin: 15px 0;
-  border: 2px dashed #8a2be2;
-}
-
-.summary-item {
-  display: flex;
-  justify-content: space-between;
-  margin: 8px 0;
-  font-size: 16px;
-}
-
-.summary-total {
-  font-weight: bold;
-  font-size: 18px;
-  color: #ff4444;
-  margin-top: 10px;
-  padding-top: 10px;
-  border-top: 1px solid #ddd;
-}
-
-/* إزالة التكرار في الفاتورة */
-.final-total {
-  display: none;
-}
-
-/* أزرار إضافية تحت البحث */
-.additional-buttons {
-  display: flex;
   justify-content: center;
-  gap: 8px;
-  margin: 10px 0;
-  padding: 0 5px;
-  flex-wrap: wrap;
+  margin-right: 5px;
+  position: absolute;
+  top: -5px;
+  left: -5px;
 }
 
-/* تحسينات تعديل الكمية في الفاتورة */
-.quantity-input-modal {
-  width: 70px;
-  padding: 6px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  text-align: center;
-  font-size: 14px;
-  margin: 0 auto;
-  display: block;
-}
-
-/* إخفاء الأزرار الثابتة القديمة */
-.support-button-fixed,
-.request-product-button-fixed {
-  display: none !important;
-}
-
-/* إعادة الفاتورة إلى شكلها الأصلي */
-.modal-content {
-  max-height: none;
-  overflow-y: visible;
-}
-
-.cart-item-controls {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  align-items: center;
-}
-
-.quantity-controls-invoice {
-  display: flex;
-  align-items: center;
-  gap: 5px;
+.category-btn {
+  position: relative;
 }
 
 /* تحسينات أداء التحميل */
@@ -1563,27 +1392,6 @@ header {
 img {
   image-rendering: -webkit-optimize-contrast;
   image-rendering: crisp-edges;
-}
-
-/* مؤشر عدد المنتجات في كل قسم */
-.category-count {
-  background: var(--accent-color);
-  color: white;
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  font-size: 10px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 5px;
-  position: absolute;
-  top: -5px;
-  left: -5px;
-}
-
-.category-btn {
-  position: relative;
 }
 
 /* تحسينات للشاشات الصغيرة جداً */
