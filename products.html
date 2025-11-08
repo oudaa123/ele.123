@@ -43,7 +43,6 @@ header {
   top: 0;
   z-index: 1000;
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-  min-height: 140px; /* ارتفاع إضافي */
 }
 
 .header-buttons {
@@ -53,7 +52,6 @@ header {
    justify-content: center;
    gap: 5px;
    position: relative;
-   z-index: 1001; /* تأكد من ظهورها */
 }
 .header-buttons button {
   background: var(--secondary-color);
@@ -138,7 +136,7 @@ header {
 /* تحسينات شريط التصنيفات لجعله أكثر ثباتاً */
 .categories-container {
   position: sticky;
-  top: 180px; /* زيادة المسافة من الأعلى */
+  top: 120px;
   z-index: 999;
   background: white;
   border-bottom: 1px solid #ddd;
@@ -656,7 +654,6 @@ header {
   gap: 8px;
   margin: 10px 0;
   padding: 0 5px;
-  z-index: 1001; /* تأكد من ظهوره */
 }
 
 #searchBox {
@@ -715,7 +712,7 @@ header {
   cursor: pointer;
   font-weight: bold;
   font-size: 16px;
-  z-index: 1002; /* زيادة قيمة z-index */
+  z-index: 999;
   display: flex;
   align-items: center;
   gap: 5px;
@@ -741,33 +738,17 @@ header {
   font-size: 14px;
 }
 
-/* شريط الشحن المجاني - تم تعديل موقعه */
+/* شريط الشحن المجاني - تم إزالته */
 .shipping-bar {
-  background: linear-gradient(135deg, #ff6b00, #ff4444);
-  color: white;
-  padding: 8px 12px;
-  text-align: center;
-  font-weight: bold;
-  margin: 5px;
-  border-radius: 8px;
-  animation: pulse-shipping 2s infinite;
   display: none;
-  font-size: 12px;
 }
 
 .shipping-progress {
-  background: rgba(255,255,255,0.3);
-  height: 6px;
-  border-radius: 3px;
-  margin: 5px 0;
-  overflow: hidden;
+  display: none;
 }
 
 .shipping-progress-fill {
-  background: white;
-  height: 100%;
-  border-radius: 3px;
-  transition: width 0.5s ease;
+  display: none;
 }
 
 @keyframes pulse-shipping {
@@ -1053,11 +1034,7 @@ header {
   }
   
   .categories-container {
-    top: 160px; /* تعديل للموبايل */
-  }
-  
-  header {
-    min-height: 160px; /* زيادة الارتفاع في الموبايل */
+    top: 110px;
   }
   
   /* تحسينات إضافية للشاشات الصغيرة */
@@ -1104,14 +1081,6 @@ header {
   .category-btn {
     padding: 6px 12px;
     font-size: 12px;
-  }
-  
-  .categories-container {
-    top: 170px;
-  }
-  
-  header {
-    min-height: 180px; /* زيادة أكبر للشاشات الصغيرة */
   }
   
   /* تحسينات إضافية للشاشات الصغيرة جداً */
@@ -1312,7 +1281,7 @@ header {
 /* شريط المنتجات الجديدة المثبت */
 .new-products-sticky-bar {
   position: sticky;
-  top: 230px; /* زيادة المسافة */
+  top: 170px;
   background: linear-gradient(135deg, #ff4444, #cc0000);
   color: white;
   padding: 8px 15px;
@@ -1330,27 +1299,13 @@ header {
   100% { transform: scale(1); }
 }
 
-/* شريط العروض المتحرك - تم تعديل موقعه */
+/* شريط العروض المتحرك - تم إزالته */
 .moving-offer-bar {
-  position: sticky;
-  top: 260px; /* زيادة المسافة */
-  background: linear-gradient(135deg, #ff6600, #ff3300);
-  color: white;
-  padding: 8px 12px;
-  text-align: center;
-  font-weight: bold;
-  z-index: 997;
   display: none;
-  overflow: hidden;
-  white-space: nowrap;
-  box-shadow: 0 2px 10px rgba(255, 102, 0, 0.3);
-  font-size: 12px;
 }
 
 .moving-offer-text {
-  display: inline-block;
-  padding-left: 100%;
-  animation: marquee 15s linear infinite;
+  display: none;
 }
 
 @keyframes marquee {
@@ -1507,8 +1462,6 @@ header {
   margin: 10px 0;
   padding: 0 5px;
   flex-wrap: wrap;
-  position: relative;
-  z-index: 1001; /* تأكد من ظهورها فوق العناصر الأخرى */
 }
 
 /* تحسينات تعديل الكمية في الفاتورة */
@@ -1691,28 +1644,13 @@ img {
   gap: 5px;
 }
 
-/* شريط الإشعارات الجانبي */
+/* شريط الإشعارات الجانبي - تم إزالته */
 .notifications-sidebar {
-  position: fixed;
-  top: 150px; /* تعديل الموقع */
-  left: 10px;
-  z-index: 996;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  max-width: 200px;
+  display: none;
 }
 
 .notification-item {
-  background: linear-gradient(135deg, #ff6600, #ff3300);
-  color: white;
-  padding: 8px 12px;
-  border-radius: 8px;
-  font-size: 12px;
-  font-weight: bold;
-  box-shadow: 0 2px 8px rgba(255, 102, 0, 0.3);
-  animation: pulse-notification 2s infinite;
-  text-align: center;
+  display: none;
 }
 
 @keyframes pulse-notification {
@@ -1724,29 +1662,21 @@ img {
 /* تحسينات التجاوب مع الموبايل */
 @media (max-width: 768px) {
   .notifications-sidebar {
-    position: static;
-    max-width: 100%;
-    margin: 10px;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: none;
   }
   
   .notification-item {
-    flex: 1;
-    min-width: 45%;
-    font-size: 11px;
-    padding: 6px 8px;
+    display: none;
   }
 }
 
 @media (max-width: 480px) {
   .notifications-sidebar {
-    flex-direction: column;
+    display: none;
   }
   
   .notification-item {
-    min-width: 100%;
+    display: none;
   }
 }
 
@@ -1819,82 +1749,9 @@ img {
 #updateBtn:hover {
   background: #ff5500;
 }
-
-/* إصلاحات خاصة لمتصفح سفاري على iOS */
-@supports (-webkit-touch-callout: none) {
-  body {
-    -webkit-overflow-scrolling: touch;
-    height: -webkit-fill-available;
-  }
-  
-  .categories-container {
-    position: -webkit-sticky;
-  }
-  
-  .categories-bar {
-    -webkit-overflow-scrolling: touch;
-    scroll-behavior: smooth;
-  }
-  
-  /* تحسين أداء التمرير */
-  .products-grid {
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-  }
-  
-  /* إصلاح مشكلة position: sticky */
-  header {
-    position: -webkit-sticky;
-  }
-  
-  /* تحسين عرض الصور */
-  .product-image-container img {
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-  }
-}
-
-/* إصلاحات للشاشات الصغيرة في سفاري */
-@media screen and (max-width: 768px) {
-  .modal-content {
-    max-height: 80vh;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-  
-  .categories-bar {
-    padding-bottom: 10px;
-  }
-}
-
-/* منع التكبير في حقول الإدخال على iOS */
-input, select, textarea {
-  font-size: 16px; /* يمنع التكبير التلقائي في iOS */
-}
-
-/* تحسينات للأزرار في iOS */
-button {
-  -webkit-appearance: none;
-  border-radius: 0;
-}
 </style>
 </head>
 <body class="hide-price">
-
-<!-- شريط الإشعارات الجانبي -->
-<div class="notifications-sidebar">
-  <div id="shippingBar" class="notification-item">
-    <div>🚚 الشحن مجاني لجميع منتجات جنه!</div>
-    <div class="shipping-progress">
-      <div class="shipping-progress-fill" id="shippingProgress"></div>
-    </div>
-    <div id="shippingMessage" style="font-size: 10px;">اشتري <span id="remainingAmount">500</span> جنيه أخرى</div>
-  </div>
-  
-  <div id="movingOfferBar" class="notification-item">
-    💥 خصم خاص للمندوب
-  </div>
-</div>
 
 <!-- شريط المنتجات الجديدة المثبت -->
 <div id="newProductsStickyBar" class="new-products-sticky-bar">
@@ -1930,7 +1787,7 @@ button {
 
   <!-- الأزرار الإضافية تحت البحث -->
   <div class="additional-buttons">
-    <button class="support-button" onclick="window.open('https://wa.me/201022495795', '_blank')">
+    <button class="support-button" onclick="contactSupport()">
       ☎️ الدعم الفني
     </button>
     <button class="request-product-button" onclick="openProductRequestModal()">
@@ -1988,7 +1845,7 @@ button {
     </div>
     <div class="password-support">
       <p>إذا أردت كلمة السر</p>
-      <a href="https://wa.me/201022495795" target="_blank">☎️  تواصل مع الدعم الفني نزداد شرف</a>
+      <a href="javascript:void(0)" onclick="contactSupportForPassword()">☎️  تواصل مع الدعم الفني نزداد شرف</a>
     </div>
   </div>
 </div>
@@ -2204,12 +2061,10 @@ function togglePricesVisibility() {
   if (pricesVisible) {
     document.body.classList.remove('hide-price');
     document.getElementById('showPricesBar').style.display = 'none';
-    // إظهار شريط العروض المتحرك عند إدخال كلمة السر
-    document.querySelector('.notifications-sidebar').style.display = 'flex';
+    // إزالة إظهار شريط الإشعارات الجانبي
   } else {
     document.body.classList.add('hide-price');
     document.getElementById('showPricesBar').style.display = 'block';
-    document.querySelector('.notifications-sidebar').style.display = 'none';
   }
 }
 
@@ -2238,6 +2093,25 @@ function checkPassword() {
     document.getElementById('passwordInput').value = '';
     document.getElementById('passwordInput').focus();
   }
+}
+
+// دالة التواصل مع الدعم الفني - تم تعديلها
+function contactSupport() {
+  const message = "🔐 *طلب كلمة السر*\n\nالسلام عليكم ورحمة الله وبركاته\n\nأحتاج كلمة السر لعرض الأسعار في متجر جنة\n\nشكراً لكم نزداد شرف 🌹";
+  const whatsappUrl = `https://wa.me/201022495795?text=${encodeURIComponent(message)}`;
+  
+  window.open(whatsappUrl, '_blank');
+  showToast('تم فتح محادثة واتساب لطلب كلمة السر');
+}
+
+// دالة التواصل مع الدعم الفني لطلب كلمة السر من داخل مودال كلمة السر
+function contactSupportForPassword() {
+  const message = "🔐 *طلب كلمة السر*\n\nالسلام عليكم ورحمة الله وبركاته\n\nأحتاج كلمة السر لعرض الأسعار في متجر جنة\n\nشكراً لكم نزداد شرف 🌹";
+  const whatsappUrl = `https://wa.me/201022495795?text=${encodeURIComponent(message)}`;
+  
+  window.open(whatsappUrl, '_blank');
+  closePasswordModal();
+  showToast('تم فتح محادثة واتساب لطلب كلمة السر');
 }
 
 function saveCart() {
@@ -2269,7 +2143,6 @@ function loadSavedCart() {
       }
       
       updateCartCount();
-      updateShippingBar();
       showToast('تم استعادة السلة المحفوظة');
     } catch (e) {
       console.error('Error loading saved cart:', e);
@@ -2281,7 +2154,6 @@ function clearCart() {
   if (confirm('هل تريد مسح السلة بالكامل؟')) {
     cart = [];
     updateCartCount();
-    updateShippingBar();
     showToast('تم مسح السلة بنجاح');
     
     localStorage.removeItem('savedCart');
@@ -2391,7 +2263,6 @@ function addToCartWithFixedQuantity(index, fixedQuantity) {
   // إضافة الكمية الثابتة مباشرة
   cart[index] = fixedQuantity;
   updateCartCount();
-  updateShippingBar();
   
   // تشغيل صوت الإشعار عند إضافة منتج جديد
   if (productsData[index].name && productsData[index].name.includes("..")) {
@@ -2418,7 +2289,6 @@ function addToCart(index){
   // إضافة الكمية المحددة فقط (بدون إضافة كمية إضافية)
   cart[index] = quantity;
   updateCartCount();
-  updateShippingBar();
   
   // تشغيل صوت الإشعار عند إضافة منتج جديد
   if (productsData[index].name && productsData[index].name.includes("..")) {
@@ -2492,34 +2362,9 @@ function updateCategoryCounts() {
   });
 }
 
-// تحديث شريط الشحن المجاني
+// تحديث شريط الشحن المجاني - تم إزالته
 function updateShippingBar() {
-  const total = calculateTotal();
-  const shippingBar = document.getElementById('shippingBar');
-  const shippingProgress = document.getElementById('shippingProgress');
-  const shippingMessage = document.getElementById('shippingMessage');
-  const remainingAmount = document.getElementById('remainingAmount');
-  
-  if (total === 0) {
-    shippingBar.style.display = 'none';
-    return;
-  }
-  
-  shippingBar.style.display = 'block';
-  
-  if (total >= FREE_SHIPPING_THRESHOLD) {
-    shippingProgress.style.width = '100%';
-    shippingMessage.innerHTML = '🎉 مبروك! الشحن مجاني';
-    shippingBar.style.background = 'linear-gradient(135deg, #25d366, #128c7e)';
-  } else {
-    const progress = (total / FREE_SHIPPING_THRESHOLD) * 100;
-    const remaining = FREE_SHIPPING_THRESHOLD - total;
-    
-    shippingProgress.style.width = `${progress}%`;
-    remainingAmount.textContent = formatPrice(remaining);
-    shippingMessage.innerHTML = `أنفق <span id="remainingAmount">${formatPrice(remaining)}</span> جنيه أخرى`;
-    shippingBar.style.background = 'linear-gradient(135deg, #ff6b00, #ff4444)';
-  }
+  // تم إزالة هذه الوظيفة
 }
 
 // باقي الدوال تبقى كما هي مع تعديلات طفيفة
@@ -2571,86 +2416,73 @@ async function fetchProducts() {
     document.getElementById('loadingStatus').textContent = 'جاري الاتصال بالخادم...';
     document.getElementById('loadingProgressBar').style.width = '40%';
     
-    // استخدام fetch مع خيارات متوافقة مع سفاري
-    try {
-      // استخدام CORS proxy لتجاوز مشاكل CORS في سفاري
-      const proxyUrl = 'https://api.allorigins.win/raw?url=';
-      const url = encodeURIComponent(SCRIPT_PRODUCTS_URL + "?t=" + new Date().getTime());
-      
-      const response = await fetch(proxyUrl + url, {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
+    // جلب البيانات الجديدة من API مع مهلة زمنية
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 ثواني مهلة
+    
+    const response = await fetch(SCRIPT_PRODUCTS_URL + "?t=" + new Date().getTime(), {
+      cache: "no-store",
+      method: 'GET',
+      mode: 'cors',
+      signal: controller.signal
+    });
+    
+    clearTimeout(timeoutId);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    document.getElementById('loadingStatus').textContent = 'جاري معالجة البيانات...';
+    document.getElementById('loadingProgressBar').style.width = '80%';
+    
+    const data = await response.json();
+    
+    if (Array.isArray(data) && data.length > 0) {
+      productsData = data.reverse().map(item => {
+        if (isNaN(parseFloat(item.price))) {
+          item.price = "0.00";
         }
+        if (!item.image || item.image.trim() === '') {
+          item.image = 'https://via.placeholder.com/200?text=صورة+منتج';
+        }
+        return item;
       });
       
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      // التحقق من وجود منتجات جديدة
+      const oldProducts = JSON.parse(localStorage.getItem("products") || "[]");
+      const newProducts = checkForNewProducts(oldProducts, productsData);
+      
+      // تحديث عدد المنتجات الجديدة
+      newProductsDetected = newProducts.length;
+      updateNewProductsCount();
+      
+      localStorage.setItem("products", JSON.stringify(productsData));
+      localStorage.setItem("products_cache_time", now.toString());
+      
+      document.getElementById('loadingStatus').textContent = 'جاري عرض المنتجات...';
+      document.getElementById('loadingProgressBar').style.width = '100%';
+      
+      filterProductsByCategory('all');
+      checkNewProducts();
+      updateCategoryCounts();
+      
+      // إظهار إشعار المنتجات الجديدة إذا كان هناك منتجات جديدة
+      if (newProducts.length > 0) {
+        showNewProductsNotification();
+        
+        // إظهار زر تحديث البيانات فقط عند وجود منتجات جديدة
+        document.getElementById('update-count').style.display = 'inline-block';
+        document.getElementById('update-count').textContent = newProducts.length;
       }
       
-      document.getElementById('loadingStatus').textContent = 'جاري معالجة البيانات...';
-      document.getElementById('loadingProgressBar').style.width = '80%';
-      
-      const data = await response.json();
-      
-      if (Array.isArray(data) && data.length > 0) {
-        productsData = data.reverse().map(item => {
-          if (isNaN(parseFloat(item.price))) {
-            item.price = "0.00";
-          }
-          if (!item.image || item.image.trim() === '') {
-            item.image = 'https://via.placeholder.com/200?text=صورة+منتج';
-          }
-          return item;
-        });
-        
-        // التحقق من وجود منتجات جديدة
-        const oldProducts = JSON.parse(localStorage.getItem("products") || "[]");
-        const newProducts = checkForNewProducts(oldProducts, productsData);
-        
-        // تحديث عدد المنتجات الجديدة
-        newProductsDetected = newProducts.length;
-        updateNewProductsCount();
-        
-        localStorage.setItem("products", JSON.stringify(productsData));
-        localStorage.setItem("products_cache_time", now.toString());
-        
-        document.getElementById('loadingStatus').textContent = 'جاري عرض المنتجات...';
-        document.getElementById('loadingProgressBar').style.width = '100%';
-        
+      setTimeout(() => {
+        document.getElementById('products-container').innerHTML = '';
         filterProductsByCategory('all');
-        checkNewProducts();
-        updateCategoryCounts();
-        
-        // إظهار إشعار المنتجات الجديدة إذا كان هناك منتجات جديدة
-        if (newProducts.length > 0) {
-          showNewProductsNotification();
-          
-          // إظهار زر تحديث البيانات فقط عند وجود منتجات جديدة
-          document.getElementById('update-count').style.display = 'inline-block';
-          document.getElementById('update-count').textContent = newProducts.length;
-        }
-        
-        setTimeout(() => {
-          document.getElementById('products-container').innerHTML = '';
-          filterProductsByCategory('all');
-        }, 500);
-        
-      } else {
-        throw new Error('لا توجد بيانات متاحة');
-      }
-    } catch (fetchError) {
-      // إذا فشل الطلب باستخدام proxy، حاول الطلب المباشر
-      console.log('محاولة الطلب المباشر بعد فشل proxy:', fetchError);
+      }, 500);
       
-      const directResponse = await fetch(SCRIPT_PRODUCTS_URL + "?t=" + new Date().getTime(), {
-        method: 'GET',
-        mode: 'no-cors'
-      }).catch(e => {
-        throw new Error('فشل كلا المحاولتين: ' + e.message);
-      });
-      
-      throw new Error('لا يمكن الوصول للبيانات حالياً');
+    } else {
+      throw new Error('لا توجد بيانات متاحة');
     }
     
   } catch (error) {
@@ -2673,11 +2505,11 @@ async function fetchProducts() {
         
       } catch (e) {
         console.error("❌ خطأ في تحميل البيانات المخزنة:", e);
-        // عرض رسالة خطأ
+        // عرض رسالة خطأ بدلاً من استخدام بيانات تجريبية
         showErrorMessage();
       }
     } else {
-      // عرض رسالة خطأ
+      // عرض رسالة خطأ بدلاً من استخدام بيانات تجريبية
       showErrorMessage();
     }
   }
@@ -2766,11 +2598,10 @@ function forceUpdate() {
 // دالة التحقق من التحديثات في الخلفية
 async function checkForUpdatesInBackground() {
   try {
-    const proxyUrl = 'https://api.allorigins.win/raw?url=';
-    const url = encodeURIComponent(SCRIPT_PRODUCTS_URL + "?t=" + new Date().getTime());
-    
-    const response = await fetch(proxyUrl + url, {
-      method: 'GET'
+    const response = await fetch(SCRIPT_PRODUCTS_URL + "?t=" + new Date().getTime(), {
+      cache: "no-store",
+      method: 'GET',
+      mode: 'cors'
     });
     
     if (response.ok) {
@@ -2789,32 +2620,6 @@ async function checkForUpdatesInBackground() {
   }
 }
 
-// دالة لمراقبة ظهور الأزرار وإعادة تثبيتها إذا لزم الأمر
-function ensureButtonsVisibility() {
-  const headerButtons = document.querySelector('.header-buttons');
-  const additionalButtons = document.querySelector('.additional-buttons');
-  const searchContainer = document.querySelector('.search-container');
-  
-  // تأكد من ظهور العناصر
-  [headerButtons, additionalButtons, searchContainer].forEach(element => {
-    if (element) {
-      element.style.display = 'flex';
-      element.style.visibility = 'visible';
-      element.style.opacity = '1';
-      element.style.zIndex = '1001';
-    }
-  });
-  
-  // تأكد من ظهور زر حفظ السلة
-  const saveCartBtn = document.getElementById('saveCartBtn');
-  if (saveCartBtn) {
-    saveCartBtn.style.display = 'flex';
-    saveCartBtn.style.visibility = 'visible';
-    saveCartBtn.style.opacity = '1';
-    saveCartBtn.style.zIndex = '1002';
-  }
-}
-
 // تهيئة نظام التحديث التلقائي
 function initializeAutoUpdateSystem() {
   // تحديث المنتجات كل 60 ثانية (دقيقة واحدة)
@@ -2825,9 +2630,6 @@ function initializeAutoUpdateSystem() {
   
   // إخفاء العداد في البداية
   document.getElementById('update-count').style.display = 'none';
-  
-  // تشغيل الدالة بشكل دوري لضمان ظهور الأزرار
-  setInterval(ensureButtonsVisibility, 1000);
 }
 
 // دالة محسنة لعرض الفاتورة مع إعادة التنظيم إلى الشكل الأصلي
@@ -2895,7 +2697,6 @@ function updateQty(idx, value){
   if(value <= 0) delete cart[idx];
   else cart[idx] = value;
   updateCartCount();
-  updateShippingBar();
 }
 
 function deleteCartItem(index) {
@@ -2903,7 +2704,6 @@ function deleteCartItem(index) {
   if (confirm(`هل تريد حذف ${cleanName} من السلة؟`)) {
     delete cart[index];
     updateCartCount();
-    updateShippingBar();
     showTotal();
     showToast(`تم حذف ${cleanName} من السلة`);
   }
@@ -3071,7 +2871,6 @@ function loadSavedInvoice(index) {
   });
   
   updateCartCount();
-  updateShippingBar();
   showTotal();
   showToast('تم تحميل الفاتورة المحفوظة');
 }
@@ -3142,9 +2941,6 @@ function performSearch() {
   }
   
   renderProducts(filtered, container);
-  
-  // تأكد من ظهور الأزرار بعد البحث
-  ensureButtonsVisibility();
 }
 
 // دالة لعرض اقتراحات البحث
@@ -3287,22 +3083,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const cartCount = cart.reduce((sum, qty) => qty ? sum + qty : sum, 0);
     document.getElementById('saveCartBtn').style.display = cartCount > 0 ? 'flex' : 'none';
   }, 1000);
-  
-  // إظهار شريط العروض المتحرك إذا كانت الأسعار ظاهرة
-  if (pricesVisible) {
-    document.querySelector('.notifications-sidebar').style.display = 'flex';
-  }
-  
-  // التأكد من أن الأقسام ثابتة دائماً
-  const categoriesContainer = document.querySelector('.categories-container');
-  if (categoriesContainer) {
-    categoriesContainer.style.display = 'block';
-    categoriesContainer.style.visibility = 'visible';
-    categoriesContainer.style.opacity = '1';
-  }
-  
-  // تشغيل دالة ضمان ظهور الأزرار فوراً
-  ensureButtonsVisibility();
 });
 </script>
 </body>
