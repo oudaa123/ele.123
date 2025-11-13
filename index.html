@@ -615,7 +615,7 @@ input, textarea {
     <button onclick="showInfo('العنوان:<br>المنصورة - نبروه سوق المحمول')">🏠 العنوان</button>
     <button onclick="showInfo('تواصل معنا:<br>01067070423<br>01022495795<br>01012253500')">📞 تواصل معنا</button>
     <button onclick="window.open('https://www.facebook.com/share/174s1yLKfA/?mibextid=wwXIfr','_blank')">📘 فيسبوك</button>
-    <button class="telegram-style-btn" onclick="goToProducts()">🔥 المنتجات والعروض</button>
+    <button class="telegram-style-btn" onclick="window.open('products.html','_blank')">🔥 المنتجات والعروض</button>
     <button class="telegram-style-btn" onclick="showSubscriptionsBox()">📲 تفعيل الصبات</button>
   </div>
 
@@ -763,11 +763,6 @@ function closeAllMenus() {
 // عرض رسالة الخدمة
 function showServiceMessage(serviceName) {
   alert(`قريباً خدمة ${serviceName} مجانية بالكامل مع التحديثات`);
-}
-
-// الانتقال مباشرة إلى صفحة المنتجات بدون باسورد
-function goToProducts() {
-    window.open('products.html', '_blank');
 }
 
 // دوال المعلومات
