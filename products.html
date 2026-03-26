@@ -7,6 +7,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>جميع منتجات جنة</title>
 <style>
+/* -------------------- جميع الأنماط (CSS) كما هي دون تغيير -------------------- */
 :root {
   --primary-color: #8a2be2;
   --secondary-color: #ffd814;
@@ -1974,7 +1975,7 @@ header {
       </thead>
       <tbody id="cartList">
       </tbody>
-    </table>
+     </table>
     
     <div class="modal-buttons">
       <button id="sendBtn">📤 ارسل فاتورتك واستلمها في اقل من 12 ساعه</button>
@@ -1996,28 +1997,24 @@ header {
 </audio>
 
 <script>
-// إعدادات التطبيق
-const SCRIPT_PRODUCTS_URL = "https://script.google.com/macros/s/AKfycbxQCsDkj7GP1HPc8YfLuIIiQxval8l3OpapKN8TuHdGXiP_5juG_9CMQ1qSbVLGCcV9lg/exec";
-
-// نظام كلمات المرور المحسن مع إضافة 2026
+// ======================
+// نظام كلمات المرور المحسن مع إضافة 2525 (زيادة 15% مع التقريب)
+// ======================
 const PASSWORDS = {
     "2026": { type: "original", increase: 0 },      // الأسعار الأصلية
     "1010": { type: "increased", increase: 4 },     // زيادة 4 جنيه
-    "2028": { type: "increased30", increase: 30 }   // زيادة 30 جنيه - الجديدة
+    "2028": { type: "increased30", increase: 30 },  // زيادة 30 جنيه
+    "2525": { type: "percentage", percentage: 15 }  // زيادة 15% مع التقريب
 };
 
 // إعدادات التطبيق
-const container = document.getElementById("products-container");
-const categoriesView = document.getElementById("categories-view");
-const productsView = document.getElementById("products-view");
-const mainProductsPage = document.getElementById("main-products-page");
-const initialLoading = document.getElementById("initialLoading");
+const SCRIPT_PRODUCTS_URL = "https://script.google.com/macros/s/AKfycbxQCsDkj7GP1HPc8YfLuIIiQxval8l3OpapKN8TuHdGXiP_5juG_9CMQ1qSbVLGCcV9lg/exec";
 
-// متغيرات التطبيق المحسنة
+// متغيرات التطبيق
 let productsData = [];
-let cart = {}; // تم تغييرها إلى كائن بدلاً من مصفوفة
+let cart = {};
 let pricesVisible = false;
-let currentPasswordConfig = null; // تم تغييرها لتحتوي على كائن كامل
+let currentPasswordConfig = null;
 let newProductsCount = 0;
 let isSearching = false;
 let currentSearchTerm = "";
@@ -2031,7 +2028,7 @@ let currentDisplayedProducts = [];
 const FREE_SHIPPING_THRESHOLD = 500;
 const SHIPPING_COST = 50;
 
-// إضافة متغير جديد لتخزين الفواتير المحفوظة
+// متغير لتخزين الفواتير المحفوظة
 let savedInvoices = JSON.parse(localStorage.getItem('savedInvoices')) || [];
 
 // ======================
@@ -2102,6 +2099,8 @@ function formatPrice(price) {
         return "0.00";
     }
     
+    // إرجاع السعر بتنسيق موحد مع منزلة عشرية واحدة أو اثنتين حسب الحاجة
+    // إذا كان الرقم صحيحاً (مثل 10) يعرض 10.00، وإذا كان 10.5 يعرض 10.50
     return numericPrice.toFixed(2);
 }
 
@@ -2124,7 +2123,33 @@ function handleImageError(img) {
 }
 
 // ======================
-// نظام كلمات المرور المحسن
+// دالة التقريب الجديدة - الأهم في هذا التعديل
+// ======================
+function roundToNicePrice(price) {
+    if (price <= 0) return 0;
+    
+    // نقرب السعر إلى أقرب 0.25 (0.00, 0.25, 0.50, 0.75)
+    // مع الحفاظ على الجزء الصحيح كما هو
+    const integerPart = Math.floor(price);
+    const decimalPart = price - integerPart;
+    
+    let roundedDecimal;
+    if (decimalPart < 0.125) roundedDecimal = 0;
+    else if (decimalPart < 0.375) roundedDecimal = 0.25;
+    else if (decimalPart < 0.625) roundedDecimal = 0.50;
+    else if (decimalPart < 0.875) roundedDecimal = 0.75;
+    else roundedDecimal = 1.00;
+    
+    let finalPrice = integerPart + roundedDecimal;
+    
+    // التأكد من عدم وجود أخطاء تقريب (مثل 10.999 -> 11.00)
+    finalPrice = Math.round(finalPrice * 100) / 100;
+    
+    return finalPrice;
+}
+
+// ======================
+// نظام كلمات المرور المحسن مع دعم النسبة المئوية والتقريب
 // ======================
 
 function getAdjustedPrice(originalPrice, productName) {
@@ -2134,11 +2159,23 @@ function getAdjustedPrice(originalPrice, productName) {
     
     // إذا كان المنتج يحتوي على * في الاسم، لا نضيف أي زيادة
     if (productName && productName.includes("*")) {
-        return price; // السعر الأصلي بدون زيادة
+        return price;
     }
     
+    let adjustedPrice = price;
+    
     // إضافة الزيادة بناءً على كلمة المرور
-    return price + currentPasswordConfig.increase;
+    if (currentPasswordConfig.percentage) {
+        // زيادة بنسبة مئوية ثم تقريب السعر
+        adjustedPrice = price * (1 + currentPasswordConfig.percentage / 100);
+        // تطبيق دالة التقريب لجعل السعر رقماً مقبولاً
+        adjustedPrice = roundToNicePrice(adjustedPrice);
+    } else if (currentPasswordConfig.increase !== undefined) {
+        // زيادة بقيمة ثابتة (لا تحتاج تقريب لأنها تضيف أرقاماً صحيحة أو كسرية بسيطة)
+        adjustedPrice = price + currentPasswordConfig.increase;
+    }
+    
+    return adjustedPrice;
 }
 
 function togglePricesVisibility() {
@@ -2174,7 +2211,9 @@ function checkPassword() {
         closePasswordModal();
         
         let message = 'تم عرض الأسعار';
-        if (currentPasswordConfig.increase > 0) {
+        if (currentPasswordConfig.percentage) {
+            message += ` مع زيادة ${currentPasswordConfig.percentage}% وتقريب الأسعار إلى أقرب 0.25 (باستثناء المنتجات التي تحتوي على *)`;
+        } else if (currentPasswordConfig.increase > 0) {
             message += ` مع زيادة ${currentPasswordConfig.increase} جنيه على كل منتج (باستثناء المنتجات التي تحتوي على *)`;
         } else {
             message += ' الأصلية بدون زيادات';
@@ -2466,8 +2505,8 @@ function renderProducts(data, containerElement) {
     }
     
     requestAnimationFrame(() => {
-    containerElement.innerHTML = html;
-});
+        containerElement.innerHTML = html;
+    });
     
     containerElement.querySelectorAll('.quantity-input').forEach(input => {
         input.addEventListener('change', function() {
@@ -2642,15 +2681,15 @@ function showTotal() {
             
             const row = document.createElement("tr");
             row.innerHTML = `<td class="product-name-invoice">${cleanName}</td>
-                             <td>${qty}</td>
-                             <td>${formatPrice(price)} جنيه</td>
-                             <td>${formatPrice(lineTotal)} جنيه</td>
-                             <td>
+                              <td>${qty}</td>
+                              <td>${formatPrice(price)} جنيه</td>
+                              <td>${formatPrice(lineTotal)} جنيه</td>
+                              <td>
                                  <div class="cart-item-controls">
                                      <input type="number" class="quantity-input-modal" min="1" value="${qty}" data-id="${productId}">
                                      <button class="delete-btn" onclick="deleteCartItem('${productId}')">🗑️ حذف</button>
                                  </div>
-                             </td>`;
+                              </td>`;
             cartList.appendChild(row);
         }
     });
@@ -2974,6 +3013,19 @@ function sendProductRequest() {
 // ======================
 
 document.addEventListener('DOMContentLoaded', function() {
+    const container = document.getElementById("products-container");
+    const categoriesView = document.getElementById("categories-view");
+    const productsView = document.getElementById("products-view");
+    const mainProductsPage = document.getElementById("main-products-page");
+    const initialLoading = document.getElementById("initialLoading");
+    
+    // تعيين المتغيرات العامة
+    window.container = container;
+    window.categoriesView = categoriesView;
+    window.productsView = productsView;
+    window.mainProductsPage = mainProductsPage;
+    window.initialLoading = initialLoading;
+    
     // بدء التحميل الأولي
     initialLoad();
     
@@ -3010,6 +3062,3 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 </body>
 </html>
-
-
-
