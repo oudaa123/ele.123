@@ -41,6 +41,7 @@ body {
   position: relative;
 }
 
+/* تحسينات للعرض على الهواتف */
 header {
   background: #131921;
   color: white;
@@ -117,7 +118,7 @@ header {
 .categories-container {
   position: sticky;
   top: 180px;
-  z-index: 997;
+  z-index: 999;
   background: white;
   border-bottom: 1px solid #ddd;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -206,10 +207,12 @@ header {
 .category-btn[data-category="فلاشة"]::before { content: "💾 "; }
 .category-btn[data-category="اخرى"]::before { content: "📦 "; }
 
+/* إخفاء الأعداد تحت الأقسام */
 .category-count {
   display: none !important;
 }
 
+/* تصميم الأقسام الرئيسية */
 .categories-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -1417,6 +1420,7 @@ header {
   box-shadow: 0 3px 10px rgba(0,0,0,0.1);
 }
 
+/* تحسينات للهواتف */
 @media (max-width: 768px) {
   .products-grid {
     grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -1625,6 +1629,7 @@ header {
   }
 }
 
+/* تحسينات خاصة لمتصفح سفاري */
 @supports (-webkit-touch-callout: none) {
   body {
     -webkit-user-select: none;
@@ -1640,6 +1645,7 @@ header {
     -webkit-touch-callout: none;
   }
   
+  /* تحسينات خاصة للآيفون */
   .categories-bar {
     -webkit-overflow-scrolling: touch;
     scroll-behavior: smooth;
@@ -1656,6 +1662,7 @@ header {
   }
 }
 
+/* تحسينات للشاشات الصغيرة جدا */
 @media (max-width: 320px) {
   .header-buttons {
     flex-direction: column;
@@ -1677,6 +1684,7 @@ header {
   }
 }
 
+/* شاشة التحميل الأولي */
 .initial-loading {
   position: fixed;
   top: 0;
@@ -1990,16 +1998,13 @@ header {
 
 <script>
 // ======================
-// تعريف المتغيرات العامة في البداية (إصلاح المشكلة الحرجة)
-// ======================
-let container, categoriesView, productsView, mainProductsPage, initialLoading;
-
 // نظام كلمات المرور المحسن مع إضافة 2525 (زيادة 15% مع التقريب)
+// ======================
 const PASSWORDS = {
-    "2026": { type: "original", increase: 0 },
-    "1010": { type: "increased", increase: 4 },
-    "2028": { type: "increased30", increase: 30 },
-    "2525": { type: "percentage", percentage: 15 }
+    "2026": { type: "original", increase: 0 },      // الأسعار الأصلية
+    "1010": { type: "increased", increase: 4 },     // زيادة 4 جنيه
+    "2028": { type: "increased30", increase: 30 },  // زيادة 30 جنيه
+    "2525": { type: "percentage", percentage: 15 }  // زيادة 15% مع التقريب
 };
 
 // إعدادات التطبيق
@@ -2063,14 +2068,13 @@ function getProductCategory(productName) {
         return 'سماعة';
     }
     
-    // إصلاح: إزالة التداخل بين الصب والفلاشات
-    if (name.includes('الفلاشات') || name.includes('فلاشة')) return 'فلاشة';
-    if (name.includes('صب') || name.includes('سبت') || name.includes('شحن متنقل')) return 'صب';
+    if (name.includes('صب') || name.includes('سبت') || name.includes('spt') || name.includes('شحن متنقل')) return 'صب';
+    if (name.includes('الفلاشات') || name.includes('فلاشة') || name.includes('spt') || name.includes('فلاشة')) return 'فلاشة';
     if (name.includes('كابل') || name.includes('سلك') || name.includes('كورد') || name.includes('cable')) return 'كابل';
     if (name.includes('شاحن') || name.includes('شحن') || name.includes('charger') || name.includes('adaptor')) return 'شاحن';
     if (name.includes('جراب') || name.includes('غطاء') || name.includes('كفر') || name.includes('cover') || name.includes('case')) return 'جراب';
     if (name.includes('اسكرين') || name.includes('شاشة') || name.includes('زجاج') || name.includes('screen') || name.includes('glass')) return 'اسكرين';
-    if (name.includes('بطارية') || name.includes('باور بانك') || name.includes('power bank')) return 'بطارية';
+    if (name.includes('بطارية') || name.includes('باور بانك') || name.includes('شحن متنقل') || name.includes('power bank')) return 'بطارية';
     
     return 'اخرى';
 }
@@ -2095,6 +2099,8 @@ function formatPrice(price) {
         return "0.00";
     }
     
+    // إرجاع السعر بتنسيق موحد مع منزلة عشرية واحدة أو اثنتين حسب الحاجة
+    // إذا كان الرقم صحيحاً (مثل 10) يعرض 10.00، وإذا كان 10.5 يعرض 10.50
     return numericPrice.toFixed(2);
 }
 
@@ -2117,11 +2123,13 @@ function handleImageError(img) {
 }
 
 // ======================
-// دالة التقريب
+// دالة التقريب الجديدة - الأهم في هذا التعديل
 // ======================
 function roundToNicePrice(price) {
     if (price <= 0) return 0;
     
+    // نقرب السعر إلى أقرب 0.25 (0.00, 0.25, 0.50, 0.75)
+    // مع الحفاظ على الجزء الصحيح كما هو
     const integerPart = Math.floor(price);
     const decimalPart = price - integerPart;
     
@@ -2133,13 +2141,15 @@ function roundToNicePrice(price) {
     else roundedDecimal = 1.00;
     
     let finalPrice = integerPart + roundedDecimal;
+    
+    // التأكد من عدم وجود أخطاء تقريب (مثل 10.999 -> 11.00)
     finalPrice = Math.round(finalPrice * 100) / 100;
     
     return finalPrice;
 }
 
 // ======================
-// نظام كلمات المرور المحسن
+// نظام كلمات المرور المحسن مع دعم النسبة المئوية والتقريب
 // ======================
 
 function getAdjustedPrice(originalPrice, productName) {
@@ -2147,16 +2157,21 @@ function getAdjustedPrice(originalPrice, productName) {
     
     const price = parseFloat(originalPrice) || 0;
     
+    // إذا كان المنتج يحتوي على * في الاسم، لا نضيف أي زيادة
     if (productName && productName.includes("*")) {
         return price;
     }
     
     let adjustedPrice = price;
     
+    // إضافة الزيادة بناءً على كلمة المرور
     if (currentPasswordConfig.percentage) {
+        // زيادة بنسبة مئوية ثم تقريب السعر
         adjustedPrice = price * (1 + currentPasswordConfig.percentage / 100);
+        // تطبيق دالة التقريب لجعل السعر رقماً مقبولاً
         adjustedPrice = roundToNicePrice(adjustedPrice);
     } else if (currentPasswordConfig.increase !== undefined) {
+        // زيادة بقيمة ثابتة (لا تحتاج تقريب لأنها تضيف أرقاماً صحيحة أو كسرية بسيطة)
         adjustedPrice = price + currentPasswordConfig.increase;
     }
     
@@ -2206,7 +2221,7 @@ function checkPassword() {
         
         showToast(message);
         
-        if (productsView && productsView.style.display === 'block') {
+        if (productsView.style.display === 'block') {
             filterProductsByCategory(currentCategory);
         }
     } else {
@@ -2217,11 +2232,10 @@ function checkPassword() {
 }
 
 // ======================
-// نظام السلة المحسن
+// نظام السلة المحسن (ID-based)
 // ======================
 
 function getProductIndexById(productId) {
-    if (!productsData || !Array.isArray(productsData)) return -1;
     return productsData.findIndex(p => p.id === productId);
 }
 
@@ -2233,10 +2247,7 @@ function addToCart(productId, quantity) {
     }
     
     const productIndex = getProductIndexById(productId);
-    if (productIndex === -1) {
-        showToast('المنتج غير موجود في قاعدة البيانات');
-        return;
-    }
+    if (productIndex === -1) return;
     
     const product = productsData[productIndex];
     cart[productId] = (cart[productId] || 0) + quantity;
@@ -2323,10 +2334,8 @@ function clearCart() {
 function updateCartCount() {
     const count = getCartTotalItems();
     const badge = document.getElementById("cart-count");
-    if (badge) {
-        badge.style.display = count > 0 ? "inline-block" : "none";
-        badge.innerText = count;
-    }
+    badge.style.display = count > 0 ? "inline-block" : "none";
+    badge.innerText = count;
 }
 
 // ======================
@@ -2339,8 +2348,6 @@ function updateShippingBar() {
     const shippingProgress = document.getElementById('shippingProgress');
     const shippingMessage = document.getElementById('shippingMessage');
     const remainingAmount = document.getElementById('remainingAmount');
-    
-    if (!shippingBar) return;
     
     if (total === 0) {
         shippingBar.style.display = 'none';
@@ -2358,7 +2365,7 @@ function updateShippingBar() {
         const remaining = FREE_SHIPPING_THRESHOLD - total;
         
         shippingProgress.style.width = `${progress}%`;
-        if (remainingAmount) remainingAmount.textContent = formatPrice(remaining);
+        remainingAmount.textContent = formatPrice(remaining);
         shippingMessage.innerHTML = `أنفق <span id="remainingAmount">${formatPrice(remaining)}</span> جنيه أخرى`;
         shippingBar.style.background = 'linear-gradient(135deg, #ff6b00, #ff4444)';
     }
@@ -2369,8 +2376,6 @@ function updateShippingBar() {
 // ======================
 
 function renderCategories() {
-    if (!categoriesView) return;
-    
     const categories = [
         { id: 'all', name: 'جميع المنتجات', icon: '🏠', color: '#8a2be2' },
         { id: 'صب', name: 'الصبات', icon: '🔋', color: '#ff4444' },
@@ -2404,27 +2409,15 @@ function renderCategories() {
 }
 
 function showCategoriesView() {
-    if (!categoriesView || !productsView) return;
-    
     categoriesView.style.display = 'grid';
     productsView.style.display = 'none';
-    
-    const categoriesContainer = document.querySelector('.categories-container');
-    if (categoriesContainer) {
-        categoriesContainer.style.display = 'block';
-    }
+    document.querySelector('.categories-container').style.display = 'block';
 }
 
 function showProductsView(category) {
-    if (!categoriesView || !productsView) return;
-    
     categoriesView.style.display = 'none';
     productsView.style.display = 'block';
-    
-    const categoriesContainer = document.querySelector('.categories-container');
-    if (categoriesContainer) {
-        categoriesContainer.style.display = 'none';
-    }
+    document.querySelector('.categories-container').style.display = 'none';
     
     currentCategory = category;
     
@@ -2435,17 +2428,11 @@ function showProductsView(category) {
         'بطارية': 'البطاريات', 'فلاشة': 'الفلاشات', 'اخرى': 'منتجات أخرى'
     };
     
-    const titleElement = document.getElementById('current-category-title');
-    if (titleElement) {
-        titleElement.textContent = categoryNames[category] || category;
-    }
-    
+    document.getElementById('current-category-title').textContent = categoryNames[category];
     filterProductsByCategory(category);
 }
 
 function renderProducts(data, containerElement) {
-    if (!containerElement) return;
-    
     currentDisplayedProducts = [...data];
     
     let html = "";
@@ -2539,8 +2526,6 @@ function addToCartFromInput(productId) {
 }
 
 function filterProductsByCategory(category) {
-    if (!container) return;
-    
     currentCategory = category;
     
     let filteredProducts = productsData;
@@ -2569,8 +2554,7 @@ async function loadProducts(useCache = true) {
         const cacheTime = localStorage.getItem("products_cache_time");
         const now = Date.now();
         
-        // زيادة مدة الكاش إلى 10 دقائق بدلاً من 5 دقائق
-        if (useCache && cachedProducts && cacheTime && (now - parseInt(cacheTime)) < 10 * 60 * 1000) {
+        if (useCache && cachedProducts && cacheTime && (now - parseInt(cacheTime)) < 5 * 60 * 1000) {
             const data = JSON.parse(cachedProducts);
             return data.map((item, index) => ({
                 ...item,
@@ -2627,8 +2611,8 @@ async function initialLoad() {
         updateInitialLoadingStatus('تم التحميل بنجاح!', 100);
         
         setTimeout(() => {
-            if (initialLoading) initialLoading.style.display = 'none';
-            if (mainProductsPage) mainProductsPage.style.display = 'block';
+            initialLoading.style.display = 'none';
+            mainProductsPage.style.display = 'block';
             showToast('تم تحميل ' + productsData.length + ' منتج بنجاح!');
         }, 500);
         
@@ -2642,7 +2626,7 @@ async function fetchProducts() {
     try {
         productsData = await loadProducts(false);
         
-        if (productsView && productsView.style.display === 'block') {
+        if (productsView.style.display === 'block') {
             filterProductsByCategory(currentCategory);
         } else {
             renderCategories();
@@ -2656,16 +2640,15 @@ async function fetchProducts() {
 }
 
 function forceUpdate() {
-    const autoUpdateIndicator = document.getElementById('autoUpdateIndicator');
-    if (autoUpdateIndicator) autoUpdateIndicator.style.display = 'block';
+    document.getElementById('autoUpdateIndicator').style.display = 'block';
     
     localStorage.removeItem("products");
     localStorage.removeItem("products_cache_time");
     
     fetchProducts().then(() => {
-        if (autoUpdateIndicator) autoUpdateIndicator.style.display = 'none';
+        document.getElementById('autoUpdateIndicator').style.display = 'none';
     }).catch(error => {
-        if (autoUpdateIndicator) autoUpdateIndicator.style.display = 'none';
+        document.getElementById('autoUpdateIndicator').style.display = 'none';
         showToast('❌ حدث خطأ أثناء التحديث');
     });
 }
@@ -2686,8 +2669,6 @@ function showTotal() {
     const finalTotal = total + shipping;
     
     const cartList = document.getElementById("cartList");
-    if (!cartList) return;
-    
     cartList.innerHTML = "";
     
     Object.entries(cart).forEach(([productId, qty]) => {
@@ -2722,23 +2703,15 @@ function showTotal() {
         });
     });
     
-    const productsTotalEl = document.getElementById("productsTotal");
-    const shippingCostBreakdownEl = document.getElementById("shippingCostBreakdown");
-    const finalTotalBreakdownEl = document.getElementById("finalTotalBreakdown");
-    
-    if (productsTotalEl) productsTotalEl.innerText = formatPrice(total) + " جنيه";
-    if (shippingCostBreakdownEl) shippingCostBreakdownEl.innerText = formatPrice(shipping) + " جنيه";
-    if (finalTotalBreakdownEl) finalTotalBreakdownEl.innerText = formatPrice(finalTotal) + " جنيه";
+    document.getElementById("productsTotal").innerText = formatPrice(total) + " جنيه";
+    document.getElementById("shippingCostBreakdown").innerText = formatPrice(shipping) + " جنيه";
+    document.getElementById("finalTotalBreakdown").innerText = formatPrice(finalTotal) + " جنيه";
     
     updateInvoiceDate();
-    
-    const totalModal = document.getElementById("totalModal");
-    if (totalModal) totalModal.style.display = "block";
-    
+    document.getElementById("totalModal").style.display = "block";
     displaySavedInvoices();
     
-    const sendBtn = document.getElementById("sendBtn");
-    if (sendBtn) sendBtn.onclick = sendInvoice;
+    document.getElementById("sendBtn").onclick = sendInvoice;
 }
 
 function deleteCartItem(productId) {
@@ -2753,8 +2726,7 @@ function deleteCartItem(productId) {
 }
 
 function closeTotalModal() { 
-    const totalModal = document.getElementById("totalModal");
-    if (totalModal) totalModal.style.display = 'none'; 
+    document.getElementById("totalModal").style.display = 'none'; 
 }
 
 function updateInvoiceDate() {
@@ -2769,8 +2741,7 @@ function updateInvoiceDate() {
     };
     
     const dateStr = now.toLocaleDateString('ar-EG', options);
-    const invoiceDateEl = document.getElementById("invoiceDate");
-    if (invoiceDateEl) invoiceDateEl.innerText = `📅 ${dateStr}`;
+    document.getElementById("invoiceDate").innerText = `📅 ${dateStr}`;
 }
 
 function sendInvoice() {
@@ -2806,21 +2777,15 @@ function sendInvoice() {
 function showNumbersModal() {
     const message = localStorage.getItem('currentInvoiceMessage');
     
-    const officeNumber = document.getElementById('officeNumber');
-    const storeNumber = document.getElementById('storeNumber');
-    const carNumber = document.getElementById('carNumber');
+    document.getElementById('officeNumber').href = `https://wa.me/201067070423?text=${encodeURIComponent(message)}`;
+    document.getElementById('storeNumber').href = `https://wa.me/201022495795?text=${encodeURIComponent(message)}`;
+    document.getElementById('carNumber').href = `https://wa.me/201012253500?text=${encodeURIComponent(message)}`;
     
-    if (officeNumber) officeNumber.href = `https://wa.me/201067070423?text=${encodeURIComponent(message)}`;
-    if (storeNumber) storeNumber.href = `https://wa.me/201022495795?text=${encodeURIComponent(message)}`;
-    if (carNumber) carNumber.href = `https://wa.me/201012253500?text=${encodeURIComponent(message)}`;
-    
-    const numbersModal = document.getElementById('numbersModal');
-    if (numbersModal) numbersModal.style.display = 'block';
+    document.getElementById('numbersModal').style.display = 'block';
 }
 
 function closeNumbersModal() {
-    const numbersModal = document.getElementById('numbersModal');
-    if (numbersModal) numbersModal.style.display = 'none';
+    document.getElementById('numbersModal').style.display = 'none';
 }
 
 function saveInvoiceWithDate() {
@@ -2863,8 +2828,6 @@ function saveInvoiceWithDate() {
 
 function displaySavedInvoices() {
     const savedInvoicesList = document.getElementById('savedInvoicesList');
-    if (!savedInvoicesList) return;
-    
     savedInvoicesList.innerHTML = '';
     
     if (savedInvoices.length === 0) {
@@ -2895,7 +2858,6 @@ function displaySavedInvoices() {
 
 function loadSavedInvoice(index) {
     const invoice = savedInvoices[index];
-    if (!invoice) return;
     
     cart = {};
     
@@ -2911,7 +2873,6 @@ function loadSavedInvoice(index) {
 
 function sendSavedInvoice(index) {
     const invoice = savedInvoices[index];
-    if (!invoice) return;
     
     let message = `📋 *فاتورة محفوظة من جنة*\n\n`;
     message += `📅 ${invoice.date}\n\n`;
@@ -2944,18 +2905,13 @@ function deleteSavedInvoice(index) {
 // ======================
 
 function performSearch() {
-    const searchBox = document.getElementById("searchBox");
-    if (!searchBox) return;
-    
-    const keyword = searchBox.value.trim().toLowerCase();
+    const keyword = document.getElementById("searchBox").value.trim().toLowerCase();
     currentSearchTerm = keyword;
     
     if (keyword === "") {
         isSearching = false;
-        const searchSuggestion = document.getElementById('searchSuggestion');
-        if (searchSuggestion) searchSuggestion.style.display = 'none';
-        
-        if (productsView && productsView.style.display === 'block') {
+        document.getElementById('searchSuggestion').style.display = 'none';
+        if (productsView.style.display === 'block') {
             filterProductsByCategory(currentCategory);
         }
         return;
@@ -2964,7 +2920,7 @@ function performSearch() {
     isSearching = true;
     
     let filtered = productsData;
-    if (currentCategory !== 'all' && productsView && productsView.style.display === 'block') {
+    if (currentCategory !== 'all' && productsView.style.display === 'block') {
         filtered = productsData.filter(product => {
             const productCategory = getProductCategory(product.name);
             return productCategory === currentCategory;
@@ -2973,7 +2929,8 @@ function performSearch() {
     
     filtered = filtered.filter(p => p.name.toLowerCase().includes(keyword));
     
-    if (categoriesView && categoriesView.style.display === 'grid') {
+    // إذا كنا في شاشة الأقسام، انتقل إلى شاشة المنتجات مع عرض نتائج البحث
+    if (categoriesView.style.display === 'grid') {
         showProductsView('all');
     }
     
@@ -2991,49 +2948,32 @@ function checkNewProducts() {
 
 function showToast(msg) {
     const toast = document.getElementById("toast");
-    if (!toast) return;
-    
     toast.innerText = msg;
     toast.style.display = "block";
     setTimeout(() => toast.style.display = "none", 1200);
 }
 
 function updateInitialLoadingStatus(message, progress) {
-    const statusEl = document.getElementById('initialLoadingStatus');
-    const progressEl = document.getElementById('initialLoadingProgress');
-    
-    if (statusEl) statusEl.textContent = message;
-    if (progressEl) progressEl.style.width = progress + '%';
+    document.getElementById('initialLoadingStatus').textContent = message;
+    document.getElementById('initialLoadingProgress').style.width = progress + '%';
 }
 
 function showInitialLoadingError() {
-    const errorEl = document.getElementById('initialLoadingError');
-    const statusEl = document.getElementById('initialLoadingStatus');
-    const spinner = document.querySelector('.initial-loading-spinner');
-    
-    if (errorEl) errorEl.style.display = 'block';
-    if (statusEl) statusEl.style.display = 'none';
-    if (spinner) spinner.style.display = 'none';
+    document.getElementById('initialLoadingError').style.display = 'block';
+    document.getElementById('initialLoadingStatus').style.display = 'none';
+    document.querySelector('.initial-loading-spinner').style.display = 'none';
 }
 
 function retryInitialLoad() {
-    const errorEl = document.getElementById('initialLoadingError');
-    const statusEl = document.getElementById('initialLoadingStatus');
-    const spinner = document.querySelector('.initial-loading-spinner');
-    const progressEl = document.getElementById('initialLoadingProgress');
-    
-    if (errorEl) errorEl.style.display = 'none';
-    if (statusEl) statusEl.style.display = 'block';
-    if (spinner) spinner.style.display = 'block';
-    if (progressEl) progressEl.style.width = '0%';
-    
+    document.getElementById('initialLoadingError').style.display = 'none';
+    document.getElementById('initialLoadingStatus').style.display = 'block';
+    document.querySelector('.initial-loading-spinner').style.display = 'block';
+    document.getElementById('initialLoadingProgress').style.width = '0%';
     initialLoad();
 }
 
 function playNotificationSound() {
     const sound = document.getElementById('notificationSound');
-    if (!sound) return;
-    
     try {
         sound.currentTime = 0;
         sound.play().catch(e => console.log('تعذر تشغيل الصوت:', e));
@@ -3043,35 +2983,24 @@ function playNotificationSound() {
 }
 
 function openProductRequestModal() {
-    const modal = document.getElementById('productRequestModal');
-    if (modal) {
-        modal.style.display = 'block';
-        const textArea = document.getElementById('productRequestText');
-        if (textArea) textArea.focus();
-    }
+    document.getElementById('productRequestModal').style.display = 'block';
+    document.getElementById('productRequestText').focus();
 }
 
 function closeProductRequestModal() {
-    const modal = document.getElementById('productRequestModal');
-    if (modal) {
-        modal.style.display = 'none';
-        const textArea = document.getElementById('productRequestText');
-        if (textArea) textArea.value = '';
-    }
+    document.getElementById('productRequestModal').style.display = 'none';
+    document.getElementById('productRequestText').value = '';
 }
 
 function sendProductRequest() {
-    const requestText = document.getElementById('productRequestText');
-    if (!requestText) return;
+    const requestText = document.getElementById('productRequestText').value.trim();
     
-    const text = requestText.value.trim();
-    
-    if (!text) {
+    if (!requestText) {
         showToast('يرجى كتابة اسم المنتج المطلوب');
         return;
     }
     
-    const message = `📦 *طلب منتج غير متوفر*\n\nالمنتج المطلوب: ${text}\n\nطلب من: متجر جنة`;
+    const message = `📦 *طلب منتج غير متوفر*\n\nالمنتج المطلوب: ${requestText}\n\nطلب من: متجر جنة`;
     const whatsappUrl = `https://wa.me/201022495795?text=${encodeURIComponent(message)}`;
     
     window.open(whatsappUrl, '_blank');
@@ -3084,12 +3013,18 @@ function sendProductRequest() {
 // ======================
 
 document.addEventListener('DOMContentLoaded', function() {
+    const container = document.getElementById("products-container");
+    const categoriesView = document.getElementById("categories-view");
+    const productsView = document.getElementById("products-view");
+    const mainProductsPage = document.getElementById("main-products-page");
+    const initialLoading = document.getElementById("initialLoading");
+    
     // تعيين المتغيرات العامة
-    container = document.getElementById("products-container");
-    categoriesView = document.getElementById("categories-view");
-    productsView = document.getElementById("products-view");
-    mainProductsPage = document.getElementById("main-products-page");
-    initialLoading = document.getElementById("initialLoading");
+    window.container = container;
+    window.categoriesView = categoriesView;
+    window.productsView = productsView;
+    window.mainProductsPage = mainProductsPage;
+    window.initialLoading = initialLoading;
     
     // بدء التحميل الأولي
     initialLoad();
@@ -3105,37 +3040,24 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    const updateBtn = document.getElementById("updateBtn");
-    if (updateBtn) updateBtn.onclick = forceUpdate;
+    document.getElementById("updateBtn").onclick = forceUpdate;
+    document.getElementById("searchBox").addEventListener("input", performSearch);
+    document.getElementById("cartBtn").onclick = showTotal;
+    document.getElementById("totalBtn").onclick = showTotal;
     
-    const searchBox = document.getElementById("searchBox");
-    if (searchBox) searchBox.addEventListener("input", performSearch);
-    
-    const cartBtn = document.getElementById("cartBtn");
-    if (cartBtn) cartBtn.onclick = showTotal;
-    
-    const totalBtn = document.getElementById("totalBtn");
-    if (totalBtn) totalBtn.onclick = showTotal;
-    
-    const passwordInput = document.getElementById('passwordInput');
-    if (passwordInput) {
-        passwordInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                checkPassword();
-            }
-        });
-    }
+    document.getElementById('passwordInput').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            checkPassword();
+        }
+    });
     
     setInterval(() => {
         const cartCount = getCartTotalItems();
-        const saveCartBtn = document.getElementById('saveCartBtn');
-        if (saveCartBtn) {
-            saveCartBtn.style.display = cartCount > 0 ? 'flex' : 'none';
-        }
+        document.getElementById('saveCartBtn').style.display = cartCount > 0 ? 'flex' : 'none';
     }, 1000);
     
-    // تهيئة التحديث التلقائي - تقليل التكرار إلى كل 5 دقائق بدلاً من دقيقة
-    setInterval(fetchProducts, 300000); // 5 دقائق
+    // تهيئة التحديث التلقائي
+    setInterval(fetchProducts, 60000);
 });
 </script>
 </body>
